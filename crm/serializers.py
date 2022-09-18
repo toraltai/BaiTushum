@@ -9,6 +9,12 @@ class SerializerClient(serializers.ModelSerializer):
         model = Client
         fields = '__all__'
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if not instance.is_director:
+            representation.pop('client_company')
+        return representation
+
 
 class SerializerCreditSpecialist(serializers.ModelSerializer):
     class Meta:
