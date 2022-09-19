@@ -78,7 +78,7 @@ class Client(models.Model):
     )
 
     def __str__(self):
-        if not self.client_company and self.is_director:
+        if not self.client_company:
             return self.full_name
         else:
             return f'{self.client_company} -- {self.full_name}'
@@ -285,4 +285,6 @@ class DataKK(models.Model):
     1.отчет по мониторингу (возможно несколько документов)
     2.фотографии залога
     3.нужно уточнить куда добавлять вышеуказанные два поля в модель Залогового имущества или в Контрагенты
+    
+    Уточнено: в Залоговое имущество 5-6 документов, 10-15 фотографий
 '''

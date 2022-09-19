@@ -1,7 +1,12 @@
 from django.contrib import admin
 from .models import *
 
-admin.site.register(Client)
+
+class MusicAdmin(admin.ModelAdmin):
+    list_filter = ['is_director']
+
+
+admin.site.register(Client, MusicAdmin)
 admin.site.register(CreditSpecialist)
 admin.site.register(Occupation)
 admin.site.register(Company)

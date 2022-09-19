@@ -1,3 +1,5 @@
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
 
@@ -8,6 +10,8 @@ from .models import Client, Company, CreditSpecialist, Occupation, Property, Gua
 class APIClient(ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = SerializerClient
+    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
+    filterset_fields = ['is_director']
 
 
 class APICreditSpecialist(ModelViewSet):

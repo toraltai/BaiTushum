@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'crm',
-
+    'django_filters',
     'rest_framework',
     'drf_yasg',
 ]
@@ -127,9 +127,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'config/static')
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'config/static')
+# ]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
