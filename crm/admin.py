@@ -7,6 +7,7 @@ class MusicAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Client, MusicAdmin)
+
 admin.site.register(CreditSpecialist)
 admin.site.register(Occupation)
 admin.site.register(Company)
