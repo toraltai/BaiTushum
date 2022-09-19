@@ -1,13 +1,21 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
+from rest_framework import decorators
 
 from .serializers import *
-from .models import Client, Company, CreditSpecialist, Occupation, Property, Guarantor, TelephoneConversation, DataKK
+from .models import Client, Company, CreditSpecialist, Entity, Occupation, Property, Guarantor, TelephoneConversation, DataKK
 
 
 class APIClient(ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = SerializerClient
+
+
+class APIEntity(ModelViewSet):
+    queryset = Entity.objects.all()
+    serializer_class = SerializerEntity
+        
+
 
 
 class APICreditSpecialist(ModelViewSet):

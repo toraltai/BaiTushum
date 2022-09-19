@@ -16,23 +16,7 @@ STATUS = [
 ]
 
 
-class Individual(models.Model):  # Физическое лицо
-    pass
-
-    class Meta:
-        verbose_name = "Документ на КК:"
-        verbose_name_plural = "Документы на КК:"
-
-
-class Entity(models.Model):  # Юридеческое лицо
-    pass
-
-    class Meta:
-        verbose_name = "Документ на КК:"
-        verbose_name_plural = "Документы на КК:"
-
-
-class Client(models.Model):
+class Client(models.Model):     #Физическое лицо
     full_name = models.CharField(max_length=100, null=False, verbose_name='ФИО клиента')
     credit_type = models.CharField(max_length=30, choices=LOAN_TYPE, verbose_name='Тип кредита')
     client_status = models.CharField(choices=STATUS, verbose_name='Статус клиента', max_length=30)
@@ -52,7 +36,6 @@ class Client(models.Model):
     guarantor = models.CharField(max_length=100, verbose_name='Поручитель')
     income_statement = models.FileField(upload_to='client_income_statement/%Y/%m/%d', null=True, blank=True,
                                         verbose_name='Справка о доходах')
-    is_director = models.BooleanField(default=False, verbose_name='Директор компании')
     client_company = models.CharField(max_length=100, verbose_name='Компания клиента', null=True, blank=True)
     mortgaged_property = models.CharField(max_length=255, verbose_name='Залоговое имущество')
     contracts = models.FileField(upload_to='contracts_with_suppliers/%Y/%m/%d', null=True, blank=True,
@@ -78,7 +61,7 @@ class Client(models.Model):
     )
 
     def __str__(self):
-        if not self.client_company and self.is_director:
+        if not self.client_company:
             return self.full_name
         else:
             return f'{self.client_company} -- {self.full_name}'
@@ -86,6 +69,14 @@ class Client(models.Model):
     class Meta:
         verbose_name = "Контрагент:"
         verbose_name_plural = "Контрагенты:"
+
+
+class Entity(Client):  # Юридеческое лицо
+    client_company = models.ForeignKey('Company', on_delete=models.CASCADE,
+                                            verbose_name="Компания клиента")
+
+    class Meta:
+        verbose_name = "Юридеческое лицо:"
 
 
 class CreditSpecialist(models.Model):

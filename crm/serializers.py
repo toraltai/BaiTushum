@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Client, Company, CreditSpecialist, MeetConversation, Occupation, Property, Guarantor, TelephoneConversation, DataKK
+from .models import Client, Company, CreditSpecialist, Entity, MeetConversation, Occupation, Property, Guarantor, TelephoneConversation, DataKK
 
 
 class SerializerClient(serializers.ModelSerializer):
@@ -15,10 +15,15 @@ class SerializerClient(serializers.ModelSerializer):
         return representation
 
 
+class SerializerEntity(serializers.ModelSerializer):
+    class Meta:
+        model = Entity
+        fields = '__all__'
+
+
 class SerializerCreditSpecialist(serializers.ModelSerializer):
     class Meta:
         model = CreditSpecialist
-        # fields = '__all__'
         exclude = ['id']
 
     def to_representation(self, instance):
