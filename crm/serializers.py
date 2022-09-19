@@ -1,4 +1,3 @@
-from rest_framework import viewsets
 from rest_framework import serializers
 
 from .models import Client, Company, CreditSpecialist, MeetConversation, Occupation, Property, Guarantor, TelephoneConversation, DataKK
@@ -19,13 +18,19 @@ class SerializerClient(serializers.ModelSerializer):
 class SerializerCreditSpecialist(serializers.ModelSerializer):
     class Meta:
         model = CreditSpecialist
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['id']
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['job_title'] = SerializerOccupation(instance.job_title).data
+        return rep
 
         
 class SerializerOccupation(serializers.ModelSerializer):
     class Meta:
         model = Occupation
-        fields = '__all__'
+        fields = ['name_job_title']
 
 
 class SerializerCompany(serializers.ModelSerializer):

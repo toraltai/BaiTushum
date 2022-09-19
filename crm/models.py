@@ -137,13 +137,22 @@ class Activity(models.Model):
     activites_add = models.CharField(max_length=100, verbose_name='Добавить источник дохода', null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if self.activites:
+        if self.activites_add:
             res = (str(self.activites_add), str(self.activites_add))
             self.ACTIVITES.append(res)
             self.activites = self.activites_add
             super(Activity, self).save(*args, **kwargs)
         else:
             super(Activity, self).save(*args, **kwargs)
+
+    def __str__(self):
+        if self.activites_add:
+            return self.activites_add
+        else:
+            return str(self.activites)
+
+    class Meta:
+        verbose_name_plural = 'Сфера деятельности'
 
 
 class Company(models.Model):
