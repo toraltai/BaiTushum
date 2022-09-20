@@ -2,9 +2,10 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
+from rest_framework import decorators
 
 from .serializers import *
-from .models import Client, Company, CreditSpecialist, Occupation, Property, Guarantor, TelephoneConversation, DataKK
+from .models import Client, Company, CreditSpecialist, Entity, Occupation, Property, Guarantor, TelephoneConversation, DataKK
 
 
 class APIClient(ModelViewSet):
@@ -12,6 +13,13 @@ class APIClient(ModelViewSet):
     serializer_class = SerializerClient
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_fields = ['is_director']
+
+
+class APIEntity(ModelViewSet):
+    queryset = Entity.objects.all()
+    serializer_class = SerializerEntity
+        
+
 
 
 class APICreditSpecialist(ModelViewSet):
