@@ -11,16 +11,14 @@ from .models import Client, Company, CreditSpecialist, Entity, Occupation, Prope
 class APIClient(ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = SerializerClient
-    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
-    filterset_fields = ['is_director']
+    # filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
+    # filterset_fields = ['is_director']
 
 
 class APIEntity(ModelViewSet):
     queryset = Entity.objects.all()
     serializer_class = SerializerEntity
         
-
-
 
 class APICreditSpecialist(ModelViewSet):
     queryset = CreditSpecialist.objects.all()

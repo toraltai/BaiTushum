@@ -16,6 +16,7 @@ STATUS = [
 ]
 
 
+
 class Client(models.Model):     #Физическое лицо
     full_name = models.CharField(max_length=100, null=False, verbose_name='ФИО клиента')
     credit_type = models.CharField(max_length=30, choices=LOAN_TYPE, verbose_name='Тип кредита')
@@ -28,15 +29,13 @@ class Client(models.Model):     #Физическое лицо
         default='Кредитная история отсутствует',
         upload_to='client_credit_history/%Y/%m/%d',
         verbose_name='Кредитная история')
-    phone = models.CharField(max_length=100, unique=True, default='+996', verbose_name='Номер телефона',
-                             help_text='+996 777 777 777')
+    phone = models.CharField(max_length=100, unique=True, default='+996', verbose_name='Номер телефона')
     address = models.CharField(max_length=100, verbose_name='Адрес прописки')
     client_actual_address = models.CharField(max_length=100, verbose_name='Адрес фактический',
                                              default='Тот же что и по прописке')
     guarantor = models.CharField(max_length=100, verbose_name='Поручитель')
     income_statement = models.FileField(upload_to='client_income_statement/%Y/%m/%d', null=True, blank=True,
                                         verbose_name='Справка о доходах')
-    client_company = models.CharField(max_length=100, verbose_name='Компания клиента', null=True, blank=True)
     mortgaged_property = models.CharField(max_length=255, verbose_name='Залоговое имущество')
     contracts = models.FileField(upload_to='contracts_with_suppliers/%Y/%m/%d', null=True, blank=True,
                                  verbose_name='Договора с подрядчиками и поставщиками')
@@ -51,7 +50,6 @@ class Client(models.Model):     #Физическое лицо
     updated_date = models.DateTimeField(auto_now=True)
     id_credit_spec = models.ForeignKey('CreditSpecialist', on_delete=models.CASCADE)
     id_guarantor = models.ForeignKey('Guarantor', on_delete=models.CASCADE, null=True, blank=True)
-    id_company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True)
     id_property = models.ForeignKey('Property', on_delete=models.CASCADE, null=True, blank=True)
     id_num_parley = models.ForeignKey(
         'TelephoneConversation',
@@ -67,16 +65,23 @@ class Client(models.Model):     #Физическое лицо
             return f'{self.client_company} -- {self.full_name}'
 
     class Meta:
-        verbose_name = "Контрагент:"
-        verbose_name_plural = "Контрагенты:"
+        verbose_name = "Контрагент"
+        verbose_name_plural = "Контрагенты"
 
 
 class Entity(Client):  # Юридеческое лицо
-    client_company = models.ForeignKey('Company', on_delete=models.CASCADE,
-                                            verbose_name="Компания клиента")
+    client_company = models.CharField(max_length=50,
+                                            verbose_name="Компания клиента", auto_created=True,)
+    id_company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True)
+    inn = models.CharField(max_length=20, verbose_name="ИНН")
+    souce_of_income = models.ForeignKey('Activity', verbose_name='Источник дохода', on_delete=models.CASCADE)
+    average_salary = models.IntegerField(verbose_name='Cредний доход')
+    own_contribution = models.IntegerField(verbose_name='Размер собвственного вклада')
+    current_loan = models.CharField(verbose_name='Текущие кредиты', max_length=50)
 
     class Meta:
-        verbose_name = "Юридеческое лицо:"
+        verbose_name = "Юридеческое лицо"
+        verbose_name_plural = "Юридеческое лицо"
 
 
 class CreditSpecialist(models.Model):
@@ -88,7 +93,7 @@ class CreditSpecialist(models.Model):
 
     class Meta:
         verbose_name = 'Специалист'
-        verbose_name_plural = "Специалисты:"
+        verbose_name_plural = "Специалисты"
 
 
 class Occupation(models.Model):
@@ -119,12 +124,18 @@ class Occupation(models.Model):
 
 class Activity(models.Model):
     ACTIVITES = [
-        ('Сельское хозяйство', 'Сельское хозяйство'),
-        ('торговля', 'торговля'),
-        ('производство', 'производство')
+        ('1','сельское хозяйство'),
+        ('2','торговля'),
+        ('3','производство'),
+        ('4','заготовка и переработка'),
+        ('5','промышленность'),
+        ('6','торговля и коммерция'),
+        ('7','строительство'),
+        ('8','транспорт'),
+        ('9','услуги'),
+        ('10','прочие')
     ]
-    activites = models.CharField(max_length=100, choices=ACTIVITES, verbose_name='Источник дохода', null=True,
-                                 blank=True)
+    activites = models.CharField(max_length=100, choices=ACTIVITES, verbose_name='Источник дохода', null=True, blank=True)
     activites_add = models.CharField(max_length=100, verbose_name='Добавить источник дохода', null=True, blank=True)
 
     def save(self, *args, **kwargs):
@@ -162,7 +173,7 @@ class Company(models.Model):
 
     class Meta:
         verbose_name = 'Компания'
-        verbose_name_plural = "Компании:"
+        verbose_name_plural = "Компании"
 
 
 class Guarantor(models.Model):
@@ -243,8 +254,8 @@ class DataKK(models.Model):
     id_spec = models.ForeignKey('CreditSpecialist', on_delete=models.PROTECT)
 
     class Meta:
-        verbose_name = "Документ на КК:"
-        verbose_name_plural = "Документы на КК:"
+        verbose_name = "Документ на КК"
+        verbose_name_plural = "Документы на КК"
 
 
 '''
