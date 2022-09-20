@@ -1,3 +1,4 @@
+
 from django.db import models
 
 LOAN_TYPE = [
@@ -16,7 +17,7 @@ STATUS = [
 ]
 
 
-class Client(models.Model):     #Физическое лицо
+class Client(models.Model):  # Физическое лицо
     full_name = models.CharField(max_length=100, null=False, verbose_name='ФИО клиента')
     credit_type = models.CharField(max_length=30, choices=LOAN_TYPE, verbose_name='Тип кредита')
     client_status = models.CharField(choices=STATUS, verbose_name='Статус клиента', max_length=30)
@@ -28,8 +29,7 @@ class Client(models.Model):     #Физическое лицо
         default='Кредитная история отсутствует',
         upload_to='client_credit_history/%Y/%m/%d',
         verbose_name='Кредитная история')
-    phone = models.CharField(max_length=100, unique=True, default='+996', verbose_name='Номер телефона',
-                             help_text='+996 777 777 777')
+    phone = models.CharField(max_length=100, unique=True, default='+996', verbose_name='Номер телефона')
     address = models.CharField(max_length=100, verbose_name='Адрес прописки')
     client_actual_address = models.CharField(max_length=100, verbose_name='Адрес фактический',
                                              default='Тот же что и по прописке')
@@ -50,7 +50,6 @@ class Client(models.Model):     #Физическое лицо
     updated_date = models.DateTimeField(auto_now=True)
     id_credit_spec = models.ForeignKey('CreditSpecialist', on_delete=models.CASCADE)
     id_guarantor = models.ForeignKey('Guarantor', on_delete=models.CASCADE, null=True, blank=True)
-    id_company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True)
     id_property = models.ForeignKey('Property', on_delete=models.CASCADE, null=True, blank=True)
     id_num_parley = models.ForeignKey(
         'TelephoneConversation',
@@ -59,23 +58,30 @@ class Client(models.Model):     #Физическое лицо
         blank=True,
     )
 
-    def __str__(self):
-        if not self.client_company:
-            return self.full_name
-        else:
-            return f'{self.client_company} -- {self.full_name}'
-
     class Meta:
-        verbose_name = "Контрагент:"
-        verbose_name_plural = "Контрагенты:"
+        verbose_name = "Контрагент"
+        verbose_name_plural = "Контрагенты"
+
+    def __str__(self):
+        return self.full_name
 
 
 class Entity(Client):  # Юридеческое лицо
-    client_company = models.ForeignKey('Company', on_delete=models.CASCADE,
-                                            verbose_name="Компания клиента")
+    client_company = models.CharField(max_length=50,
+                                      verbose_name="Компания клиента", auto_created=True, )
+    id_company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True)
+    inn = models.CharField(max_length=20, verbose_name="ИНН")
+    souce_of_income = models.ForeignKey('Activity', verbose_name='Источник дохода', on_delete=models.CASCADE)
+    average_salary = models.IntegerField(verbose_name='Cредний доход')
+    own_contribution = models.IntegerField(verbose_name='Размер собвственного вклада')
+    current_loan = models.CharField(verbose_name='Текущие кредиты', max_length=50)
 
     class Meta:
-        verbose_name = "Юридеческое лицо:"
+        verbose_name = "Юридическое лицо"
+        verbose_name_plural = "Юридиеские лица"
+
+    def __str__(self):
+        return f'{self.client_company} -- {self.full_name}'
 
 
 class CreditSpecialist(models.Model):
@@ -87,7 +93,7 @@ class CreditSpecialist(models.Model):
 
     class Meta:
         verbose_name = 'Специалист'
-        verbose_name_plural = "Специалисты:"
+        verbose_name_plural = "Специалисты"
 
 
 class Occupation(models.Model):
@@ -118,9 +124,16 @@ class Occupation(models.Model):
 
 class Activity(models.Model):
     ACTIVITES = [
-        ('Сельское хозяйство', 'Сельское хозяйство'),
-        ('торговля', 'торговля'),
-        ('производство', 'производство')
+        ('1', 'сельское хозяйство'),
+        ('2', 'торговля'),
+        ('3', 'производство'),
+        ('4', 'заготовка и переработка'),
+        ('5', 'промышленность'),
+        ('6', 'торговля и коммерция'),
+        ('7', 'строительство'),
+        ('8', 'транспорт'),
+        ('9', 'услуги'),
+        ('10', 'прочие')
     ]
     activites = models.CharField(max_length=100, choices=ACTIVITES, verbose_name='Источник дохода', null=True,
                                  blank=True)
@@ -161,7 +174,7 @@ class Company(models.Model):
 
     class Meta:
         verbose_name = 'Компания'
-        verbose_name_plural = "Компании:"
+        verbose_name_plural = "Компании"
 
 
 class Guarantor(models.Model):
@@ -186,11 +199,9 @@ class Guarantor(models.Model):
         verbose_name_plural = 'Поручители'
 
 
-
 class Property(models.Model):
     type = models.CharField(max_length=100, verbose_name="Залоговое имущество")
     address = models.CharField(max_length=100, verbose_name='Местонахождение залога')
-    document = models.FileField(upload_to='document/%Y/%m/%d')
 
     def __str__(self):
         return f'{self.type}'
@@ -199,6 +210,13 @@ class Property(models.Model):
         verbose_name = 'Залоговое имущество'
         verbose_name_plural = "Залоговые имущества"
 
+
+class Files(models.Model):
+    file = models.FileField(upload_to='company_files/%Y/%m/%d')
+    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = 'Документы на залоговое имущество'
 
 class TelephoneConversation(models.Model):
     name = models.CharField(max_length=100)
@@ -243,8 +261,8 @@ class DataKK(models.Model):
     id_spec = models.ForeignKey('CreditSpecialist', on_delete=models.PROTECT)
 
     class Meta:
-        verbose_name = "Документ на КК:"
-        verbose_name_plural = "Документы на КК:"
+        verbose_name = "Документ на КК"
+        verbose_name_plural = "Документы на КК"
 
 
 '''

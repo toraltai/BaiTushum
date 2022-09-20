@@ -1,18 +1,13 @@
 from rest_framework import serializers
 
-from .models import Client, Company, CreditSpecialist, Entity, MeetConversation, Occupation, Property, Guarantor, TelephoneConversation, DataKK
+from .models import Client, Company, CreditSpecialist, Entity, MeetConversation, Occupation, Property, Guarantor, \
+    TelephoneConversation, DataKK, Files
 
 
 class SerializerClient(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = '__all__'
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        if not instance.is_director:
-            representation.pop('client_company')
-        return representation
 
 
 class SerializerEntity(serializers.ModelSerializer):
@@ -31,7 +26,7 @@ class SerializerCreditSpecialist(serializers.ModelSerializer):
         rep['job_title'] = SerializerOccupation(instance.job_title).data
         return rep
 
-        
+
 class SerializerOccupation(serializers.ModelSerializer):
     class Meta:
         model = Occupation
@@ -44,10 +39,28 @@ class SerializerCompany(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class FilesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Files
+        fields = '__all__'
+
+
 class SerializerProperty(serializers.ModelSerializer):
+    files = FilesSerializer(many=True, read_only=True)
+
     class Meta:
         model = Property
         fields = '__all__'
+
+    def create(self, validated_data):
+        requests = self.context.get('request')
+        files = requests.FILES
+        property = Property.objects.create(**validated_data)
+
+        for file in files.getlist('files'):
+            Files.objects.create(property=property, file=file)
+
+        return property
 
 
 class SerializerGuarantor(serializers.ModelSerializer):
