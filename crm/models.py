@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 LOAN_TYPE = [
     ('LS', 'Лизинг'),
@@ -24,11 +25,11 @@ class Client(models.Model):     #Физическое лицо
     credit_sum = models.CharField(max_length=30, verbose_name='Сумма кредита')
     marital_status = models.CharField(max_length=30, choices=MARITAL_STATUSES, verbose_name='Семейное положение')
     credit_history = models.FileField(
-        null=True,
-        blank=True,
-        default='Кредитная история отсутствует',
-        upload_to='client_credit_history/%Y/%m/%d',
-        verbose_name='Кредитная история')
+            null=True,
+            blank=True,
+            default='Кредитная история отсутствует',
+            upload_to='client_credit_history/%Y/%m/%d',
+            verbose_name='Кредитная история')
     phone = models.CharField(max_length=100, unique=True, default='+996', verbose_name='Номер телефона')
     address = models.CharField(max_length=100, verbose_name='Адрес прописки')
     client_actual_address = models.CharField(max_length=100, verbose_name='Адрес фактический',
@@ -40,10 +41,10 @@ class Client(models.Model):     #Физическое лицо
     contracts = models.FileField(upload_to='contracts_with_suppliers/%Y/%m/%d', null=True, blank=True,
                                  verbose_name='Договора с подрядчиками и поставщиками')
     report = models.FileField(
-        upload_to='reports_with_suppliers/%Y/%m/%d',
-        null=True,
-        blank=True,
-        verbose_name='Oтчет подрядчиков и поставщиков об оказанной услугe'
+            upload_to='reports_with_suppliers/%Y/%m/%d',
+            null=True,
+            blank=True,
+            verbose_name='Oтчет подрядчиков и поставщиков об оказанной услугe'
     )
     monitoring_report = models.FileField(upload_to='media', verbose_name='Oтчет по мониторингу', null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
@@ -52,24 +53,21 @@ class Client(models.Model):     #Физическое лицо
     id_guarantor = models.ForeignKey('Guarantor', on_delete=models.CASCADE, null=True, blank=True)
     id_property = models.ForeignKey('Property', on_delete=models.CASCADE, null=True, blank=True)
     id_num_parley = models.ForeignKey(
-        'TelephoneConversation',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
+            'TelephoneConversation',
+            on_delete=models.CASCADE,
+            null=True,
+            blank=True,
     )
 
     def __str__(self):
-        if not self.client_company:
-            return self.full_name
-        else:
-            return f'{self.client_company} -- {self.full_name}'
+        return f'{self.full_name}'
 
     class Meta:
         verbose_name = "Контрагент"
         verbose_name_plural = "Контрагенты"
 
 
-class Entity(Client):  # Юридеческое лицо
+class Entity(Client):  # Юридическое лицо
     client_company = models.CharField(max_length=50,
                                             verbose_name="Компания клиента", auto_created=True,)
     id_company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True)
@@ -79,14 +77,20 @@ class Entity(Client):  # Юридеческое лицо
     own_contribution = models.IntegerField(verbose_name='Размер собвственного вклада')
     current_loan = models.CharField(verbose_name='Текущие кредиты', max_length=50)
 
+    def __str__(self):
+        if not self.client_company:
+            return self.full_name
+        else:
+            return f'{self.client_company} -- {self.full_name}'
+
     class Meta:
-        verbose_name = "Юридеческое лицо"
-        verbose_name_plural = "Юридеческое лицо"
+        verbose_name = "Юридическое лицо"
+        verbose_name_plural = "Юридическое лицо"
 
 
 class CreditSpecialist(models.Model):
     full_name = models.CharField(max_length=100, verbose_name='ФИО кредитного специалиста')
-    job_title = models.OneToOneField('Occupation', on_delete=models.CASCADE)
+    job_title = models.ForeignKey('Occupation', on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.full_name} -- {self.job_title}'
@@ -180,9 +184,9 @@ class Guarantor(models.Model):
     full_name = models.CharField(max_length=100, verbose_name='ФИО залогодателя')
 
     status = models.CharField(
-        max_length=30,
-        choices=MARITAL_STATUSES,
-        verbose_name="Семейное положение"
+            max_length=30,
+            choices=MARITAL_STATUSES,
+            verbose_name="Семейное положение"
     )
     credit_history = models.FileField(upload_to='credit_history/%Y/%m/%d')
     phone = models.CharField(max_length=30, verbose_name='Номер телефона')
@@ -238,55 +242,21 @@ class MeetConversation(models.Model):
 
 
 class DataKK(models.Model):
-    created_date = models.DateTimeField(
-        auto_now_add=True, verbose_name="Дата создания:")
-    credit_spec_report = models.FileField(
-        verbose_name="Заключение кредитного эксперта (скан):",
-        upload_to="credit_spec/%Y/%m/%d")
-    committee_decision = models.FileField(
-        verbose_name="Решение КК (скан):",
-        upload_to="decision/%Y/%m/%d")
-    all_contracts = models.FileField(
-        verbose_name="Все заключенные договора, перечень и сканы:",
-        upload_to="all_contracts/%Y/%m/%d")
-    scoring = models.CharField(verbose_name="Скоринг:", max_length=150)
-    id_client = models.ForeignKey('Client', on_delete=models.PROTECT)
+    created_date = models.DateTimeField(null=True, blank=True,
+            auto_now_add=True, verbose_name="Дата создания:")
+    credit_spec_report = models.FileField(null=True, blank=True,
+            verbose_name="Заключение кредитного эксперта (скан):",
+            upload_to="credit_spec/%Y/%m/%d")
+    committee_decision = models.FileField(null=True, blank=True,
+            verbose_name="Решение КК (скан):",
+            upload_to="decision/%Y/%m/%d")
+    all_contracts = models.FileField(null=True, blank=True,
+            verbose_name="Все заключенные договора, перечень и сканы:",
+            upload_to="all_contracts/%Y/%m/%d")
+    scoring = models.CharField(verbose_name="Скоринг:", max_length=150, null=True, blank=True)
+    id_client = models.ForeignKey('Entity', on_delete=models.PROTECT)
     id_spec = models.ForeignKey('CreditSpecialist', on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = "Документ на КК"
         verbose_name_plural = "Документы на КК"
-
-
-'''
-Должности:
-    1) Создать юзера со всеми его атрибутами
-    2) Сделать возможность присваивать должности зарегестрированным юзерам
-    3) Дать эту возможность только кредитному админу
-    4) Возможность вбивать или выбирать должность
-    
-Компании:
-    5) Разделить физ.лиц от юр.лиц
-    6) Создать модельку для сфер деятельности
-    7) В модель Company добавить возможность прикрепления документа
-    8) В модель Company добавить поле для прикрепления файла
-    
-Контрагент (Client):
-    9) Добавить поле связанное (foreignkey) с моделью CreditSpecialist
-    10) Choices на статус клиента
-
-Кредный специалист:
-    11) Поменять название на "Специалист"
-    12) Возможность выбирать юзера и должность
-    
-Поручители:
-    13) Убрать из бутерброда и добавить в раздел "Контрагент"
-    14) В разделе "Контрагент" поле поручитель должно перенаправлять на API создания поручителя
-
-В мониторинг залога нужно добавить поля:
-    1.отчет по мониторингу (возможно несколько документов)
-    2.фотографии залога
-    3.нужно уточнить куда добавлять вышеуказанные два поля в модель Залогового имущества или в Контрагенты
-    
-    Уточнено: в Залоговое имущество 5-6 документов, 10-15 фотографий
-'''

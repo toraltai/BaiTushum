@@ -6,6 +6,7 @@ from .views import *
 
 r = DefaultRouter()
 r.register('client', APIClient)
+r.register('entity', APIEntity )
 r.register('credit_spec', APICreditSpecialist)
 r.register('occup', APIOccupation)
 r.register('company', APICompany)

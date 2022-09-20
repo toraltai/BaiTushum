@@ -1,3 +1,4 @@
+from dataclasses import field
 from rest_framework import serializers
 
 from .models import Client, Company, CreditSpecialist, Entity, MeetConversation, Occupation, Property, Guarantor, TelephoneConversation, DataKK
@@ -8,17 +9,16 @@ class SerializerClient(serializers.ModelSerializer):
         model = Client
         fields = '__all__'
 
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        if not instance.is_director:
-            representation.pop('client_company')
-        return representation
-
 
 class SerializerEntity(serializers.ModelSerializer):
     class Meta:
         model = Entity
-        fields = '__all__'
+        exclude = ['id']
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['id_credit_spec'] = SerializerCreditSpecialist(instance.id_credit_spec).data['full_name']
+        return rep
 
 
 class SerializerCreditSpecialist(serializers.ModelSerializer):
@@ -28,14 +28,14 @@ class SerializerCreditSpecialist(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
-        rep['job_title'] = SerializerOccupation(instance.job_title).data
+        rep['job_title'] = SerializerOccupation(instance.job_title).data['name_job_title']
         return rep
 
         
 class SerializerOccupation(serializers.ModelSerializer):
     class Meta:
         model = Occupation
-        fields = ['name_job_title']
+        fields = ['id','name_job_title']
 
 
 class SerializerCompany(serializers.ModelSerializer):
@@ -70,4 +70,11 @@ class SerializersseetConvers(serializers.ModelSerializer):
 class SerializersDataKK(serializers.ModelSerializer):
     class Meta:
         model = DataKK
-        fields = '__all__'
+        exclude = ['id']
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['id_client'] = SerializerEntity(instance.id_client).data['full_name']
+        rep['id_spec'] = SerializerCreditSpecialist(instance.id_spec).data['full_name']
+        return rep
+
