@@ -125,7 +125,6 @@ celerybeat.pid
 # Environments
 .venv
 .env/
-.env
 env/
 ENV/
 env.bak/
@@ -282,5 +281,8 @@ cython_debug/
 
 static/
 media/
-venv/
 .idea/
+__pycache__/
+venv/
+crm/migrations/
+.env

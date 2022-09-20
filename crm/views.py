@@ -28,7 +28,6 @@ class APICreditSpecialist(ModelViewSet):
 class APIOccupation(ModelViewSet):
     queryset = Occupation.objects.all()
     serializer_class = SerializerOccupation
-    permission_classes = IsAdminUser
 
 
 class APICompany(ModelViewSet):
