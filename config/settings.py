@@ -215,4 +215,3 @@ CORS_ORIGIN_WHITELIST = [
     'https://www.thunderclient.com',
 ]
 
-# show me text
