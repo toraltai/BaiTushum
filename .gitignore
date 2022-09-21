@@ -3,4 +3,4 @@ migrations/
 venv/
 .env
 db.sqlite3
-**/config/settings.py
+config/settings.py/
