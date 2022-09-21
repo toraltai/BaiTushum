@@ -16,8 +16,13 @@ class FileInAdmin(admin.TabularInline):
     max_num = 5
 
 
+class ImageInAdmin(admin.TabularInline):
+    model = Images
+    fields = ['image']
+    max_num = 5
+
 class PropertyAdmin(admin.ModelAdmin):
-    inlines = [FileInAdmin]
+    inlines = [FileInAdmin, ImageInAdmin]
 
 
 admin.site.register(Property, PropertyAdmin)
@@ -25,3 +30,4 @@ admin.site.register(TelephoneConversation)
 admin.site.register(MeetConversation)
 admin.site.register(DataKK)
 admin.site.register(Activity)
+admin.site.register(Images)

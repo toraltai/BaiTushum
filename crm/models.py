@@ -48,13 +48,15 @@ class Client(models.Model):  # Физическое лицо
 
 
 class Entity(Client):  # Юридическое лицо
-    client_company = models.CharField(max_length=50,verbose_name="Компания клиента",auto_created=True)
-    id_company = models.ForeignKey('Company',on_delete=models.CASCADE,null=True,blank=True)
-    inn = models.CharField(max_length=20,verbose_name="ИНН")
-    souce_of_income = models.ForeignKey('Activity',verbose_name='Источник дохода',on_delete=models.CASCADE)
-    average_salary = models.IntegerField(verbose_name='Cредний доход')
-    own_contribution = models.IntegerField(verbose_name='Размер собвственного вклада')
-    current_loan = models.CharField(verbose_name='Текущие кредиты',max_length=50)
+    client_company = models.CharField(max_length=50,
+                                      verbose_name="Компания клиента", auto_created=True, )
+    id_company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True)
+    inn = models.CharField(max_length=20, verbose_name="ИНН")
+    souce_of_income = models.ForeignKey('Activity', verbose_name='Источник дохода', on_delete=models.CASCADE)
+    average_salary = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Средний доход в месяц')
+    own_contribution = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Размер собвственного вклада')
+    assets = models.TextField(help_text='Актив - стоимость – дата приобретения', verbose_name='Активы на момент анализа')
+    current_loan = models.CharField(verbose_name='Текущие кредиты', max_length=50)
 
     class Meta:
         verbose_name = "Юридическое лицо"
@@ -194,17 +196,26 @@ class Files(models.Model):
         verbose_name_plural = 'Документы на залоговое имущество'
 
 
+class Images(models.Model):
+    image = models.ImageField(upload_to='company_images/%Y/%m/%')
+    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = 'Фотографии залогового имущества'
+
+
 class TelephoneConversation(models.Model):
     name = models.CharField(max_length=100)
     date = models.CharField(max_length=30)
     time = models.CharField(max_length=30)
     desc = models.TextField(max_length=200)
+    field_order = ['date', 'name', 'time', 'desc']
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = "Телефонный переговор"
+        verbose_name = 'Телефонные переговоры'
         verbose_name_plural = 'Телефонные переговоры'
 
 
@@ -213,6 +224,12 @@ class MeetConversation(models.Model):
     date = models.CharField(max_length=30)
     time = models.CharField(max_length=30)
     desc = models.TextField(max_length=200)
+    results_report = models.FileField(null=True, blank=True,
+                                      verbose_name="Очет по результатам",
+                                      upload_to="results_report/%Y/%m/%d")
+    statistics = models.FileField(null=True, blank=True,
+                                  verbose_name="Статистика",
+                                  upload_to="statistics/%Y/%m/%d")
 
     def __str__(self):
         return self.name
@@ -223,13 +240,22 @@ class MeetConversation(models.Model):
 
 
 class DataKK(models.Model):
-    created_date = models.DateTimeField(null=True,blank=True,auto_now_add=True,verbose_name="Дата создания:")
-    credit_spec_report = models.FileField(null=True,blank=True,verbose_name="Заключение кредитного эксперта (скан):",upload_to="credit_spec/%Y/%m/%d")
-    committee_decision = models.FileField(null=True,blank=True,verbose_name="Решение КК (скан):",upload_to="decision/%Y/%m/%d")
-    all_contracts = models.FileField(null=True,blank=True,verbose_name="Все заключенные договора, перечень и сканы:",upload_to="all_contracts/%Y/%m/%d")
-    scoring = models.CharField(verbose_name="Скоринг:",max_length=150,null=True,blank=True)
-    id_client = models.ForeignKey('Entity',on_delete=models.PROTECT)
-    id_spec = models.ForeignKey('CreditSpecialist',on_delete=models.PROTECT)
+    created_date = models.DateTimeField(null=True, blank=True,
+                                        auto_now_add=True, verbose_name="Дата создания:")
+    credit_spec_report = models.FileField(null=True, blank=True,
+                                          verbose_name="Заключение кредитного эксперта (скан):",
+                                          upload_to="credit_spec/%Y/%m/%d")
+    committee_decision = models.FileField(null=True, blank=True,
+                                          verbose_name="Решение КК (скан):",
+                                          upload_to="decision/%Y/%m/%d")
+    all_contracts = models.FileField(null=True, blank=True,
+                                     verbose_name="Все заключенные договора, перечень и сканы:",
+                                     upload_to="all_contracts/%Y/%m/%d")
+
+    scoring = models.CharField(verbose_name="Скоринг:", max_length=150, null=True, blank=True)
+    id_client = models.ForeignKey('Entity', on_delete=models.PROTECT)
+    id_spec = models.ForeignKey('CreditSpecialist', on_delete=models.PROTECT)
+
 
     class Meta:
         verbose_name = "Документ на КК"

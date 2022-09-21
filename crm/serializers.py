@@ -1,7 +1,8 @@
 from dataclasses import field
 from rest_framework import serializers
 
-from .models import Client, Company, CreditSpecialist, Entity, MeetConversation, Occupation, Property, Guarantor, TelephoneConversation, DataKK, Files
+from .models import Client, Company, CreditSpecialist, Entity, MeetConversation, Occupation, Property, Guarantor, \
+    TelephoneConversation, DataKK, Files, Images
 
 
 class SerializerClient(serializers.ModelSerializer):
@@ -35,7 +36,7 @@ class SerializerCreditSpecialist(serializers.ModelSerializer):
 class SerializerOccupation(serializers.ModelSerializer):
     class Meta:
         model = Occupation
-        fields = ['id','name_job_title']
+        fields = ['id', 'name_job_title']
 
 
 class SerializerCompany(serializers.ModelSerializer):
@@ -50,23 +51,31 @@ class FilesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ImagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Images
+        fields = '__all__'
+
+
 class SerializerProperty(serializers.ModelSerializer):
     files = FilesSerializer(many=True, read_only=True)
+    images = ImagesSerializer(many=True, read_only=True)
 
     class Meta:
         model = Property
         fields = '__all__'
 
     def create(self, validated_data):
-        requests = self.context.get('request')
-        files = requests.FILES
+        request = self.context.get('request')
+        all_data = request.FILES
         property = Property.objects.create(**validated_data)
 
-        for file in files.getlist('files'):
-            Files.objects.create(property=property, file=file)
+        for image in all_data.getlist('images'):
+            Images.objects.create(property=property, image=image)
 
+        for f in all_data.getlist('files'):
+            Files.objects.create(property=property, file=f)
         return property
-
 
 class SerializerGuarantor(serializers.ModelSerializer):
     class Meta:
@@ -95,5 +104,3 @@ class SerializersDataKK(serializers.ModelSerializer):
         rep['id_client'] = SerializerEntity(instance.id_client).data['full_name']
         rep['id_spec'] = SerializerCreditSpecialist(instance.id_spec).data['full_name']
         return rep
-
-
