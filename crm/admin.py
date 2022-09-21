@@ -16,8 +16,6 @@ class FileInAdmin(admin.TabularInline):
     max_num = 5
 
 
-
-
 class PropertyAdmin(admin.ModelAdmin):
     inlines = [FileInAdmin]
 
