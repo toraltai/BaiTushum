@@ -1,5 +1,4 @@
 from django.db import models
-from datetime import datetime
 
 LOAN_TYPE = [
     ('LS', 'Лизинг'),
@@ -17,19 +16,18 @@ STATUS = [
 ]
 
 
-
-class Client(models.Model):     #Физическое лицо
+class Client(models.Model):  # Физическое лицо
     full_name = models.CharField(max_length=100, null=False, verbose_name='ФИО клиента')
     credit_type = models.CharField(max_length=30, choices=LOAN_TYPE, verbose_name='Тип кредита')
     client_status = models.CharField(choices=STATUS, verbose_name='Статус клиента', max_length=30)
     credit_sum = models.CharField(max_length=30, verbose_name='Сумма кредита')
     marital_status = models.CharField(max_length=30, choices=MARITAL_STATUSES, verbose_name='Семейное положение')
     credit_history = models.FileField(
-            null=True,
-            blank=True,
-            default='Кредитная история отсутствует',
-            upload_to='client_credit_history/%Y/%m/%d',
-            verbose_name='Кредитная история')
+        null=True,
+        blank=True,
+        default='Кредитная история отсутствует',
+        upload_to='client_credit_history/%Y/%m/%d',
+        verbose_name='Кредитная история')
     phone = models.CharField(max_length=100, unique=True, default='+996', verbose_name='Номер телефона')
     address = models.CharField(max_length=100, verbose_name='Адрес прописки')
     client_actual_address = models.CharField(max_length=100, verbose_name='Адрес фактический',
@@ -41,10 +39,10 @@ class Client(models.Model):     #Физическое лицо
     contracts = models.FileField(upload_to='contracts_with_suppliers/%Y/%m/%d', null=True, blank=True,
                                  verbose_name='Договора с подрядчиками и поставщиками')
     report = models.FileField(
-            upload_to='reports_with_suppliers/%Y/%m/%d',
-            null=True,
-            blank=True,
-            verbose_name='Oтчет подрядчиков и поставщиков об оказанной услугe'
+        upload_to='reports_with_suppliers/%Y/%m/%d',
+        null=True,
+        blank=True,
+        verbose_name='Oтчет подрядчиков и поставщиков об оказанной услугe'
     )
     monitoring_report = models.FileField(upload_to='media', verbose_name='Oтчет по мониторингу', null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
@@ -53,10 +51,10 @@ class Client(models.Model):     #Физическое лицо
     id_guarantor = models.ForeignKey('Guarantor', on_delete=models.CASCADE, null=True, blank=True)
     id_property = models.ForeignKey('Property', on_delete=models.CASCADE, null=True, blank=True)
     id_num_parley = models.ForeignKey(
-            'TelephoneConversation',
-            on_delete=models.CASCADE,
-            null=True,
-            blank=True,
+        'TelephoneConversation',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
     )
 
     def __str__(self):
@@ -69,7 +67,7 @@ class Client(models.Model):     #Физическое лицо
 
 class Entity(Client):  # Юридическое лицо
     client_company = models.CharField(max_length=50,
-                                            verbose_name="Компания клиента", auto_created=True,)
+                                      verbose_name="Компания клиента", auto_created=True, )
     id_company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True)
     inn = models.CharField(max_length=20, verbose_name="ИНН")
     souce_of_income = models.ForeignKey('Activity', verbose_name='Источник дохода', on_delete=models.CASCADE)
@@ -77,15 +75,12 @@ class Entity(Client):  # Юридическое лицо
     own_contribution = models.IntegerField(verbose_name='Размер собвственного вклада')
     current_loan = models.CharField(verbose_name='Текущие кредиты', max_length=50)
 
-    def __str__(self):
-        if not self.client_company:
-            return self.full_name
-        else:
-            return f'{self.client_company} -- {self.full_name}'
-
     class Meta:
         verbose_name = "Юридическое лицо"
-        verbose_name_plural = "Юридическое лицо"
+        verbose_name_plural = "Юридические лица"
+
+    def __str__(self):
+        return f'{self.client_company} -- {self.full_name}'
 
 
 class CreditSpecialist(models.Model):
@@ -128,18 +123,19 @@ class Occupation(models.Model):
 
 class Activity(models.Model):
     ACTIVITES = [
-        ('1','сельское хозяйство'),
-        ('2','торговля'),
-        ('3','производство'),
-        ('4','заготовка и переработка'),
-        ('5','промышленность'),
-        ('6','торговля и коммерция'),
-        ('7','строительство'),
-        ('8','транспорт'),
-        ('9','услуги'),
-        ('10','прочие')
+        ('1', 'сельское хозяйство'),
+        ('2', 'торговля'),
+        ('3', 'производство'),
+        ('4', 'заготовка и переработка'),
+        ('5', 'промышленность'),
+        ('6', 'торговля и коммерция'),
+        ('7', 'строительство'),
+        ('8', 'транспорт'),
+        ('9', 'услуги'),
+        ('10', 'прочие')
     ]
-    activites = models.CharField(max_length=100, choices=ACTIVITES, verbose_name='Источник дохода', null=True, blank=True)
+    activites = models.CharField(max_length=100, choices=ACTIVITES, verbose_name='Источник дохода', null=True,
+                                 blank=True)
     activites_add = models.CharField(max_length=100, verbose_name='Добавить источник дохода', null=True, blank=True)
 
     def save(self, *args, **kwargs):
@@ -184,9 +180,9 @@ class Guarantor(models.Model):
     full_name = models.CharField(max_length=100, verbose_name='ФИО залогодателя')
 
     status = models.CharField(
-            max_length=30,
-            choices=MARITAL_STATUSES,
-            verbose_name="Семейное положение"
+        max_length=30,
+        choices=MARITAL_STATUSES,
+        verbose_name="Семейное положение"
     )
     credit_history = models.FileField(upload_to='credit_history/%Y/%m/%d')
     phone = models.CharField(max_length=30, verbose_name='Номер телефона')
@@ -205,7 +201,6 @@ class Guarantor(models.Model):
 class Property(models.Model):
     type = models.CharField(max_length=100, verbose_name="Залоговое имущество")
     address = models.CharField(max_length=100, verbose_name='Местонахождение залога')
-    document = models.FileField(upload_to='document/%Y/%m/%d')
 
     def __str__(self):
         return f'{self.type}'
@@ -213,6 +208,14 @@ class Property(models.Model):
     class Meta:
         verbose_name = 'Залоговое имущество'
         verbose_name_plural = "Залоговые имущества"
+
+
+class Files(models.Model):
+    file = models.FileField(upload_to='company_files/%Y/%m/%d')
+    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = 'Документы на залоговое имущество'
 
 
 class TelephoneConversation(models.Model):
@@ -243,16 +246,16 @@ class MeetConversation(models.Model):
 
 class DataKK(models.Model):
     created_date = models.DateTimeField(null=True, blank=True,
-            auto_now_add=True, verbose_name="Дата создания:")
+                                        auto_now_add=True, verbose_name="Дата создания:")
     credit_spec_report = models.FileField(null=True, blank=True,
-            verbose_name="Заключение кредитного эксперта (скан):",
-            upload_to="credit_spec/%Y/%m/%d")
+                                          verbose_name="Заключение кредитного эксперта (скан):",
+                                          upload_to="credit_spec/%Y/%m/%d")
     committee_decision = models.FileField(null=True, blank=True,
-            verbose_name="Решение КК (скан):",
-            upload_to="decision/%Y/%m/%d")
+                                          verbose_name="Решение КК (скан):",
+                                          upload_to="decision/%Y/%m/%d")
     all_contracts = models.FileField(null=True, blank=True,
-            verbose_name="Все заключенные договора, перечень и сканы:",
-            upload_to="all_contracts/%Y/%m/%d")
+                                     verbose_name="Все заключенные договора, перечень и сканы:",
+                                     upload_to="all_contracts/%Y/%m/%d")
     scoring = models.CharField(verbose_name="Скоринг:", max_length=150, null=True, blank=True)
     id_client = models.ForeignKey('Entity', on_delete=models.PROTECT)
     id_spec = models.ForeignKey('CreditSpecialist', on_delete=models.PROTECT)
