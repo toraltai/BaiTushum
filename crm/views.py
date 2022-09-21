@@ -11,8 +11,6 @@ from .models import Client, Company, CreditSpecialist, Entity, Occupation, Prope
 class APIClient(ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = SerializerClient
-    # filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
-    # filterset_fields = ['is_director']
 
 
 class APIEntity(ModelViewSet):

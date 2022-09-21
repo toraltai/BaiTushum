@@ -1,0 +1,155 @@
+sudo sysctl -w net.ipv4.ip_default_ttl=65
+
+
+
+
+
+
+person_db=# select id as "person id" from person_db;
+	изменения названия колонки в рамках одного вывода
+	
+person_db=# select * from person_db limit 5;
+	вывод первых 5 значений
+	
+
+person_db=# select distinct  age from person_db;
+	вывод уникальных значений
+	
+person_db=# select * from person_db where name like 'J%';
+	вывод значений начинающихся на заданное значение
+	
+person_db=# select * from person_db where name like '%m';
+	вывод значений заканчивающихся на заданное значение
+	
+person_db=# select * from person_db where name like '%o%';
+	вывод значений содержащих заданное значение
+	
+person_db=# select * from person_db where name like '_a%';
+	вывод значений у которых вторая буква равна заданной
+	
+person_db=# select * from person_db where age between 20 and 40;
+	вывод значений нахлдящихся в указанном диапазоне
+	
+person_db=# select * from person_db order by name;
+	сортировка по имени
+	
+person_db=# select * from person_db order by id desc;
+	сортировка по id в порядке убывания
+	
+person_db=# select age, count(name) from person_db group by age 
+	кол-во повторяющихся возрастов
+	
+person_db=# select gender, count(name) from person_db group by gender;
+	кол-во повторяющихся гендеров
+	
+person_db=# select gender, count(name) from person_db group by gender having count(id) >3;
+		кол-во повторяющихся гендеров с условием
+		
+person_db=# select gender, count(name) from person_db where gender ='w' group by gender having count(id) >3 ;
+	двойное условие
+	
+person_db=# alter table person_db rename to person;
+	переименование таблицы
+	
+person_db=# alter table person drop column gender;
+	удаление столбца
+	
+person_db=# alter table person alter column age type text;
+	изменение типа данных таблицы
+	
+person_db=# alter table person alter column age drop not null;
+	удаление ограничения столбца
+	
+person_db=# alter table person alter column age set not null;
+	изменение ограничения столбца
+	
+person_db=# alter table person alter column age2 type integer using age2::integer;
+	присваивание типа данных к столбцу(int)
+	
+person_db=# alter table person add constraint check_age2 check(age2 > 15);
+	добавление ограничения к столбцу (возраст больше 15)
+	
+person_db=# update person set age2 = 50;
+	изменение всех значений столбца age2 на 50
+	
+person_db=# update person set age2 = 60 where id = 1;
+	изменение значения одного элемента столбца на 60 по id
+	
+person_db=# select * from person order by id; 
+	сортировка таблицы по id в порядке возрастания
+	
+person_db=# update person set age2 = 16 where id = 12;
+	изменение одного элемента столбца при помоши условия
+	
+person_db=# delete from person where id = 5;
+	удаление элемента столбца по id
+	
+person_db=# delete from person where id < 5;
+	удаление элементов столбца по условию
+	
+person_db=# delete from person;
+	очистка таблицы
+	
+ select product.name, category.name from product join category on category.id = category.id;
+
+test=# select p.name, c.name from product as p left join category as c on p.category_id = c.id;
+
+
+test(# person_id int unique references person(id));
+
+
+test=# select studend_teacher.id, student.name, teacher.name from studend_teacher join student on student.id = studend_teacher.id_student join teacher on studend_teacher.id_teacher = teacher.id;
+
+
+test=# select st.id, s.name, t.name from studend_teacher as st join student as s on s.id = st.id_student join teacher as t on st.id_teacher = t.id;
+
+	
+	
+	
+	
+	
+	
+1)select plaintext from wordform order by occurences desc fetch first(10) row only;
+
+2)select plaintext from wordform where plaintext ilike 'a%';
+
+3)select title, genretype from work where genretype = 'p';
+
+4)select avg(totalparagraphs) from work where genretype = 't';
+  
+5)select title from work where totalwords > (select avg(totalwords) from work);
+
+6)select character.charname, character.speechcount, work.title from character_work join character on character.charid = character_work.charid join work on work.workid = character_work.workid;
+
+7)select round(avg(character.speechcount)), work.title from character_work join character on character.charid = character_work.charid join work on work.workid = character_work.workid where work.title ='Romeo and Juliet' group by work.title;
+
+8)select section, sum(wordcount) from paragraph group by section;
+
+9)select charname, speechcount from character where speechcount between 15 and 30;
+
+10)select title, year from work where year between 1601 and 1700;
+
+11)select longtitle from work where longtitle like '%the%';
+
+12)select distinct section from paragraph;
+
+13)select chapter.chapterid, chapter.description, work.title from chapter join work on work.workid = chapter.workid;
+
+14)select paragraph.paragraphnum, character.charname, character.speechcount from paragraph join character on character.charid = paragraph.charid;
+
+15)select paragraph.paragraphnum, work.title, work.year from paragraph join work on work.workid = paragraph.workid;
+
+
+
+установка pip install psycopg2-binary
+
+
+akwnsxltvtegckyl
+
+kwork.ru
+
+token '3' for github = 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
+ 
+
+
+

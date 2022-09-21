@@ -21,7 +21,6 @@ class ImageInAdmin(admin.TabularInline):
     fields = ['image']
     max_num = 5
 
-
 class PropertyAdmin(admin.ModelAdmin):
     inlines = [FileInAdmin, ImageInAdmin]
 
