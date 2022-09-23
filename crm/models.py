@@ -48,15 +48,14 @@ class Client(models.Model):  # Физическое лицо
 
 
 class Entity(Client):  # Юридическое лицо
-    client_company = models.CharField(max_length=50,
-                                      verbose_name="Компания клиента", auto_created=True, )
-    id_company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True)
-    inn = models.CharField(max_length=20, verbose_name="ИНН")
-    souce_of_income = models.ForeignKey('Activity', verbose_name='Источник дохода', on_delete=models.CASCADE)
-    average_salary = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Средний доход в месяц')
-    own_contribution = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Размер собвственного вклада')
-    assets = models.TextField(help_text='Актив - стоимость – дата приобретения', verbose_name='Активы на момент анализа')
-    current_loan = models.CharField(verbose_name='Текущие кредиты', max_length=50)
+    client_company = models.CharField(max_length=50,verbose_name="Компания клиента",auto_created=True, )
+    id_company = models.ForeignKey('Company', on_delete=models.CASCADE,null=True,blank=True)
+    inn = models.CharField(max_length=20,verbose_name="ИНН")
+    souce_of_income = models.ForeignKey('Activity',verbose_name='Источник дохода',on_delete=models.CASCADE)
+    average_salary = models.DecimalField(max_digits=10,decimal_places=2,verbose_name='Средний доход в месяц')
+    own_contribution = models.DecimalField(max_digits=10,decimal_places=2,verbose_name='Размер собвственного вклада')
+    assets = models.TextField(help_text='Актив - стоимость – дата приобретения',verbose_name='Активы на момент анализа')
+    current_loan = models.CharField(verbose_name='Текущие кредиты',max_length=50)
 
     class Meta:
         verbose_name = "Юридическое лицо"
