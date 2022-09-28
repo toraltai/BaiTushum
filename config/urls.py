@@ -18,6 +18,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('docs/', schema_view.with_ui('swagger')),
     path('crm/', include('crm.urls')),
+    path('accoutns/', include('accounts.urls')),
     # path('api/', include('users.urls')),
     # path('api/token/', TokenObtainPairView.as_view()),
     # path('api/token/refresh/', TokenRefreshView.as_view()),

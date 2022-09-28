@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 
+
 class UserManager(BaseUserManager):
 
     def _create_user(self, email, password, **extra_fields):
@@ -35,11 +36,14 @@ class UserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
+    full_name = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
+    tel_number = models.CharField(default='+996 ', max_length=20)
+    adress = models.CharField(max_length=100)
     activation_code = models.CharField(max_length=50, blank=True)
     is_active = models.BooleanField(default=False)
-    occupation = models.ForeignKey
+
     username = None
 
     USERNAME_FIELD = 'email'
@@ -54,3 +58,18 @@ class CustomUser(AbstractUser):
         import uuid
         code = str(uuid.uuid4())
         self.activation_code = code
+
+class SpecUser(CustomUser):
+    occupation = models.CharField(max_length=100, choices=[
+        ('CreditSpecialist', 'Кредитный специалист'),
+        ('Creditadministrator', 'Кредитный администратор')
+    ], null=True, blank=True)
+
+    def __str__(self):
+        return self.email
+
+    def create_activation_code(self):
+        import uuid
+        code = str(uuid.uuid4())
+        self.activation_code = code
+
