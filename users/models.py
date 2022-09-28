@@ -9,13 +9,26 @@ OCCUPATION = (
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, full_name, occupation, phone_number, password=None):
+    def create_spec(self, email, username, full_name, occupation, phone_number, password=None):
 
         if email is None:
             raise TypeError('Users must have an email address.')
 
-        user = self.model(email=self.normalize_email(email), username=username, phone_number=phone_number,
-                          full_name=full_name, occupation=occupation)
+        user = self.model(email=self.normalize_email(email), username=username,
+                          full_name=full_name, phone_number=phone_number, occupation=occupation)
+        user.set_password(password)
+        user.is_staff = True
+        user.save()
+
+        return user
+
+    def create_client(self, email, username, full_name, address, phone_number, password=None):
+
+        if email is None:
+            raise TypeError('Users must have an email address.')
+
+        user = self.model(email=self.normalize_email(email), username=username,
+                          full_name=full_name, address=address, phone_number=phone_number)
         user.set_password(password)
         user.save()
 
@@ -42,6 +55,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     full_name = models.CharField('ФИО', db_index=True, max_length=406)
     username = models.CharField(max_length=100)
     occupation = models.CharField('Должность', choices=OCCUPATION, max_length=406, blank=True)
+    address = models.CharField(max_length=164, blank=True, null=True)
+    phone_number = models.CharField(max_length=100, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
