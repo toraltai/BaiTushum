@@ -3,7 +3,6 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
 from rest_framework import decorators
-
 from .serializers import *
 from .models import Client, Company, CreditSpecialist, Entity, Occupation, Property, Guarantor, TelephoneConversation, DataKK
 
@@ -24,6 +23,7 @@ class APICreditSpecialist(ModelViewSet):
 
 
 class APIOccupation(ModelViewSet):
+    permission_classes = IsAdminUser,
     queryset = Occupation.objects.all()
     serializer_class = SerializerOccupation
 
