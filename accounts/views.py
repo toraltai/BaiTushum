@@ -32,7 +32,7 @@ class RegisterSpecApiView(APIView):
     @swagger_auto_schema(request_body=SpecUserSerializer)
     def post(self, request):
         data = request.data
-        serializer = RegisterSerializer(data=data)
+        serializer = SpecUserSerializer(data=data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             message = f'Вы успешно зарегестрированы. ' \

@@ -11,11 +11,13 @@ User = get_user_model()
 
 
 class RegisterSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(required=True)
+    tel_number = serializers.CharField(required=True)
     password2 = serializers.CharField(min_length=6, write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ['full_name','email', 'adress', 'tel_number', 'password', 'password2']
+        fields = ['full_name', 'email', 'adress', 'tel_number', 'password', 'password2']
 
     def validate(self, attrs):
         password = attrs.get('password')
@@ -118,10 +120,13 @@ class ForgotPasswordCompleteSerializer(serializers.Serializer):
         if pass1 != pass2:
             raise serializers.ValidationError
 
+
 class SpecUserSerializer(serializers.ModelSerializer):
+    password2 = serializers.CharField(required=True)
+    occupation = serializers.CharField(required=True)
     class Meta:
         model = SpecUser
-        fields = ['full_name', 'occupation', 'email', 'adress', 'tel_number', 'password']
+        fields = ['full_name', 'occupation', 'email', 'adress', 'tel_number', 'password', 'password2']
 
     def validate(self, attrs):
         password = attrs.get('password')
@@ -133,7 +138,7 @@ class SpecUserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         print(validated_data)
-        user = User.objects.create_user(**validated_data)
+        user = SpecUser.objects.create_user(**validated_data)
         code = user.activation_code
         # celery_send_confirmation_email.delay(code, user.email)
         # send_confirmation_email(code, user.email)
