@@ -7,6 +7,7 @@ from .serializers import *
 from .models import Client, Company, CreditSpecialist, Entity, Occupation, Property, Guarantor, TelephoneConversation, DataKK
 from .permisions import IsCreditSpec,IsCreditAdmin
 
+
 class APIClient(ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = SerializerClient
