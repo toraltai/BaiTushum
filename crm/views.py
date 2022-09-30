@@ -5,7 +5,8 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework import decorators
 from .serializers import *
 from .models import Client, Company, CreditSpecialist, Entity, Occupation, Property, Guarantor, TelephoneConversation, DataKK
-from .permisions import IsCreditSpec,IsCreditAdmin,IsClient
+from .permisions import IsCreditSpec,IsCreditAdmin
+
 
 class APIClient(ModelViewSet):
     queryset = Client.objects.all()

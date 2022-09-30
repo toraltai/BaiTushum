@@ -8,9 +8,10 @@ class IsClient(BasePermission):
 
 class IsCreditSpec(BasePermission):
     def has_permission(self, request, view):
-        return bool(request.user and  request.user.occupation == 'Кредит.спец' or request.user.is_superuser)
+        return bool(request.user and  request.user.occupation=='Кредит.спец' or request.user.is_superuserp)
+
 
 
 class IsCreditAdmin(BasePermission):
     def has_permission(self, request, view):
-        return bool(request.user and  request.user.occupation == 'Кредит.админ' or request.user.is_superuser)
+        return bool(request.user and  request.user.occupation=='Кредит.админ' or request.user.is_superuserp)
