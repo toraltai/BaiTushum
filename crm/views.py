@@ -1,32 +1,23 @@
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAdminUser
-from rest_framework import decorators
+
 from .serializers import *
-from .models import Client, Company, CreditSpecialist, Entity, Occupation, Property, Guarantor, TelephoneConversation, DataKK
-from .permisions import IsCreditSpec,IsCreditAdmin
+
 
 
 class APIClient(ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = SerializerClient
 
+    def perform_create(self, serializer):
+        serializer.save(id_credit_spec=self.request.user)
+
 
 class APIEntity(ModelViewSet):
     queryset = Entity.objects.all()
     serializer_class = SerializerEntity
-        
 
-class APICreditSpecialist(ModelViewSet):
-    queryset = CreditSpecialist.objects.all()
-    serializer_class = SerializerCreditSpecialist
-
-
-class APIOccupation(ModelViewSet):
-    permission_classes = [IsCreditSpec,]
-    queryset = Occupation.objects.all()
-    serializer_class = SerializerOccupation
+    def perform_create(self, serializer):
+        serializer.save(id_credit_spec=self.request.user)
 
 
 class APICompany(ModelViewSet):
@@ -44,17 +35,14 @@ class APIGuarantor(ModelViewSet):
     serializer_class = SerializerGuarantor
 
 
-class APITelephConvers(ModelViewSet):
-    queryset = TelephoneConversation.objects.all()
-    fields = '__all__'
-
-
-class APIMeetConvers(ModelViewSet):
-    queryset = MeetConversation.objects.all()
+class APIConvers(ModelViewSet):
+    queryset = Conversation.objects.all()
     fields = '__all__'
 
 
 class APIDataKK(ModelViewSet):
     queryset = DataKK.objects.all()
     serializer_class = SerializersDataKK
-    # permission_classes = IsAdminUser
+
+    def perform_create(self, serializer):
+        serializer.save(id_spec=self.request.user)

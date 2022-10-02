@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.db import models
 
 OCCUPATION = (
     ('Кредит.спец', 'Кредит.спец'),
@@ -67,4 +67,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def __str__(self):
-        return self.full_name
+        if self.occupation:
+            return self.full_name
+        else:
+            return f'Имя клиента: {self.full_name}'

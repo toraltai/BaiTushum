@@ -1,42 +1,27 @@
-from dataclasses import field
 from rest_framework import serializers
 
-from .models import Client, Company, CreditSpecialist, Entity, MeetConversation, Occupation, Property, Guarantor, \
-    TelephoneConversation, DataKK, Files, Images
+from .models import *
 
 
 class SerializerClient(serializers.ModelSerializer):
+    id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.fullname')
+
     class Meta:
         model = Client
         fields = '__all__'
 
 
 class SerializerEntity(serializers.ModelSerializer):
+    id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.fullname')
+
     class Meta:
         model = Entity
         exclude = ['id']
 
-    def to_representation(self, instance):
-        rep = super().to_representation(instance)
-        rep['id_credit_spec'] = SerializerCreditSpecialist(instance.id_credit_spec).data['full_name']
-        return rep
-
-
-class SerializerCreditSpecialist(serializers.ModelSerializer):
-    class Meta:
-        model = CreditSpecialist
-        exclude = ['id']
-
-    def to_representation(self, instance):
-        rep = super().to_representation(instance)
-        rep['job_title'] = SerializerOccupation(instance.job_title).data['name_job_title']
-        return rep
-
-
-class SerializerOccupation(serializers.ModelSerializer):
-    class Meta:
-        model = Occupation
-        fields = ['id', 'name_job_title']
+    # def to_representation(self, instance):
+    #     rep = super().to_representation(instance)
+    #     rep['id_credit_spec'] = SerializerCreditSpecialist(instance.id_credit_spec).data['full_name']
+    #     return rep
 
 
 class SerializerCompany(serializers.ModelSerializer):
@@ -77,24 +62,22 @@ class SerializerProperty(serializers.ModelSerializer):
             Files.objects.create(property=property, file=f)
         return property
 
+
 class SerializerGuarantor(serializers.ModelSerializer):
     class Meta:
         model = Guarantor
         fields = '__all__'
 
 
-class SerializersTelephConvers(serializers.ModelSerializer):
+class SerializersConvers(serializers.ModelSerializer):
     class Meta:
-        model = TelephoneConversation
+        model = Conversation
         fields = '__all__'
 
 
-class SerializersseetConvers(serializers.ModelSerializer):
-    model = MeetConversation
-    fields = '__all__'
-
-
 class SerializersDataKK(serializers.ModelSerializer):
+    id_spec = serializers.ReadOnlyField(source='id_spec.fullname')
+
     class Meta:
         model = DataKK
         exclude = ['id']
@@ -102,5 +85,5 @@ class SerializersDataKK(serializers.ModelSerializer):
     def to_representation(self, instance):
         rep = super().to_representation(instance)
         rep['id_client'] = SerializerEntity(instance.id_client).data['full_name']
-        rep['id_spec'] = SerializerCreditSpecialist(instance.id_spec).data['full_name']
+        # rep['id_spec'] = SerializerCreditSpecialist(instance.id_spec).data['full_name']
         return rep

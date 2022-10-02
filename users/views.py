@@ -1,10 +1,9 @@
-from django.shortcuts import render
-from rest_framework import status
 from rest_framework import permissions
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import ViewSet
-from .serializer import RegistrationSpecSerializer, RegistrationClientSerializer,LogoutSerislizer
+
+from .serializer import RegistrationSpecSerializer, RegistrationClientSerializer, LogoutSerislizer
 
 
 class RegistrationSpecAPIView(APIView):
@@ -32,13 +31,14 @@ class RegistrationClientAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
 class UserLogoutView(APIView):
     serializer_class = LogoutSerislizer
-    permission_classes = [permissions.IsAuthenticated,]
+    permission_classes = [permissions.IsAuthenticated, ]
 
-    def post(self,request):
+    def post(self, request):
         serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception = True)
+        serializer.is_valid(raise_exception=True)
         serializer.save()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
