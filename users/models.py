@@ -22,7 +22,7 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_client(self, email, username, full_name, address, phone_number, password=None):
+    def create_user(self, email, username, full_name, address, phone_number, password=None):
 
         if email is None:
             raise TypeError('Users must have an email address.')

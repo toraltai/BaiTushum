@@ -18,11 +18,6 @@ class SerializerEntity(serializers.ModelSerializer):
         model = Entity
         exclude = ['id']
 
-    # def to_representation(self, instance):
-    #     rep = super().to_representation(instance)
-    #     rep['id_credit_spec'] = SerializerCreditSpecialist(instance.id_credit_spec).data['full_name']
-    #     return rep
-
 
 class SerializerCompany(serializers.ModelSerializer):
     class Meta:
