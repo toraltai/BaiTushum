@@ -3,6 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from .serializers import *
 
 
+
 class APIClient(ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = SerializerClient
