@@ -22,7 +22,7 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_client(self, email, username, full_name, address, phone_number, password=None):
+    def create_user(self, email, username, full_name, address, phone_number, password=None):
 
         if email is None:
             raise TypeError('Users must have an email address.')
@@ -56,8 +56,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=100)
     occupation = models.CharField('Должность', choices=OCCUPATION, max_length=406, blank=True)
     address = models.CharField(max_length=164, blank=True, null=True)
-    phone_number = models.CharField(max_length=100, blank=True, null=True)
-    is_active = models.BooleanField(default=True)
+    phone_number = models.CharField(max_length=100, default='+996', blank=True, null=True)
+    is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -68,6 +68,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         if self.occupation:
-            return self.full_name
+            return f'Сотрудник: {self.full_name}'
+        elif self.is_superuser:
+            return f'Администратор: {self.username}'
         else:
-            return f'Имя клиента: {self.full_name}'
+            return f'Клиент: {self.full_name}'

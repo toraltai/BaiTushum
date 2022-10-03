@@ -1,5 +1,7 @@
 from django.db import models
+
 from users.models import User
+
 LOAN_TYPE = [
     ('LS', 'Лизинг'),
     ('CR', 'Кредит'),
@@ -12,6 +14,8 @@ MARITAL_STATUSES = [
 ]
 STATUS = [
     ('Принят', 'Принят'),
+    ('Обработка', 'Обработка'),
+    ('На рассмотрении', 'На рассмотрении'),
     ('Отказано', 'Отказано')
 ]
 
@@ -119,7 +123,8 @@ class Company(models.Model):
     field_activity = models.ForeignKey(Activity, on_delete=models.CASCADE, verbose_name='Cфера деятельности')
     okpo = models.CharField(max_length=8, unique=True)
     register_number = models.CharField(max_length=30, unique=True)
-    document = models.FileField(upload_to='company_files/%Y/%m/%d', null=True, blank=True)
+    document = models.FileField(upload_to='company_files/%Y/%m/%d', verbose_name='Документ компании', null=True,
+                                blank=True)
 
     def __str__(self):
         return f'{self.company_name}'
@@ -151,7 +156,7 @@ class Property(models.Model):
     address = models.CharField(max_length=100, verbose_name='Местонахождение залога')
 
     def __str__(self):
-        return f'{self.type}'
+        return f'{self.id}. {self.type}'
 
     class Meta:
         verbose_name = 'Залоговое имущество'
@@ -189,7 +194,7 @@ class Conversation(models.Model):
                                   upload_to="statistics/%Y/%m/%d")
 
     def __str__(self):
-        return self.name
+        return f'{self.id}. {self.name}'
 
     class Meta:
         verbose_name = 'Переговоры'
@@ -197,7 +202,6 @@ class Conversation(models.Model):
 
 
 class DataKK(models.Model):
-
     created_date = models.DateTimeField(null=True, blank=True,
                                         auto_now_add=True, verbose_name="Дата создания:")
     credit_spec_report = models.FileField(null=True, blank=True,

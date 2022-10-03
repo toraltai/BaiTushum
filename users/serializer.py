@@ -7,11 +7,11 @@ from .models import User
 
 class RegistrationUserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
-        fields = ['email', 'full_name', 'username', 'password']
+        fields = ['email', 'username', 'full_name', 'address', 'phone_number', 'password']
 
 
 class RegistrationClientSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(
+    password_confirm = serializers.CharField(
         max_length=128,
         min_length=8,
         write_only=True
@@ -22,15 +22,13 @@ class RegistrationClientSerializer(serializers.ModelSerializer):
         fields = ['email', 'username', 'full_name', 'address', 'phone_number', 'password']
 
     def create(self, validated_data):
-        user = User.objects.create_client(**validated_data)
+        user = User.objects.create_user(**validated_data)
 
         return user
 
 
 class RegistrationSpecSerializer(serializers.ModelSerializer):
-    occupation = serializers.CharField(required=True)
-    phone_number = serializers.CharField(required=True)
-    password = serializers.CharField(
+    password_confirm = serializers.CharField(
         max_length=128,
         min_length=8,
         write_only=True

@@ -8,7 +8,13 @@ class SerializerClient(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = '__all__'
+        exclude = ['credit_history', 'income_statement', 'contracts', 'report', 'monitoring_report', ]
+
+
+class SerializerClientAdmin(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = ['credit_history', 'income_statement', 'contracts', 'report', 'monitoring_report', ]
 
 
 class SerializerEntity(serializers.ModelSerializer):
@@ -16,18 +22,25 @@ class SerializerEntity(serializers.ModelSerializer):
 
     class Meta:
         model = Entity
-        exclude = ['id']
+        exclude = ['credit_history', 'income_statement', 'contracts', 'report', 'monitoring_report', ]
 
-    # def to_representation(self, instance):
-    #     rep = super().to_representation(instance)
-    #     rep['id_credit_spec'] = SerializerCreditSpecialist(instance.id_credit_spec).data['full_name']
-    #     return rep
+
+class SerializerEntityAdmin(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = ['credit_history', 'income_statement', 'contracts', 'report', 'monitoring_report', ]
 
 
 class SerializerCompany(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = '__all__'
+        exclude = ['document']
+
+
+class SerializerCompanyAdmin(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        exclude = ['document']
 
 
 class FilesSerializer(serializers.ModelSerializer):
@@ -42,8 +55,8 @@ class ImagesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class SerializerProperty(serializers.ModelSerializer):
-    files = FilesSerializer(many=True, read_only=True)
+class SerializerPropertyAdmin(serializers.ModelSerializer):
+    files = FilesSerializer(many=True, read_only=True, )
     images = ImagesSerializer(many=True, read_only=True)
 
     class Meta:
@@ -63,16 +76,37 @@ class SerializerProperty(serializers.ModelSerializer):
         return property
 
 
+class SerializerProperty(serializers.ModelSerializer):
+    class Meta:
+        model = Property
+        fields = ['type', 'address']
+
+
 class SerializerGuarantor(serializers.ModelSerializer):
     class Meta:
         model = Guarantor
-        fields = '__all__'
+        exclude = ['income_statement']
+
+
+class SerializerGuarantorAdmin(serializers.ModelSerializer):
+    class Meta:
+        model = Guarantor
+        fields = ['income_statement']
 
 
 class SerializersConvers(serializers.ModelSerializer):
     class Meta:
         model = Conversation
-        fields = '__all__'
+        fields = ['is_meeting', 'date', 'name', 'time', 'desc']
+
+
+class SerializersConversFull(serializers.ModelSerializer):
+    name = serializers.ReadOnlyField()
+    date = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Conversation
+        fields = ['name', 'date', 'results_report', 'statistics']
 
 
 class SerializersDataKK(serializers.ModelSerializer):
@@ -80,10 +114,16 @@ class SerializersDataKK(serializers.ModelSerializer):
 
     class Meta:
         model = DataKK
-        exclude = ['id']
+        exclude = ['credit_spec_report', 'committee_decision', 'all_contracts']
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
         rep['id_client'] = SerializerEntity(instance.id_client).data['full_name']
         # rep['id_spec'] = SerializerCreditSpecialist(instance.id_spec).data['full_name']
         return rep
+
+
+class SerializersDataKKAdmin(serializers.ModelSerializer):
+    class Meta:
+        model = DataKK
+        exclude = ['credit_spec_report', 'committee_decision', 'all_contracts']
