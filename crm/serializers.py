@@ -40,7 +40,7 @@ class SerializerCompany(serializers.ModelSerializer):
 class SerializerCompanyAdmin(serializers.ModelSerializer):
     class Meta:
         model = Company
-        exclude = ['document']
+        fields = ['document']
 
 
 class FilesSerializer(serializers.ModelSerializer):
