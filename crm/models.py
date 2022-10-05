@@ -48,7 +48,8 @@ class Client(models.Model):  # Физическое лицо
                                      blank=True)
     id_property = models.ForeignKey('Property', verbose_name='Залоговое имущество', on_delete=models.CASCADE, null=True,
                                     blank=True)
-    id_num_parley = models.ForeignKey('Conversation', on_delete=models.CASCADE, null=True, blank=True, )
+    id_num_parley = models.ForeignKey('Conversation', on_delete=models.CASCADE, null=True, blank=True,
+                                      verbose_name='Переговоры')
 
     def __str__(self):
         return f'{self.id}. {self.full_name}'
@@ -137,11 +138,11 @@ class Company(models.Model):
 class Guarantor(models.Model):
     full_name = models.CharField(max_length=100, verbose_name='ФИО залогодателя')
     status = models.CharField(max_length=30, choices=MARITAL_STATUSES, verbose_name="Семейное положение")
-    credit_history = models.FileField(upload_to='credit_history/%Y/%m/%d')
+    credit_history = models.FileField(upload_to='credit_history/%Y/%m/%d', null=True, blank=True)
     phone = models.CharField(max_length=30, verbose_name='Номер телефона')
     address = models.CharField(max_length=100, verbose_name='Адрес прописки')
     actual_address = models.CharField(max_length=100, verbose_name='Адрес фактический')
-    income_statement = models.FileField(upload_to='guarantor_income_statement/%Y/%m/%d')
+    income_statement = models.FileField(upload_to='guarantor_income_statement/%Y/%m/%d', null=True, blank=True)
 
     def __str__(self):
         return self.full_name
@@ -221,3 +222,6 @@ class DataKK(models.Model):
     class Meta:
         verbose_name = "Документ на КК"
         verbose_name_plural = "Документы на КК"
+
+    def __str__(self):
+        return f'{self.id}. {self.id_client.id}'

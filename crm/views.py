@@ -87,7 +87,7 @@ class APIConvers(ModelViewSet):
 
 class APIDataKK(ModelViewSet):
     queryset = DataKK.objects.all()
-    serializer_class = SerializersDataKK
+    # serializer_class = SerializersDataKK
     permission_classes = [IsAuthenticated, IsStaff]
 
     def perform_create(self, serializer):
