@@ -35,26 +35,30 @@ class RegistrationClientSerializer(serializers.ModelSerializer):
 
 
 class RegistrationSpecSerializer(serializers.ModelSerializer):
-    password_confirm = serializers.CharField(
-        max_length=128,
-        min_length=6,
-        write_only=True
-    )
+    # password_confirm = serializers.CharField(
+    #     max_length=128,
+    #     min_length=6,
+    #     write_only=True
+    # )
 
     class Meta:
-        model = User
-        fields = ['email', 'username', 'full_name', 'occupation', 'phone_number', 'password', 'password_confirm']
+        model = SpecUser
+        fields = '__all__'
 
-    def validate(self, attrs):
-        password = attrs.get('password')
-        password_confirm = attrs.pop('password_confirm')
-
-        if password != password_confirm:
-            raise serializers.ValidationError('Пароли не совпадают!')
-        return attrs
+    # def validate(self, attrs):
+    #     password = attrs.get('password')
+    #     password_confirm = attrs.pop('password_confirm')
+    #
+    #     if password != password_confirm:
+    #         raise serializers.ValidationError('Пароли не совпадают!')
+    #     return attrs
 
     def create(self, validated_data):
-        user = User.objects.create_spec(**validated_data)
+        print(validated_data)
+        email = self.validated_data['email']
+        password = self.validated_data['password']
+        user = User.objects.create_user(email=email, password=password)
+        self.validated_data['user'] = user
         return user
 
 

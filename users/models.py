@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, AbstractUser
+from django.contrib.auth.models import BaseUserManager, AbstractUser
 from django.db import models
 
 OCCUPATION = (
@@ -11,10 +11,10 @@ OCCUPATION = (
 class UserManager(BaseUserManager):
 
     def _create_user(self, email, password, **extra_fields):
-            user = self.model(email=email, **extra_fields)
-            user.set_password(password)
-            user.save(using=self._db)
-            return user
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
     def create_user(self, email, password, **extra_fields):
         extra_fields.setdefault("is_staff", False)
@@ -54,8 +54,10 @@ class User(AbstractUser):
 
 class SpecUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=100, verbose_name='ФИО')
-    occupation = models.CharField(choices=OCCUPATION, max_length=69)
+    # full_name = models.CharField(max_length=100, verbose_name='ФИО')
+    # occupation = models.CharField(choices=OCCUPATION, max_length=69)
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=100)
 
 
 class ClientUser(models.Model):
