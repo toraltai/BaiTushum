@@ -1,10 +1,7 @@
-from djoser.serializers import UserCreateSerializer
+from djoser.serializers import UserCreateSerializer, ActivationSerializer, SendEmailResetSerializer
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
-
 from .models import User
-
-
 class RegistrationUserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         fields = ['email', 'username', 'full_name', 'address', 'phone_number', 'password']
@@ -28,8 +25,6 @@ class RegistrationClientSerializer(serializers.ModelSerializer):
 
 
 class RegistrationSpecSerializer(serializers.ModelSerializer):
-    occupation = serializers.CharField(required=True)
-    phone_number = serializers.CharField(required=True)
     password = serializers.CharField(
         max_length=128,
         min_length=8,

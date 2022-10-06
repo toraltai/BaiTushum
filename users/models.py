@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db import models
-
 OCCUPATION = (
     ('Кредит.спец', 'Кредит.спец'),
     ('Кредит.админ', 'Кредит.админ'),
@@ -9,13 +8,13 @@ OCCUPATION = (
 
 
 class UserManager(BaseUserManager):
-    def create_spec(self, email, username, full_name, occupation, phone_number, password=None):
+    def create_spec(self, email, username, full_name, phone_number, password=None):
 
         if email is None:
             raise TypeError('Users must have an email address.')
 
         user = self.model(email=self.normalize_email(email), username=username,
-                          full_name=full_name, phone_number=phone_number, occupation=occupation)
+                          full_name=full_name, phone_number=phone_number)
         user.set_password(password)
         user.is_staff = True
         user.save()
@@ -54,8 +53,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(db_index=True, unique=True)
     full_name = models.CharField('ФИО', db_index=True, max_length=406)
     username = models.CharField(max_length=100)
-    occupation = models.CharField('Должность', choices=OCCUPATION, max_length=406, blank=True)
-    address = models.CharField(max_length=164, blank=True, null=True)
     phone_number = models.CharField(max_length=100, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -65,9 +62,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['username']
 
     objects = UserManager()
+    #
+    # def __str__(self):
+    #     if self.occupation:
+    #         return self.full_name
+    #     else:
+    #         return f'Имя клиента: {self.full_name}'
 
-    def __str__(self):
-        if self.occupation:
-            return self.full_name
-        else:
-            return f'Имя клиента: {self.full_name}'
+class SpecUser(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    occupation = models.CharField(choices=OCCUPATION,max_length=69)
+
+class ClientUser(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    address =  models.CharField(max_length=169)
