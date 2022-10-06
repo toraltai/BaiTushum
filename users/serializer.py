@@ -5,12 +5,19 @@ from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from .models import User, SpecUser
 
 
+# регистрация джосера с активацией
 class RegistrationUserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
-        fields = ['email', 'password']
+        fields = ['email', 'full_name', 'phone_number', 'password']
 
 
-class RegistrationClientSerializer(serializers.ModelSerializer):
+# class RegistrationSpecSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = SpecUser
+#         fields = ['email','occupation']
+
+# кастомная регистрация
+class RegistrationAccountSerializer(serializers.ModelSerializer):
     password_confirm = serializers.CharField(
         max_length=128,
         min_length=6,
@@ -18,8 +25,8 @@ class RegistrationClientSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = SpecUser
-        fields = ['email', 'full_name', 'password', 'password_confirm']
+        model = User
+        fields = ['email', 'username', 'full_name', 'phone_number', 'password', 'password_confirm']
 
     def validate(self, attrs):
         password = attrs.get('password')
@@ -31,30 +38,6 @@ class RegistrationClientSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
-        return user
-
-
-class RegistrationSpecSerializer(serializers.ModelSerializer):
-    password_confirm = serializers.CharField(
-        max_length=128,
-        min_length=6,
-        write_only=True
-    )
-
-    class Meta:
-        model = User
-        fields = ['email', 'username', 'full_name', 'occupation', 'phone_number', 'password', 'password_confirm']
-
-    def validate(self, attrs):
-        password = attrs.get('password')
-        password_confirm = attrs.pop('password_confirm')
-
-        if password != password_confirm:
-            raise serializers.ValidationError('Пароли не совпадают!')
-        return attrs
-
-    def create(self, validated_data):
-        user = User.objects.create_spec(**validated_data)
         return user
 
 
