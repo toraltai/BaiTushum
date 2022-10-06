@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, AbstractUser
 from django.db import models
 
 OCCUPATION = (
@@ -9,68 +9,55 @@ OCCUPATION = (
 
 
 class UserManager(BaseUserManager):
-    def create_spec(self, email, username, full_name, occupation, phone_number, password=None):
 
-        if email is None:
-            raise TypeError('Users must have an email address.')
+    def _create_user(self, email, password, **extra_fields):
+            user = self.model(email=email, **extra_fields)
+            user.set_password(password)
+            user.save(using=self._db)
+            return user
 
-        user = self.model(email=self.normalize_email(email), username=username,
-                          full_name=full_name, phone_number=phone_number, occupation=occupation)
-        user.set_password(password)
-        user.is_staff = True
-        user.save()
+    def create_user(self, email, password, **extra_fields):
+        extra_fields.setdefault("is_staff", False)
+        extra_fields.setdefault("is_superuser", False)
+        return self._create_user(email, password, **extra_fields)
 
-        return user
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
 
-    def create_user(self, email, username, full_name, address, phone_number, password=None):
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
 
-        if email is None:
-            raise TypeError('Users must have an email address.')
-
-        user = self.model(email=self.normalize_email(email), username=username,
-                          full_name=full_name, address=address, phone_number=phone_number)
-        user.set_password(password)
-        user.save()
-
-        return user
-
-    def create_superuser(self, email, username, password, **extra):
-        if password is None:
-            raise TypeError('Superusers must have a password.')
-
-        if email is None:
-            raise TypeError('Users must have an email address.')
-
-        user = self.model(email=self.normalize_email(email), username=username)
-        user.set_password(password)
-        user.is_superuser = True
-        user.is_staff = True
-        user.save()
-
-        return user
+        return self._create_user(email, password, **extra_fields)
 
 
-class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(db_index=True, unique=True)
-    full_name = models.CharField('ФИО', db_index=True, max_length=406)
-    username = models.CharField(max_length=100)
-    occupation = models.CharField('Должность', choices=OCCUPATION, max_length=406, blank=True)
-    address = models.CharField(max_length=164, blank=True, null=True)
-    phone_number = models.CharField(max_length=100, default='+996', blank=True, null=True)
+class User(AbstractUser):
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=100)
     is_active = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    username = None
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = []
 
     objects = UserManager()
 
-    def __str__(self):
-        if self.occupation:
-            return f'Сотрудник: {self.full_name}'
-        elif self.is_superuser:
-            return f'Администратор: {self.username}'
-        else:
-            return f'Клиент: {self.full_name}'
+    # def __str__(self):
+    #     if self.occupation:
+    #         return self.full_name
+    #     else:
+    #         return f'Имя клиента: {self.full_name}'
+
+
+class SpecUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=100, verbose_name='ФИО')
+    occupation = models.CharField(choices=OCCUPATION, max_length=69)
+
+
+class ClientUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    address = models.CharField(max_length=169)

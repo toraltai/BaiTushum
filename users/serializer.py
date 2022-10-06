@@ -2,12 +2,12 @@ from djoser.serializers import UserCreateSerializer
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
-from .models import User
+from .models import User, SpecUser
 
 
 class RegistrationUserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
-        fields = ['email', 'username', 'full_name', 'address', 'phone_number', 'password']
+        fields = ['email', 'password']
 
 
 class RegistrationClientSerializer(serializers.ModelSerializer):
@@ -18,8 +18,8 @@ class RegistrationClientSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = User
-        fields = ['email', 'username', 'full_name', 'address', 'phone_number', 'password', 'password_confirm']
+        model = SpecUser
+        fields = ['email', 'full_name', 'password', 'password_confirm']
 
     def validate(self, attrs):
         password = attrs.get('password')
@@ -31,7 +31,6 @@ class RegistrationClientSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
-
         return user
 
 
@@ -56,7 +55,6 @@ class RegistrationSpecSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_spec(**validated_data)
-
         return user
 
 

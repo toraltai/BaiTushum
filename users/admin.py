@@ -1,11 +1,14 @@
 from django.contrib import admin
 
-from .models import User
+# class UserAdmin(admin.ModelAdmin):
+#     list_filter = ['is_staff']
+#     search_fields = ['username']
+#
+#
+# admin.site.register(User, UserAdmin)
+# =======
+from .models import User, ClientUser, SpecUser
 
-
-class UserAdmin(admin.ModelAdmin):
-    list_filter = ['is_staff']
-    search_fields = ['username']
-
-
-admin.site.register(User, UserAdmin)
+admin.site.register(User)
+admin.site.register(ClientUser)
+admin.site.register(SpecUser)
