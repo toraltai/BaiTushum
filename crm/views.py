@@ -10,19 +10,18 @@ class APIClient(ModelViewSet):
     # serializer_class = SerializerClient
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def perform_create(self, serializer):
-        serializer.save(id_credit_spec=self.request.user)
+    # def perform_create(self, serializer):
+    #     serializer.save(id_credit_spec=self.request.user)
 
-    def get_serializer_class(self):
-        if self.request.user.specuser.occupation == 'Кредит.спец':
-            return SerializerClient
-        else:
-            return SerializerClientAdmin
+    # def get_serializer_class(self):
+    #     if self.request.user.specuser.occupation == 'Кредит.спец':
+    #         return SerializerClient
+    #     else:
+    #         return SerializerClientAdmin
 
 
 class APIEntity(ModelViewSet):
     queryset = Entity.objects.all()
-
     serializer_class = SerializerEntity
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -89,8 +88,8 @@ class APIDataKK(ModelViewSet):
     # serializer_class = SerializersDataKK
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def perform_create(self, serializer):
-        serializer.save(id_spec=self.request.user)
+    # def perform_create(self, serializer):
+    #     serializer.save(id_spec=self.request.user)
 
     # def get_serializer_class(self):
     #     if self.request.user.specuser.occupation == 'Кредит.спец':
