@@ -1,12 +1,6 @@
 from django.contrib.auth.models import BaseUserManager, AbstractUser
 from django.db import models
 
-OCCUPATION = (
-    ('Кредит.спец', 'Кредит.спец'),
-    ('Кредит.админ', 'Кредит.админ'),
-
-)
-
 
 class UserManager(BaseUserManager):
     def create_user(self, email, full_name, phone_number, password=None):
@@ -54,6 +48,10 @@ class User(AbstractUser):
     #     else:
     #         return f'Имя клиента: {self.full_name}'
 
+
+OCCUPATION = (
+    ('Кредит.спец', 'Кредит.спец'),
+    ('Кредит.админ', 'Кредит.админ'),)
 
 class SpecUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='specuser')

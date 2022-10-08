@@ -10,8 +10,8 @@ class APIClient(ModelViewSet):
     serializer_class = SerializerClient
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    # def perform_create(self, serializer):
-    #     serializer.save(id_credit_spec=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(id_credit_spec=self.request.user)
 
     # def get_serializer_class(self):
     #     if self.request.user.specuser.occupation == 'Кредит.спец':
