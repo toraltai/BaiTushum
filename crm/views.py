@@ -7,7 +7,7 @@ from .serializers import *
 
 class APIClient(ModelViewSet):
     queryset = Client.objects.all()
-    # serializer_class = SerializerClient
+    serializer_class = SerializerClient
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     # def perform_create(self, serializer):
@@ -37,7 +37,7 @@ class APIEntity(ModelViewSet):
 
 class APICompany(ModelViewSet):
     queryset = Company.objects.all()
-    # serializer_class = SerializerCompany
+    serializer_class = SerializerCompany
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     # def get_serializer_class(self):
@@ -51,6 +51,7 @@ class APIProperty(ModelViewSet):
     queryset = Property.objects.all()
     serializer_class = SerializerPropertyAdmin
     permission_classes = [IsAuthenticatedOrReadOnly]
+    
     # def get_serializer_class(self):
     #     if self.request.user.occupation == 'Кредит.спец':
     #         return SerializerProperty
@@ -73,7 +74,7 @@ class APIGuarantor(ModelViewSet):
 
 class APIConvers(ModelViewSet):
     queryset = Conversation.objects.all()
-    # serializer_class = SerializersConvers
+    serializer_class = SerializersConvers
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     # def get_serializer_class(self):
@@ -85,7 +86,7 @@ class APIConvers(ModelViewSet):
 
 class APIDataKK(ModelViewSet):
     queryset = DataKK.objects.all()
-    # serializer_class = SerializersDataKK
+    serializer_class = SerializersDataKK
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     # def perform_create(self, serializer):
