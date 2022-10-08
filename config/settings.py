@@ -52,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'drf_api_logger.middleware.api_logger_middleware.APILoggerMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -233,3 +235,5 @@ CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1:3001',
     'https://www.thunderclient.com',
 ]
+
+DRF_API_LOGGER_DATABASE = True  # Default to False
