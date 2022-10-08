@@ -122,7 +122,7 @@ class Company(models.Model):
     legal_address = models.CharField(max_length=100, verbose_name='Юридический адрес')
     actual_address = models.CharField(max_length=100, verbose_name='Фактический адрес')
     telephone = models.CharField(max_length=30, verbose_name='Номер телефона')
-    field_activity = models.ForeignKey(Activity, on_delete=models.CASCADE, verbose_name='Cфера деятельности')
+    field_activity = models.ForeignKey(Activity,verbose_name='Cфера деятельности',on_delete=models.CASCADE,)
     okpo = models.CharField(max_length=8, unique=True)
     register_number = models.CharField(max_length=30, unique=True)
     document = models.FileField(upload_to='company_files/%Y/%m/%d', verbose_name='Документ компании', null=True,
@@ -153,7 +153,7 @@ class Guarantor(models.Model):
         verbose_name_plural = 'Поручители'
 
 
-class Property(models.Model):
+class Property(models.Model): 
     type = models.CharField(max_length=100, verbose_name="Залоговое имущество")
     address = models.CharField(max_length=100, verbose_name='Местонахождение залога')
 
@@ -166,8 +166,8 @@ class Property(models.Model):
 
 
 class Files(models.Model):
-    file = models.FileField(upload_to='company_files/%Y/%m/%d')
-    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+    file = models.FileField(verbose_name='Файл',upload_to='company_files/%Y/%m/%d')
+    property = models.ForeignKey(Property, verbose_name='Залоговое имущество', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Документ на залоговое имущество'
@@ -217,8 +217,8 @@ class DataKK(models.Model):
                                      upload_to="all_contracts/%Y/%m/%d")
 
     scoring = models.CharField(verbose_name="Скоринг:", max_length=150, null=True, blank=True)
-    id_client = models.ForeignKey('Entity', on_delete=models.PROTECT)
-    id_spec = models.ForeignKey(SpecUser, on_delete=models.PROTECT)
+    id_client = models.ForeignKey('Entity',verbose_name='Юридическое лицо',on_delete=models.PROTECT)
+    id_spec = models.ForeignKey(SpecUser,verbose_name='Кредитный спец', on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = "Документ на КК"
