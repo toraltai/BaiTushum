@@ -1,4 +1,4 @@
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
 from .permisions import IsStaff
@@ -8,7 +8,7 @@ from .serializers import *
 class APIClient(ModelViewSet):
     queryset = Client.objects.all()
     # serializer_class = SerializerClient
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(id_credit_spec=self.request.user)
@@ -24,7 +24,7 @@ class APIEntity(ModelViewSet):
     queryset = Entity.objects.all()
 
     # serializer_class = SerializerEntity
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(id_credit_spec=self.request.user)
@@ -39,7 +39,7 @@ class APIEntity(ModelViewSet):
 class APICompany(ModelViewSet):
     queryset = Company.objects.all()
     # serializer_class = SerializerCompany
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_serializer_class(self):
         if self.request.user.specuser.occupation == 'Кредит.спец':
@@ -51,7 +51,7 @@ class APICompany(ModelViewSet):
 class APIProperty(ModelViewSet):
     queryset = Property.objects.all()
     serializer_class = SerializerPropertyAdmin
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     # def get_serializer_class(self):
     #     if self.request.user.occupation == 'Кредит.спец':
     #         return SerializerProperty
@@ -63,7 +63,7 @@ class APIProperty(ModelViewSet):
 class APIGuarantor(ModelViewSet):
     queryset = Guarantor.objects.all()
     serializer_class = SerializerGuarantor
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_serializer_class(self):
         if self.request.user.specuser.occupation == 'Кредит.спец':
@@ -75,7 +75,7 @@ class APIGuarantor(ModelViewSet):
 class APIConvers(ModelViewSet):
     queryset = Conversation.objects.all()
     # serializer_class = SerializersConvers
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_serializer_class(self):
         if self.request.user.specuser.occupation == 'Кредит.спец':
@@ -87,7 +87,7 @@ class APIConvers(ModelViewSet):
 class APIDataKK(ModelViewSet):
     queryset = DataKK.objects.all()
     # serializer_class = SerializersDataKK
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(id_spec=self.request.user)
