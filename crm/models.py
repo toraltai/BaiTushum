@@ -1,6 +1,7 @@
 from django.db import models
 
-from users.models import User
+from users.models import SpecUser, ClientUser
+
 
 LOAN_TYPE = [
     ('LS', 'Лизинг'),
@@ -43,7 +44,7 @@ class Client(models.Model):  # Физическое лицо
     monitoring_report = models.FileField(upload_to='media', verbose_name='Oтчет по мониторингу', null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_date = models.DateTimeField(auto_now=True)
-    id_credit_spec = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Кредитный специалист')
+    id_credit_spec = models.ForeignKey(SpecUser, on_delete=models.CASCADE, verbose_name='Кредитный специалист')
     id_guarantor = models.ForeignKey('Guarantor', verbose_name='Поручитель', on_delete=models.CASCADE, null=True,
                                      blank=True)
     id_property = models.ForeignKey('Property', verbose_name='Залоговое имущество', on_delete=models.CASCADE, null=True,
@@ -217,7 +218,7 @@ class DataKK(models.Model):
 
     scoring = models.CharField(verbose_name="Скоринг:", max_length=150, null=True, blank=True)
     id_client = models.ForeignKey('Entity', on_delete=models.PROTECT)
-    id_spec = models.ForeignKey(User, on_delete=models.PROTECT)
+    id_spec = models.ForeignKey(SpecUser, on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = "Документ на КК"
