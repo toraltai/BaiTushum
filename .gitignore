@@ -5,3 +5,4 @@ static/
 staticfiles/
 .env
 db.sqlite3
+config/settings.py
