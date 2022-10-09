@@ -1,5 +1,5 @@
 from django.db import models
-
+from users.models import User,SpecUser,ClientUser
 from users.models import SpecUser, ClientUser
 
 

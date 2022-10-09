@@ -2,7 +2,7 @@ from djoser.serializers import UserCreateSerializer
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
-from .models import User
+from .models import User, ClientUser, SpecUser,OCCUPATION
 
 
 # регистрация джосера с активацией
@@ -34,6 +34,19 @@ class RegistrationAccountSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user
+
+
+class SpecUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SpecUser
+        fields = ['user','occupation']
+
+
+
+class ClientUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClientUser
+        fields = ['user','address']
 
 
 class LogoutSerislizer(serializers.Serializer):
