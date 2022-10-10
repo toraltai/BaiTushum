@@ -42,6 +42,7 @@ class APICompany(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
+        print(dir(self))
         if self.request.user.specuser.occupation == 'Кредит.спец':
             return SerializerCompany
         else:

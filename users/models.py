@@ -48,11 +48,9 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = UserManager()
+
     # def __str__(self):
-    #     if self.occupation:
-    #         return self.full_name
-    #     else:
-    #         return f'Имя клиента: {self.full_name}'
+    #     return self.full_name
 
 
 class SpecUser(models.Model):

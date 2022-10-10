@@ -20,7 +20,7 @@ class SerializerClientAdmin(serializers.ModelSerializer):
 
 
 class SerializerEntity(serializers.ModelSerializer):
-    id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.fullname')
+    id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.full_name')
 
     class Meta:
         model = Entity
@@ -98,6 +98,9 @@ class SerializerGuarantor(serializers.ModelSerializer):
 
 
 class SerializerGuarantorAdmin(serializers.ModelSerializer):
+    date = serializers.ReadOnlyField()
+    name = serializers.ReadOnlyField()
+
     class Meta:
         model = Guarantor
         fields = ['full_name', 'income_statement']
