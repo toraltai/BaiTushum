@@ -50,7 +50,7 @@ class APICompany(ModelViewSet):
 class APIProperty(ModelViewSet):
     queryset = Property.objects.all()
     serializer_class = SerializerPropertyAdmin
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
     
     # def get_serializer_class(self):
     #     if self.request.user.occupation == 'Кредит.спец':

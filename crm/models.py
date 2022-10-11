@@ -61,15 +61,14 @@ class Client(models.Model):  # Физическое лицо
 
 
 class Entity(Client):  # Юридическое лицо
-    client_company = models.CharField(max_length=50, verbose_name="Компания клиента", auto_created=True, )
-    id_company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True)
-    inn = models.CharField(max_length=20, verbose_name="ИНН")
-    souce_of_income = models.ForeignKey('Activity', verbose_name='Источник дохода', on_delete=models.CASCADE)
-    average_salary = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Средний доход в месяц')
-    own_contribution = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Размер собвственного вклада')
-    assets = models.TextField(help_text='Актив - стоимость – дата приобретения',
-                              verbose_name='Активы на момент анализа')
-    current_loan = models.CharField(verbose_name='Текущие кредиты', max_length=200)
+    client_company = models.CharField(max_length=50,verbose_name="Компания клиента",auto_created=True, )
+    id_company = models.ForeignKey('Company',on_delete=models.CASCADE,null=True,blank=True)
+    inn = models.CharField(max_length=20,verbose_name="ИНН")
+    souce_of_income = models.ForeignKey('Activity',verbose_name='Источник дохода',on_delete=models.CASCADE)
+    average_salary = models.DecimalField(max_digits=10,decimal_places=2,verbose_name='Средний доход в месяц')
+    own_contribution = models.DecimalField(max_digits=10,decimal_places=2,verbose_name='Размер собвственного вклада')
+    assets = models.TextField(help_text='Актив - стоимость – дата приобретения',verbose_name='Активы на момент анализа')
+    current_loan = models.CharField(verbose_name='Текущие кредиты',max_length=200)
 
     class Meta:
         verbose_name = "Юридическое лицо"
@@ -92,9 +91,8 @@ class Activity(models.Model):
         ('9', 'услуги'),
         ('10', 'прочие')
     ]
-    activites = models.CharField(max_length=100, choices=ACTIVITES, verbose_name='Источник дохода', null=True,
-                                 blank=True)
-    activites_add = models.CharField(max_length=100, verbose_name='Добавить источник дохода', null=True, blank=True)
+    activites = models.CharField(max_length=100, choices=ACTIVITES, verbose_name='Источник дохода',null=True,blank=True)
+    activites_add = models.CharField(max_length=100, verbose_name='Добавить источник дохода',null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if self.activites_add:
@@ -153,7 +151,7 @@ class Guarantor(models.Model):
         verbose_name_plural = 'Поручители'
 
 
-class Property(models.Model): 
+class Property(models.Model):
     type = models.CharField(max_length=100, verbose_name="Залоговое имущество")
     address = models.CharField(max_length=100, verbose_name='Местонахождение залога')
 
@@ -167,7 +165,7 @@ class Property(models.Model):
 
 class Files(models.Model):
     file = models.FileField(verbose_name='Файл',upload_to='company_files/%Y/%m/%d')
-    property = models.ForeignKey(Property, verbose_name='Залоговое имущество', on_delete=models.CASCADE)
+    property = models.ForeignKey(Property, verbose_name='Залоговое имущество', on_delete=models.CASCADE, related_name='files')
 
     class Meta:
         verbose_name = 'Документ на залоговое имущество'
@@ -176,7 +174,7 @@ class Files(models.Model):
 
 class Images(models.Model):
     image = models.ImageField(upload_to='company_images/%Y/%m/%')
-    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='images')
 
     class Meta:
         verbose_name_plural = 'Фотографии залогового имущества'
