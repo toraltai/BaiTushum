@@ -49,18 +49,21 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
     objects = UserManager()
 
-    # def __str__(self):
-    #     return self.full_name
+    def __str__(self):
+        return f'{self.id}'
 
 
 class SpecUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='specuser')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='spec_user', editable=False)
     occupation = models.CharField(choices=OCCUPATION, max_length=69)
 
     def __str__(self):
-        return f'{self.user.full_name} - {self.occupation}'
+        return f'{self.user.full_name} - {self.occupation} - {self.user.email}'
 
 
 class ClientUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='client_user', editable=False)
     address = models.CharField(max_length=169)
+
+    def __str__(self):
+        return f'{self.user.full_name}'

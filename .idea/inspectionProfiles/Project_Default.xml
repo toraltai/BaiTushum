@@ -4,7 +4,7 @@
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
-          <list size="41">
+          <list size="44">
             <item index="0" class="java.lang.String" itemvalue="drf-yasg" />
             <item index="1" class="java.lang.String" itemvalue="PyJWT" />
             <item index="2" class="java.lang.String" itemvalue="async-timeout" />
@@ -46,6 +46,9 @@
             <item index="38" class="java.lang.String" itemvalue="idna" />
             <item index="39" class="java.lang.String" itemvalue="inflection" />
             <item index="40" class="java.lang.String" itemvalue="Pillow" />
+            <item index="41" class="java.lang.String" itemvalue="psycopg2" />
+            <item index="42" class="java.lang.String" itemvalue="tzdata" />
+            <item index="43" class="java.lang.String" itemvalue="sqlparse" />
           </list>
         </value>
       </option>

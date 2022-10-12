@@ -1,4 +1,6 @@
 from django.db import models
+from users.models import User,SpecUser,ClientUser
+from users.models import SpecUser, ClientUser
 
 from users.models import User, SpecUser
 
@@ -217,7 +219,7 @@ class DataKK(models.Model):
 
     scoring = models.CharField(verbose_name="Скоринг:", max_length=150, null=True, blank=True)
     id_client = models.ForeignKey('Entity', on_delete=models.PROTECT)
-    id_spec = models.ForeignKey(User, on_delete=models.PROTECT)
+    id_spec = models.ForeignKey(SpecUser, on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = "Документ на КК"
