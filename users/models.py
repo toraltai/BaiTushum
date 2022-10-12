@@ -1,25 +1,19 @@
 from django.contrib.auth.models import BaseUserManager, AbstractUser
 from django.db import models
 
-OCCUPATION = (
-    ('Кредит.спец', 'Кредит.спец'),
-    ('Кредит.админ', 'Кредит.админ'),
-
-)
-
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, full_name, phone_number, password=None):
+    def create_user(self, email, full_name, phone_number, password=None, **extra):
 
         if email is None:
             raise TypeError('Users must have an email address.')
 
         user = self.model(email=self.normalize_email(email),
-                          full_name=full_name, phone_number=phone_number)
+                          full_name=full_name, phone_number=phone_number, **extra)
+        
         user.set_password(password)
         user.is_active = True
         user.save()
-
         return user
 
     def create_superuser(self, email, password, **extra):
@@ -50,8 +44,12 @@ class User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return f'{self.id}'
+        return f'{self.id}. {self.email}'
 
+
+OCCUPATION = (
+    ('Кредит.спец', 'Кредит.спец'),
+    ('Кредит.админ', 'Кредит.админ'),)
 
 class SpecUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='spec_user', editable=False)

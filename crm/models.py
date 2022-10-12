@@ -1,8 +1,6 @@
 from django.db import models
-from users.models import User,SpecUser,ClientUser
-from users.models import SpecUser, ClientUser
 
-from users.models import User, SpecUser
+from users.models import SpecUser, User
 
 LOAN_TYPE = [
     ('LS', 'Лизинг'),
@@ -45,7 +43,7 @@ class Client(models.Model):  # Физическое лицо
     monitoring_report = models.FileField(upload_to='media', verbose_name='Oтчет по мониторингу', null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_date = models.DateTimeField(auto_now=True)
-    id_credit_spec = models.ForeignKey(SpecUser, on_delete=models.CASCADE, verbose_name='Кредитный специалист')
+    id_credit_spec = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Кредитный специалист')
     id_guarantor = models.ForeignKey('Guarantor', verbose_name='Поручитель', on_delete=models.CASCADE, null=True,
                                      blank=True)
     id_property = models.ForeignKey('Property', verbose_name='Залоговое имущество', on_delete=models.CASCADE, null=True,
@@ -123,7 +121,7 @@ class Company(models.Model):
     legal_address = models.CharField(max_length=100, verbose_name='Юридический адрес')
     actual_address = models.CharField(max_length=100, verbose_name='Фактический адрес')
     telephone = models.CharField(max_length=30, verbose_name='Номер телефона')
-    field_activity = models.ForeignKey(Activity, on_delete=models.CASCADE, verbose_name='Cфера деятельности')
+    field_activity = models.ForeignKey(Activity, verbose_name='Cфера деятельности', on_delete=models.CASCADE, )
     okpo = models.CharField(max_length=8, unique=True)
     register_number = models.CharField(max_length=30, unique=True)
     document = models.FileField(upload_to='company_files/%Y/%m/%d', verbose_name='Документ компании', null=True,
@@ -167,8 +165,9 @@ class Property(models.Model):
 
 
 class Files(models.Model):
-    file = models.FileField(upload_to='company_files/%Y/%m/%d')
-    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+    file = models.FileField(verbose_name='Файл', upload_to='company_files/%Y/%m/%d')
+    property = models.ForeignKey(Property, verbose_name='Залоговое имущество', on_delete=models.CASCADE,
+                                 related_name='files')
 
     class Meta:
         verbose_name = 'Документ на залоговое имущество'
@@ -177,7 +176,7 @@ class Files(models.Model):
 
 class Images(models.Model):
     image = models.ImageField(upload_to='company_images/%Y/%m/%')
-    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='images')
 
     class Meta:
         verbose_name_plural = 'Фотографии залогового имущества'
@@ -218,8 +217,8 @@ class DataKK(models.Model):
                                      upload_to="all_contracts/%Y/%m/%d")
 
     scoring = models.CharField(verbose_name="Скоринг:", max_length=150, null=True, blank=True)
-    id_client = models.ForeignKey('Entity', on_delete=models.PROTECT)
-    id_spec = models.ForeignKey(SpecUser, on_delete=models.PROTECT)
+    id_client = models.ForeignKey('Entity', verbose_name='Юридическое лицо', on_delete=models.PROTECT)
+    id_spec = models.ForeignKey(User, verbose_name='Кредитный спец', on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = "Документ на КК"

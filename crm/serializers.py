@@ -4,7 +4,7 @@ from .models import *
 
 
 class SerializerClient(serializers.ModelSerializer):
-    id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.fullname')
+    id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.full_name')
 
     class Meta:
         model = Client
@@ -34,7 +34,7 @@ class SerializerEntityAdmin(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = ['client_company', 'full_name', 'credit_history', 'income_statement', 'contracts', 'report',
-                  'monitoring_report', ]
+                  'monitoring_report', 'phone']
 
 
 class SerializerCompany(serializers.ModelSerializer):
@@ -63,6 +63,16 @@ class ImagesSerializer(serializers.ModelSerializer):
         model = Images
         fields = '__all__'
 
+    def get_url(self, instance):
+        if instance.image.url.startswith('/media'):
+            return f'http://127.0.0.1:8000{instance.image.url}'
+        return instance.image.url
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['image'] = self.get_url(instance)
+        return rep
+
 
 class SerializerPropertyAdmin(serializers.ModelSerializer):
     files = FilesSerializer(many=True, read_only=True, )
@@ -77,12 +87,22 @@ class SerializerPropertyAdmin(serializers.ModelSerializer):
         all_data = request.FILES
         property = Property.objects.create(**validated_data)
 
-        for image in all_data.getlist('images'):
-            Images.objects.create(property=property, image=image)
+        Images.objects.bulk_create(
+            [Images(property=property, image=image) for image in all_data.getlist('images')]
+        )
 
-        for f in all_data.getlist('files'):
-            Files.objects.create(property=property, file=f)
+        Files.objects.bulk_create(
+            [Files(property=property, file=f) for f in all_data.getlist('files')]
+        )
+
         return property
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        print(rep)
+        rep['images'] = ImagesSerializer(instance.images.all(), many=True).data
+        rep['files'] = FilesSerializer(instance.files.all(), many=True).data
+        return rep
 
 
 class SerializerProperty(serializers.ModelSerializer):

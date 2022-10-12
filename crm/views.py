@@ -1,7 +1,7 @@
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import ModelViewSet
 from django.shortcuts import redirect
-from .permisions import IsStaff
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
+
 from .serializers import *
 
 
@@ -13,9 +13,10 @@ class APIClient(ModelViewSet):
         serializer.save(id_credit_spec=self.request.user)
 
     def get_serializer_class(self):
-        if self.request.user.specuser.occupation == 'Кредит.спец':
+        occupation = self.request.user.spec_user.occupation
+        if occupation == 'Кредит.спец':
             return SerializerClient
-        if self.request.user.specuser.occupation == 'Кредит.админ':
+        if occupation == 'Кредит.админ':
             return SerializerClientAdmin
         else:
             return redirect('/')
@@ -24,14 +25,15 @@ class APIClient(ModelViewSet):
 class APIEntity(ModelViewSet):
     queryset = Entity.objects.all()
     permission_classes = [IsAuthenticated]
+    serializer_class = SerializerEntity
 
     def perform_create(self, serializer):
         serializer.save(id_credit_spec=self.request.user)
 
     def get_serializer_class(self):
-        if self.request.user.specuser.occupation == 'Кредит.спец':
+        if self.request.user.spec_user.occupation == 'Кредит.спец':
             return SerializerEntity
-        elif self.request.user.specuser.occupation == 'Кредит.админ':
+        elif self.request.user.spec_user.occupation == 'Кредит.админ':
             return SerializerEntityAdmin
         else:
             return redirect('/')
@@ -40,21 +42,31 @@ class APIEntity(ModelViewSet):
 class APICompany(ModelViewSet):
     queryset = Company.objects.all()
     permission_classes = [IsAuthenticated]
+    serializer_class = SerializerCompany
 
-    def get_serializer_class(self):
-        print(dir(self))
-        if self.request.user.specuser.occupation == 'Кредит.спец':
-            return SerializerCompany
-        elif self.request.user.specuser.occupation == 'Кредит.админ':
-            return SerializerCompany
-        else:
-            return redirect('/')
+
+def get_serializer_class(self):
+    if self.request.user.spec_user.occupation == 'Кредит.спец':
+        return SerializerCompany
+    elif self.request.user.spec_user.occupation == 'Кредит.админ':
+        return SerializerCompany
+    else:
+        return redirect('/')
 
 
 class APIProperty(ModelViewSet):
     queryset = Property.objects.all()
     serializer_class = SerializerPropertyAdmin
     permission_classes = [IsAuthenticated]
+
+    # def get_serializer_class(self):
+    #     if self.request.user.specuser.occupation == 'Кредит.спец':
+    #         return SerializerProperty
+    #     elif self.request.user.specuser.occupation == 'Кредит.админ':
+    #         return SerializerPropertyAdmin
+    #     else:
+    #         return redirect('/')
+
 
 
 class APIGuarantor(ModelViewSet):
@@ -63,9 +75,9 @@ class APIGuarantor(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
-        if self.request.user.specuser.occupation == 'Кредит.спец':
+        if self.request.user.spec_user.occupation == 'Кредит.спец':
             return SerializerGuarantor
-        elif self.request.user.specuser.occupation == 'Кредит.админ':
+        elif self.request.user.spec_user.occupation == 'Кредит.админ':
             return SerializerGuarantorAdmin
         else:
             return redirect('/')
@@ -76,9 +88,9 @@ class APIConvers(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
-        if self.request.user.specuser.occupation == 'Кредит.спец':
+        if self.request.user.spec_user.occupation == 'Кредит.спец':
             return SerializersConvers
-        if self.request.user.specuser.occupation == 'Кредит.админ':
+        if self.request.user.spec_user.occupation == 'Кредит.админ':
             return SerializersConversFull
         else:
             return redirect('/')
@@ -87,14 +99,15 @@ class APIConvers(ModelViewSet):
 class APIDataKK(ModelViewSet):
     queryset = DataKK.objects.all()
     permission_classes = [IsAuthenticated]
+    # serializer_class = SerializersDataKK
 
     def perform_create(self, serializer):
         serializer.save(id_spec=self.request.user)
 
     def get_serializer_class(self):
-        if self.request.user.specuser.occupation == 'Кредит.спец':
+        if self.request.user.spec_user.occupation == 'Кредит.спец':
             return SerializersDataKK
-        if self.request.user.specuser.occupation == 'Кредит.спец':
+        if self.request.user.spec_user.occupation == 'Кредит.админ':
             return SerializersDataKKAdmin
         else:
-            return redirect('/')
+           return redirect('/')
