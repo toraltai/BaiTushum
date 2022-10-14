@@ -42,11 +42,9 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = UserManager()
-    # def __str__(self):
-    #     if self.occupation:
-    #         return self.full_name
-    #     else:
-    #         return f'Имя клиента: {self.full_name}'
+
+    def __str__(self):
+        return f'{self.id}. {self.email}'
 
 
 OCCUPATION = (
@@ -54,15 +52,15 @@ OCCUPATION = (
     ('Кредит.админ', 'Кредит.админ'),)
 
 class SpecUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='specuser')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='spec_user', editable=False)
     occupation = models.CharField(choices=OCCUPATION, max_length=69)
 
     def __str__(self):
-        return f'{self.user.full_name} - {self.occupation}'
+        return f'{self.user.full_name} - {self.occupation} - {self.user.email}'
 
 
 class ClientUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='client_user', editable=False)
     address = models.CharField(max_length=169)
 
     def __str__(self):

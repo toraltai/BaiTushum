@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True if config('DEBUG') == '1' else False
+DEBUG = True  #if config('DEBUG') == '1' else False
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 
@@ -145,8 +145,7 @@ SIMPLE_JWT = {
 #         'PORT': 5432
 #     }
 # }
-if DEBUG:   #for local 
-# if DEBUG == False:
+if DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -237,3 +236,13 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 DRF_API_LOGGER_DATABASE = True  # Default to False
+
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'api': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    }}

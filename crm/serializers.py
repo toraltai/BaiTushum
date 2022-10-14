@@ -4,7 +4,7 @@ from .models import *
 
 
 class SerializerClient(serializers.ModelSerializer):
-    id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.fullname')
+    id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.full_name')
 
     class Meta:
         model = Client
@@ -20,7 +20,7 @@ class SerializerClientAdmin(serializers.ModelSerializer):
 
 
 class SerializerEntity(serializers.ModelSerializer):
-    id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.fullname')
+    id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.full_name')
 
     class Meta:
         model = Entity
@@ -34,7 +34,7 @@ class SerializerEntityAdmin(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = ['client_company', 'full_name', 'credit_history', 'income_statement', 'contracts', 'report',
-                  'monitoring_report', ]
+                  'monitoring_report', 'phone']
 
 
 class SerializerCompany(serializers.ModelSerializer):
@@ -57,14 +57,23 @@ class FilesSerializer(serializers.ModelSerializer):
         model = Files
         fields = '__all__'
 
+    def get_url(self, instance):
+        if instance.file.url.startswith('/media'):
+            return f'http://127.0.0.1:8000{instance.file.url}'
+        return instance.file.url
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['file'] = self.get_url(instance)
+        return rep
+
 
 class ImagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Images
         fields = '__all__'
-    
-    def get_url(self, instance):
 
+    def get_url(self, instance):
         if instance.image.url.startswith('/media'):
             return f'http://127.0.0.1:8000{instance.image.url}'
         return instance.image.url
@@ -74,7 +83,10 @@ class ImagesSerializer(serializers.ModelSerializer):
         rep['image'] = self.get_url(instance)
         return rep
 
+
 class SerializerPropertyAdmin(serializers.ModelSerializer):
+    type = serializers.ReadOnlyField()
+    address = serializers.ReadOnlyField()
     files = FilesSerializer(many=True, read_only=True, )
     images = ImagesSerializer(many=True, read_only=True)
 
@@ -99,7 +111,6 @@ class SerializerPropertyAdmin(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
-        print(rep)
         rep['images'] = ImagesSerializer(instance.images.all(), many=True).data
         rep['files'] = FilesSerializer(instance.files.all(), many=True).data
         return rep
@@ -118,6 +129,9 @@ class SerializerGuarantor(serializers.ModelSerializer):
 
 
 class SerializerGuarantorAdmin(serializers.ModelSerializer):
+    date = serializers.ReadOnlyField()
+    name = serializers.ReadOnlyField()
+
     class Meta:
         model = Guarantor
         fields = ['full_name', 'income_statement']
