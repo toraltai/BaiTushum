@@ -146,6 +146,7 @@ SIMPLE_JWT = {
 #     }
 # }
 if DEBUG:
+# if DEBUG == False:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
