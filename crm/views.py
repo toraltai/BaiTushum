@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from .serializers import *
@@ -56,17 +56,16 @@ def get_serializer_class(self):
 
 class APIProperty(ModelViewSet):
     queryset = Property.objects.all()
-    serializer_class = SerializerPropertyAdmin
+    # serializer_class = SerializerPropertyAdmin
     permission_classes = [IsAuthenticated]
 
-    # def get_serializer_class(self):
-    #     if self.request.user.specuser.occupation == 'Кредит.спец':
-    #         return SerializerProperty
-    #     elif self.request.user.specuser.occupation == 'Кредит.админ':
-    #         return SerializerPropertyAdmin
-    #     else:
-    #         return redirect('/')
-
+    def get_serializer_class(self):
+        if self.request.user.specuser.occupation == 'Кредит.спец':
+            return SerializerProperty
+        elif self.request.user.specuser.occupation == 'Кредит.админ':
+            return SerializerPropertyAdmin
+        else:
+            return redirect('/')
 
 
 class APIGuarantor(ModelViewSet):
@@ -99,6 +98,7 @@ class APIConvers(ModelViewSet):
 class APIDataKK(ModelViewSet):
     queryset = DataKK.objects.all()
     permission_classes = [IsAuthenticated]
+
     # serializer_class = SerializersDataKK
 
     def perform_create(self, serializer):
@@ -110,4 +110,14 @@ class APIDataKK(ModelViewSet):
         if self.request.user.spec_user.occupation == 'Кредит.админ':
             return SerializersDataKKAdmin
         else:
-           return redirect('/')
+            return redirect('/')
+
+
+class ImageAPIView(ModelViewSet):
+    queryset = Images.objects.all()
+    serializer_class = ImagesSerializer
+
+
+class FileAPIView(ModelViewSet):
+    queryset = Files.objects.all()
+    serializer_class = FilesSerializer

@@ -236,3 +236,13 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 DRF_API_LOGGER_DATABASE = True  # Default to False
+
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'api': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    }}
