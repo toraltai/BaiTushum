@@ -18,7 +18,7 @@ urlpatterns = [
     path('docs/', schema_view.with_ui('swagger')),
     path('crm/', include('crm.urls')),
     path('', include('users.urls')),
-    re_path(r'auth/', include('djoser.urls')),
+    # re_path(r'auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -10,7 +10,7 @@ class RegistrationUserSerializer(UserCreateSerializer):
         fields = ['email', 'full_name', 'phone_number', 'password']
 
 
-class LogoutSerislizer(serializers.Serializer):
+class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
 
     def validate(self, attrs):
@@ -92,3 +92,4 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['email', 'password', 'full_name', 'phone_number']
+        ref_name = 'user'

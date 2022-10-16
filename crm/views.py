@@ -7,6 +7,7 @@ from .serializers import *
 
 class APIClient(ModelViewSet):
     queryset = Client.objects.all()
+    serializer_class = SerializerClient
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
