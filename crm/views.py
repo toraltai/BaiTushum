@@ -61,9 +61,9 @@ class APIProperty(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
-        if self.request.user.specuser.occupation == 'Кредит.спец':
+        if self.request.user.spec_user.occupation == 'Кредит.спец':
             return SerializerProperty
-        elif self.request.user.specuser.occupation == 'Кредит.админ':
+        elif self.request.user.spec_user.occupation == 'Кредит.админ':
             return SerializerPropertyAdmin
         else:
             return redirect('/')
