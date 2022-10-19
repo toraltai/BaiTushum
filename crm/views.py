@@ -99,8 +99,7 @@ class APIConvers(ModelViewSet):
 class APIDataKK(ModelViewSet):
     queryset = DataKK.objects.all()
     permission_classes = [IsAuthenticated]
-
-    # serializer_class = SerializersDataKK
+    serializer_class = SerializersDataKK
 
     # def perform_create(self, serializer):
     #     serializer.save(id_spec=self.request.user)

@@ -48,8 +48,8 @@ class User(AbstractUser):
 
 
 OCCUPATION = (
-    ('Кредит.спец', 'Кредит.спец'),
-    ('Кредит.админ', 'Кредит.админ'),)
+    ('spec', 'Кредит.спец'),
+    ('admin', 'Кредит.админ'),)
 
 class SpecUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='spec_user', editable=False)
