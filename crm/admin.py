@@ -1,10 +1,17 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from .models import *
 
-admin.site.register(Client)
-admin.site.register(Entity)
 
+class ClientAdmin(admin.ModelAdmin):
+    list_display = ['id', 'full_name', 'credit_type', 'id_credit_spec']
+    list_filter = ['credit_type']
+    search_fields = ['id', 'full_name']
+
+
+admin.site.register(Client, ClientAdmin)
+admin.site.register(Entity)
 admin.site.register(Company)
 admin.site.register(Guarantor)
 admin.site.register(Files)
@@ -24,6 +31,7 @@ class ImageInAdmin(admin.TabularInline):
 
 class PropertyAdmin(admin.ModelAdmin):
     inlines = [FileInAdmin, ImageInAdmin]
+    list_display = ['images']
 
 
 admin.site.register(Property, PropertyAdmin)

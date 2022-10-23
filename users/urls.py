@@ -1,24 +1,16 @@
-from django.urls import path, include
-from rest_framework.routers import SimpleRouter
+from rest_framework.routers import DefaultRouter
 
-from .views import RegisterClientAPIView, UserLogoutView, \
-    SpecUserViewAPIView, ClientUserViewAPIView, RegisterSpecAPIView, UserAPIView
+from django.urls import path
+from .views import RegisterClientAPIView, UserLogoutView, RegisterSpecAPIView, UserAPIView
 
 app_name = 'users'
-router = SimpleRouter()
-router.register(r'spec', SpecUserViewAPIView)
-router.register(r'client', ClientUserViewAPIView)
+
+r = DefaultRouter()
+r.register('info', RegisterClientAPIView,)
 
 urlpatterns = [
-    path('users/', include(router.urls)),
     path('register/client/', RegisterClientAPIView.as_view()),
     path('register/spec/', RegisterSpecAPIView.as_view()),
     path('user/<int:pk>/', UserAPIView.as_view()),
     path('logout/', UserLogoutView.as_view()),
-
-    # path('users/', RegistrationAccountAPIView.as_view()),
-    # path('users_client/', RegistrationAccountCLientAPIView.as_view()),
-    # path('client/', RegistrationClientAPIView.as_view()),
-
 ]
-

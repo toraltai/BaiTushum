@@ -1,8 +1,9 @@
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include,re_path
+from django.urls import path, include
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
-from django.conf.urls.static import static
+
 from . import settings
 
 schema_view = get_schema_view(
@@ -14,11 +15,13 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('docs/', schema_view.with_ui('swagger')),
-    path('crm/', include('crm.urls')),
-    path('', include('users.urls')),
-    re_path(r'auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.jwt')),
+          path('jet/', include('jet.urls', 'jet')),
+          path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
+          path('docs/', schema_view.with_ui('swagger')),
+          path('crm/', include('crm.urls')),
+          path('', include('users.urls')),
+          # re_path(r'auth/', include('djoser.urls')),
+          path('auth/', include('djoser.urls.jwt')),
+          path('', admin.site.urls),
 
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+      ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

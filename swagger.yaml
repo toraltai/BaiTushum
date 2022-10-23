@@ -1,0 +1,55 @@
+openapi: 3.0.3
+info:
+  title: BaiTushumDemo
+  description: DEMO
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/
+    description: Dev server
+paths:
+  /register:
+    post:
+      summary: Регистрация
+      tags:
+        - RegisterClient
+      parameters:
+        - name: toy_id
+          in: path
+          required: true
+          description: Идентификатор игрушки
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Toy' 
+
+
+components:
+  schemas:
+    Toy:
+      type: object
+      required:
+        - name
+        - status
+      properties: 
+        toy_id:
+          type: string
+          example: example
+        name:
+          type: string
+          example: string
+        status:
+          type: string
+          enum:
+            - old
+            - new
+            - broken
+          description: Состояние игрушки
+        created_at:
+          type: string
+          example: date/month/year
+contentType: yaml

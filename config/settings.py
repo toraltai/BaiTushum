@@ -14,13 +14,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  #if config('DEBUG') == '1' else False
+DEBUG = False  #if config('DEBUG') == '1' else False
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 
 # Application definition
 
 INSTALLED_APPS = [
+    'jet.dashboard',
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -145,7 +147,8 @@ SIMPLE_JWT = {
 #         'PORT': 5432
 #     }
 # }
-if DEBUG:
+# if DEBUG:
+if DEBUG == False:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -187,7 +190,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-Ru'
 
 TIME_ZONE = 'Asia/Bishkek'
 
@@ -235,7 +238,7 @@ CORS_ORIGIN_WHITELIST = [
     'https://www.thunderclient.com',
 ]
 
-DRF_API_LOGGER_DATABASE = True  # Default to False
+DRF_API_LOGGER_DATABASE = False  # Default to False
 
 
 SWAGGER_SETTINGS = {
@@ -245,4 +248,41 @@ SWAGGER_SETTINGS = {
             'in': 'header',
             'name': 'Authorization'
         }
-    }}
+    }
+}
+
+JET_THEMES = [
+    {
+        'theme': 'default',
+        'color': '#47bac1',
+        'title': 'Default'
+    },
+    {
+        'theme': 'green',
+        'color': '#44b78b',
+        'title': 'Green'
+    },
+    {
+        'theme': 'light-green',
+        'color': '#2faa60',
+        'title': 'Light Green'
+    },
+    {
+        'theme': 'light-violet',
+        'color': '#a464c4',
+        'title': 'Light Violet'
+    },
+    {
+        'theme': 'light-blue',
+        'color': '#5EADDE',
+        'title': 'Light Blue'
+    },
+    {
+        'theme': 'light-gray',
+        'color': '#222',
+        'title': 'Light Gray'
+    }
+]
+
+
+JET_SIDE_MENU_COMPACT = True
