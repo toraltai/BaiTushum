@@ -47,7 +47,7 @@ class Client(models.Model):  # Физическое лицо
     id_guarantor = models.ForeignKey('Guarantor', verbose_name='Поручитель', on_delete=models.CASCADE, null=True,
                                      blank=True)
     id_property = models.ForeignKey('Property', verbose_name='Залоговое имущество', on_delete=models.CASCADE, null=True,
-                                    blank=True)
+                                    blank=True, related_name='Client')
     id_num_parley = models.ForeignKey('Conversation', on_delete=models.CASCADE, null=True, blank=True,
                                       verbose_name='Переговоры')
 
@@ -89,7 +89,7 @@ class Entity(models.Model):  # Юридическое лицо
     current_loan = models.CharField(verbose_name='Текущие кредиты', max_length=200)
     id_credit_spec = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Кредитный специалист')
     id_property = models.ForeignKey('Property', verbose_name='Залоговое имущество', on_delete=models.CASCADE, null=True,
-                                    blank=True)
+                                    blank=True, related_name='Entity')
     id_num_parley = models.ForeignKey('Conversation', on_delete=models.CASCADE, null=True, blank=True,
                                       verbose_name='Переговоры')
 
@@ -246,7 +246,8 @@ class DataKK(models.Model):
                                      upload_to="all_contracts/%Y/%m/%d")
 
     scoring = models.CharField(verbose_name="Скоринг:", max_length=150, null=True, blank=True)
-    id_entity = models.ForeignKey('Entity', verbose_name='Юридическое лицо', on_delete=models.PROTECT, related_name='entity')
+    id_entity = models.ForeignKey('Entity', verbose_name='Юридическое лицо', on_delete=models.PROTECT,
+                                  related_name='DataKK')
     id_spec = models.ForeignKey(User, verbose_name='Кредитный спец', on_delete=models.PROTECT)
 
     class Meta:
