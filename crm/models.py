@@ -23,7 +23,7 @@ STATUS = [
 class Client(models.Model):  # Физическое лицо
     full_name = models.CharField(max_length=100, null=False, verbose_name='ФИО клиента')
     credit_type = models.CharField(max_length=30, choices=LOAN_TYPE, verbose_name='Тип кредита')
-    client_status = models.CharField(choices=STATUS, verbose_name='Статус клиента', max_length=30)
+    status = models.CharField(choices=STATUS, verbose_name='Статус клиента', max_length=30)
     credit_sum = models.CharField(max_length=30, verbose_name='Сумма кредита')
     marital_status = models.CharField(max_length=30, choices=MARITAL_STATUSES, verbose_name='Семейное положение')
     credit_history = models.FileField(null=True, blank=True, default='Кредитная история отсутствует',
@@ -48,7 +48,7 @@ class Client(models.Model):  # Физическое лицо
                                      blank=True)
     id_property = models.ForeignKey('Property', verbose_name='Залоговое имущество', on_delete=models.CASCADE, null=True,
                                     blank=True)
-    id_num_parley = models.ForeignKey('Conversation', on_delete=models.CASCADE, null=True, blank=True,
+    meet_conversation = models.ForeignKey('Conversation', on_delete=models.CASCADE, null=True, blank=True,
                                       verbose_name='Переговоры')
 
     def __str__(self):
