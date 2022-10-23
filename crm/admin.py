@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from .models import *
 
 
@@ -14,8 +13,7 @@ admin.site.register(Client, ClientAdmin)
 
 class EntityAdmin(admin.ModelAdmin):
     list_display = ['id', 'full_name_director', 'client_company', 'id_credit_spec']
-    list_filter = ['credit_type']
-    search_fields = ['id', 'full_name']
+    search_fields = ['id', 'full_name_director']
 
 
 admin.site.register(Entity, EntityAdmin)
@@ -55,7 +53,7 @@ class ImageInAdmin(admin.TabularInline):
 
 class PropertyAdmin(admin.ModelAdmin):
     inlines = [FileInAdmin, ImageInAdmin]
-    list_display = ['id', 'type',]
+    list_display = ['id', 'type', ]
     search_fields = ['id', 'type', ]
 
 
@@ -78,7 +76,11 @@ class DataKKAdmin(admin.ModelAdmin):
 
 admin.site.register(DataKK, DataKKAdmin)
 
-class Activity(admin.ModelAdmin):
+
+class ActivityAdmin(admin.ModelAdmin):
     list_display = ['id', 'activites']
-admin.site.register(Activity)
+    search_fields = ['id', 'activites']
+
+
+admin.site.register(Activity, ActivityAdmin)
 # admin.site.register(Images)

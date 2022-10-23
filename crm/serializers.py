@@ -33,7 +33,7 @@ class SerializerEntityAdmin(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['client_company', 'full_name', 'credit_history', 'income_statement', 'contracts', 'report',
+        fields = ['client_company', 'full_name_director', 'credit_history', 'income_statement', 'contracts', 'report',
                   'monitoring_report', 'phone']
 
 
