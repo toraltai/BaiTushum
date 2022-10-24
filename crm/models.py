@@ -101,36 +101,38 @@ class Entity(models.Model):  # Юридическое лицо
 
 
 class Activity(models.Model):
-    ACTIVITES = [
-        ('1', 'сельское хозяйство'),
-        ('2', 'торговля'),
-        ('3', 'производство'),
-        ('4', 'заготовка и переработка'),
-        ('5', 'промышленность'),
-        ('6', 'торговля и коммерция'),
-        ('7', 'строительство'),
-        ('8', 'транспорт'),
-        ('9', 'услуги'),
-        ('10', 'прочие')
-    ]
-    activites = models.CharField(max_length=100, choices=ACTIVITES, verbose_name='Источник дохода', null=True,
-                                 blank=True)
-    activites_add = models.CharField(max_length=100, verbose_name='Добавить источник дохода', null=True, blank=True)
+    # ACTIVITES = [
+    #     ('1', 'сельское хозяйство'),
+    #     ('2', 'торговля'),
+    #     ('3', 'производство'),
+    #     ('4', 'заготовка и переработка'),
+    #     ('5', 'промышленность'),
+    #     ('6', 'торговля и коммерция'),
+    #     ('7', 'строительство'),
+    #     ('8', 'транспорт'),
+    #     ('9', 'услуги'),
+    #     ('10', 'прочие')
+    # ]
+    # activites = models.CharField(max_length=100, choices=ACTIVITES, verbose_name='Источник дохода', null=True,
+    #                              blank=True)
+    activites_add = models.CharField(max_length=100, verbose_name='Добавить источник дохода')
 
-    def save(self, *args, **kwargs):
-        if self.activites_add:
-            res = (str(self.activites_add), str(self.activites_add))
-            self.ACTIVITES.append(res)
-            self.activites = self.activites_add
-            super(Activity, self).save(*args, **kwargs)
-        else:
-            super(Activity, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.activites_add:
+    #         res = (str(self.activites_add), str(self.activites_add))
+    #         self.ACTIVITES.append(res)
+    #         self.activites = self.activites_add
+    #         super(Activity, self).save(*args, **kwargs)
+    #     else:
+    #         super(Activity, self).save(*args, **kwargs)
 
+    # def __str__(self):
+    #     if self.activites_add:
+    #         return self.activites_add
+    #     else:
+    #         return str(self.activites)
     def __str__(self):
-        if self.activites_add:
-            return self.activites_add
-        else:
-            return str(self.activites)
+        return f'{self.activites_add}'
 
     class Meta:
         verbose_name = 'Сфера деятельности'
@@ -143,7 +145,7 @@ class Company(models.Model):
     legal_address = models.CharField(max_length=100, verbose_name='Юридический адрес')
     actual_address = models.CharField(max_length=100, verbose_name='Фактический адрес')
     telephone = models.CharField(max_length=30, verbose_name='Номер телефона')
-    field_activity = models.ForeignKey(Activity, verbose_name='Cфера деятельности', on_delete=models.CASCADE, )
+    field_activity = models.ForeignKey(Activity, verbose_name='Cфера деятельности', on_delete=models.CASCADE)
     okpo = models.CharField(max_length=8, unique=True)
     register_number = models.CharField(max_length=30, unique=True)
     document = models.FileField(upload_to='company_files/%Y/%m/%d', verbose_name='Документ компании', null=True,
