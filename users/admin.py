@@ -9,7 +9,7 @@ class UserAdmin(admin.ModelAdmin):
 # admin.site.register(ClientUser)
 @admin.register(ClientUser)
 class ClientUserAdmin(admin.ModelAdmin):
-    list_display = ['__str__']
+    list_display = ['__str__', 'address']
 
 # admin.site.register(SpecUser)
 @admin.register(SpecUser)
