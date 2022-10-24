@@ -56,7 +56,7 @@ class SpecUser(models.Model):
     occupation = models.CharField(choices=OCCUPATION, max_length=69)
 
     def __str__(self):
-        return f'{self.user.full_name} - {self.occupation} - {self.user.email}'
+        return f'{self.user.full_name}'
 
 
 class ClientUser(models.Model):
@@ -64,4 +64,4 @@ class ClientUser(models.Model):
     address = models.CharField(max_length=169)
 
     def __str__(self):
-        return f'{self.user.full_name}'
+        return f'{self.user.email}'

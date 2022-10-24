@@ -145,8 +145,8 @@ SIMPLE_JWT = {
 #         'PORT': 5432
 #     }
 # }
-# if DEBUG:
-if DEBUG == False:
+if DEBUG:
+# if DEBUG == False:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
