@@ -24,7 +24,7 @@ class SerializerEntity(serializers.ModelSerializer):
 
     class Meta:
         model = Entity
-        exclude = ['credit_history', 'income_statement', 'contracts', 'report', 'monitoring_report', ]
+        exclude = ['credit_history', 'contracts', 'report', 'monitoring_report', ]
 
 
 class SerializerEntityAdmin(serializers.ModelSerializer):
@@ -33,7 +33,7 @@ class SerializerEntityAdmin(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['client_company', 'full_name', 'credit_history', 'income_statement', 'contracts', 'report',
+        fields = ['full_name_director', 'client_company', 'credit_history', 'contracts', 'report',
                   'monitoring_report', 'phone']
 
 

@@ -59,23 +59,45 @@ class Client(models.Model):  # Физическое лицо
         verbose_name_plural = "Контрагенты"
 
 
-class Entity(Client):  # Юридическое лицо
+class Entity(models.Model):  # Юридическое лицо
+    full_name_director = models.CharField(max_length=100, verbose_name='ФИО представителя')
     client_company = models.CharField(max_length=50, verbose_name="Компания клиента", auto_created=True, )
     id_company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True)
     inn = models.CharField(max_length=20, verbose_name="ИНН")
+    credit_type = models.CharField(max_length=30, choices=LOAN_TYPE, verbose_name='Тип кредита')
+    credit_sum = models.CharField(max_length=30, verbose_name='Сумма кредита')
+    credit_history = models.FileField(null=True, blank=True, default='Кредитная история отсутствует',
+                                      upload_to='client_credit_history/%Y/%m/%d', verbose_name='Кредитная история')
+    phone = models.CharField(max_length=100, unique=True, default='+996', verbose_name='Телефон компании')
+    address = models.CharField(max_length=100, verbose_name='Юр. адрес')
+    client_actual_address = models.CharField(max_length=100, verbose_name='Адрес фактический',
+                                             default='Тот же что и юр. адрес')
+    mortgaged_property = models.CharField(max_length=255, verbose_name='Залоговое имущество')
+    contracts = models.FileField(upload_to='contracts_with_suppliers/%Y/%m/%d', null=True, blank=True,
+                                 verbose_name='Договора с подрядчиками и поставщиками')
+    report = models.FileField(upload_to='reports_with_suppliers/%Y/%m/%d', null=True, blank=True,
+                              verbose_name='Oтчет подрядчиков и поставщиков об оказанной услугe')
+    monitoring_report = models.FileField(upload_to='media', verbose_name='Oтчет по мониторингу', null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_date = models.DateTimeField(auto_now=True)
     souce_of_income = models.ForeignKey('Activity', verbose_name='Источник дохода', on_delete=models.CASCADE)
     average_salary = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Средний доход в месяц')
     own_contribution = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Размер собвственного вклада')
     assets = models.TextField(help_text='Актив - стоимость – дата приобретения',
                               verbose_name='Активы на момент анализа')
     current_loan = models.CharField(verbose_name='Текущие кредиты', max_length=200)
+    id_credit_spec = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Кредитный специалист')
+    id_property = models.ForeignKey('Property', verbose_name='Залоговое имущество', on_delete=models.CASCADE, null=True,
+                                    blank=True, related_name='Entity')
+    id_num_parley = models.ForeignKey('Conversation', on_delete=models.CASCADE, null=True, blank=True,
+                                      verbose_name='Переговоры')
 
     class Meta:
         verbose_name = "Юридическое лицо"
         verbose_name_plural = "Юридические лица"
 
     def __str__(self):
-        return f'{self.id} -- {self.client_company} -- {self.full_name}'
+        return f'{self.id}. {self.client_company} -- {self.full_name_director}'
 
 
 class Activity(models.Model):
