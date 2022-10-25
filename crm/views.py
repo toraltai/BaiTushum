@@ -1,7 +1,7 @@
-from django.shortcuts import redirect
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import generics
+from rest_framework import generics, decorators
+from rest_framework.response import Response
 
 from .serializers import *
 
@@ -46,6 +46,11 @@ class APICompany(ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = SerializerCompany
     # permission_classes = [IsAuthenticated]
+
+    # @decorators.action(['GET'], detail=False)
+    # def from_last(self, request):
+    #     res = Activity.objects.filter(reverse=False).values()
+    #     return Response(ActivitySerializer(res, many=True).data)
 
 
 
@@ -129,3 +134,8 @@ class FileAPIView(ModelViewSet):
 class APIActivity(generics.ListCreateAPIView):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
+
+    # @decorators.action(['GET'], detail=False)
+    # def max_and_min(self, request):
+    #     res = Activity.objects.filter()
+    #     return Response(ActivitySerializer(res, many=True).data)
