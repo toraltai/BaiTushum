@@ -1,7 +1,7 @@
 import os
 from datetime import timedelta
 from pathlib import Path
-
+# heroku git:remote -a baitushumdemo
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -145,8 +145,8 @@ SIMPLE_JWT = {
 #         'PORT': 5432
 #     }
 # }
-if DEBUG:
-# if DEBUG == False:
+# if DEBUG:
+if DEBUG == False:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
