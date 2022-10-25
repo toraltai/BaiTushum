@@ -8,7 +8,8 @@ class SerializerClient(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        exclude = ['credit_history', 'income_statement', 'contracts', 'report', 'monitoring_report', ]
+        # exclude = ['credit_history', 'income_statement', 'contracts', 'report', 'monitoring_report', ]
+        fields = "__all__"
 
 
 class SerializerClientAdmin(serializers.ModelSerializer):
@@ -170,3 +171,9 @@ class SerializersDataKKAdmin(serializers.ModelSerializer):
     class Meta:
         model = DataKK
         fields = ['credit_spec_report', 'committee_decision', 'all_contracts']
+
+
+class ActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Activity
+        fields = '__all__'

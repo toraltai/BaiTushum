@@ -65,6 +65,7 @@ class Entity(models.Model):  # Юридическое лицо
     id_company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True)
     inn = models.CharField(max_length=20, verbose_name="ИНН")
     credit_type = models.CharField(max_length=30, choices=LOAN_TYPE, verbose_name='Тип кредита')
+    status = models.CharField(choices=STATUS, verbose_name='Статус клиента', max_length=30)
     credit_sum = models.CharField(max_length=30, verbose_name='Сумма кредита')
     credit_history = models.FileField(null=True, blank=True, default='Кредитная история отсутствует',
                                       upload_to='client_credit_history/%Y/%m/%d', verbose_name='Кредитная история')
@@ -117,20 +118,20 @@ class Activity(models.Model):
     #                              blank=True)
     activites_add = models.CharField(max_length=100, verbose_name='Добавить источник дохода')
 
-    # def save(self, *args, **kwargs):
-    #     if self.activites_add:
-    #         res = (str(self.activites_add), str(self.activites_add))
-    #         self.ACTIVITES.append(res)
-    #         self.activites = self.activites_add
-    #         super(Activity, self).save(*args, **kwargs)
-    #     else:
-    #         super(Activity, self).save(*args, **kwargs)
+    # # def save(self, *args, **kwargs):
+    # #     if self.activites_add:
+    # #         res = (str(self.activites_add), str(self.activites_add))
+    # #         self.ACTIVITES.append(res)
+    # #         self.activites = self.activites_add
+    # #         super(Activity, self).save(*args, **kwargs)
+    # #     else:
+    # #         super(Activity, self).save(*args, **kwargs)
 
-    # def __str__(self):
-    #     if self.activites_add:
-    #         return self.activites_add
-    #     else:
-    #         return str(self.activites)
+    # # def __str__(self):
+    # #     if self.activites_add:
+    # #         return self.activites_add
+    # #     else:
+    # #         return str(self.activites)
     def __str__(self):
         return f'{self.activites_add}'
 
@@ -241,7 +242,8 @@ class DataKK(models.Model):
                                      upload_to="all_contracts/%Y/%m/%d")
 
     scoring = models.CharField(verbose_name="Скоринг:", max_length=150, null=True, blank=True)
-    id_client = models.ForeignKey('Entity', verbose_name='Юридическое лицо', on_delete=models.PROTECT)
+    id_entity = models.ForeignKey('Entity', verbose_name='Юридическое лицо', on_delete=models.PROTECT)
+    id_client = models.ForeignKey('Client', verbose_name='Физическое лицо', on_delete=models.PROTECT)
     id_spec = models.ForeignKey(User, verbose_name='Кредитный спец', on_delete=models.PROTECT)
 
     class Meta:

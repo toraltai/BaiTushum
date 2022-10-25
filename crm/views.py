@@ -1,6 +1,7 @@
 from django.shortcuts import redirect
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
+from rest_framework import generics
 
 from .serializers import *
 
@@ -124,3 +125,7 @@ class ImageAPIView(ModelViewSet):
 class FileAPIView(ModelViewSet):
     queryset = Files.objects.all()
     serializer_class = FilesSerializer
+
+class APIActivity(generics.ListCreateAPIView):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
