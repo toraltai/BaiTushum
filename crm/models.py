@@ -133,7 +133,7 @@ class Activity(models.Model):
     # #     else:
     # #         return str(self.activites)
     def __str__(self):
-        return f'{self.activites_add}'
+        return f'{self.id} - {self.activites_add}'
 
     class Meta:
         verbose_name = 'Сфера деятельности'
@@ -146,11 +146,14 @@ class Company(models.Model):
     legal_address = models.CharField(max_length=100, verbose_name='Юридический адрес')
     actual_address = models.CharField(max_length=100, verbose_name='Фактический адрес')
     telephone = models.CharField(max_length=30, verbose_name='Номер телефона')
-    field_activity = models.ForeignKey(Activity, verbose_name='Cфера деятельности', on_delete=models.CASCADE)
+    field_activity = models.ForeignKey(Activity, verbose_name='Cфера деятельности', on_delete=models.CASCADE, )
     okpo = models.CharField(max_length=8, unique=True)
     register_number = models.CharField(max_length=30, unique=True)
     document = models.FileField(upload_to='company_files/%Y/%m/%d', verbose_name='Документ компании', null=True,
                                 blank=True)
+
+    def reversed_list(self):
+        return Activity.objects.filter(activites_add__gt=3)
 
     def __str__(self):
         return f'{self.company_name}'

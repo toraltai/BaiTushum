@@ -11,8 +11,8 @@ class APIClient(ModelViewSet):
     serializer_class = SerializerClient
     # permission_classes = [IsAuthenticated]
 
-    # def perform_create(self, serializer):
-    #     serializer.save(id_credit_spec=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(id_credit_spec=self.request.user)
 
     # def get_serializer_class(self):
     #     occupation = self.request.user.spec_user.occupation
