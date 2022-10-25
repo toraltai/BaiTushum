@@ -30,8 +30,8 @@ class APIEntity(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
 
-    # def perform_create(self, serializer):
-    #     serializer.save(id_credit_spec=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(id_credit_spec=self.request.user)
 
     # def get_serializer_class(self):
     #     if self.request.user.spec_user.occupation == 'Кредит.спец':
@@ -110,8 +110,8 @@ class APIDataKK(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
 
-    # def perform_create(self, serializer):
-    #     serializer.save(id_spec=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(id_spec=self.request.user)
 
     # def get_serializer_class(self):
     #     if self.request.user.spec_user.occupation == 'Кредит.спец':
