@@ -158,7 +158,7 @@ class SerializersDataKK(serializers.ModelSerializer):
 
     class Meta:
         model = DataKK
-        exclude = ['credit_spec_report', 'committee_decision', 'all_contracts']
+        exclude = '__all__'
 
     # def to_representation(self, instance):
     #     rep = super().to_representation(instance)
@@ -170,7 +170,7 @@ class SerializersDataKK(serializers.ModelSerializer):
 class SerializersDataKKAdmin(serializers.ModelSerializer):
     class Meta:
         model = DataKK
-        fields = ['credit_spec_report', 'committee_decision', 'all_contracts']
+        fields = '__all__'
 
 
 class ActivitySerializer(serializers.ModelSerializer):
