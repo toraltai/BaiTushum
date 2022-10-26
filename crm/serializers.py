@@ -158,7 +158,7 @@ class SerializersDataKK(serializers.ModelSerializer):
 
     class Meta:
         model = DataKK
-        exclude = '__all__'
+        fields = '__all__'
 
     # def to_representation(self, instance):
     #     rep = super().to_representation(instance)
