@@ -93,6 +93,7 @@ class APIGuarantor(ModelViewSet):
 
 class APIConvers(ModelViewSet):
     queryset = Conversation.objects.all()
+    serializer_class = SerializersConvers
     # permission_classes = [IsAuthenticated]
 
     # def get_serializer_class(self):

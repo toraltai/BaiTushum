@@ -141,7 +141,7 @@ class SerializerGuarantorAdmin(serializers.ModelSerializer):
 class SerializersConvers(serializers.ModelSerializer):
     class Meta:
         model = Conversation
-        fields = ['is_meeting', 'date', 'name', 'time', 'desc']
+        fields = '__all__'
 
 
 class SerializersConversFull(serializers.ModelSerializer):
