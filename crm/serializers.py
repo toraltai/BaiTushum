@@ -86,8 +86,8 @@ class ImagesSerializer(serializers.ModelSerializer):
 
 
 class SerializerPropertyAdmin(serializers.ModelSerializer):
-    type = serializers.ReadOnlyField()
-    address = serializers.ReadOnlyField()
+    # type = serializers.ReadOnlyField()
+    # address = serializers.ReadOnlyField()
     files = FilesSerializer(many=True, read_only=True, )
     images = ImagesSerializer(many=True, read_only=True)
 
