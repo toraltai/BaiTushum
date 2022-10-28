@@ -29,7 +29,7 @@ class SerializerEntity(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
-        rep['souce_of_income'] = SerializerEntity(instance.souce_of_income).data['activites_add']
+        rep['souce_of_income'] = ActivitySerializer(instance.souce_of_income).data['activites_add']
         return rep
 
 
