@@ -27,10 +27,10 @@ class SerializerEntity(serializers.ModelSerializer):
         model = Entity
         exclude = ['credit_history', 'contracts', 'report', 'monitoring_report', ]
 
-        def to_representation(self, instance):
-            rep = super().to_representation(instance)
-            rep['souce_of_income'] = SerializerEntity(instance.id_client).data['activites_add']
-            return rep
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['souce_of_income'] = SerializerEntity(instance.id_client).data['activites_add']
+        return rep
 
 
 class SerializerEntityAdmin(serializers.ModelSerializer):
