@@ -81,7 +81,7 @@ class Entity(models.Model):  # Юридическое лицо
     monitoring_report = models.FileField(upload_to='media', verbose_name='Oтчет по мониторингу', null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_date = models.DateTimeField(auto_now=True)
-    souce_of_income = models.ForeignKey('Activity', verbose_name='Источник дохода', on_delete=models.CASCADE)
+    souce_of_income = models.ForeignKey('Activity', verbose_name='Источник дохода', on_delete=models.CASCADE,null=True, blank=True)
     average_salary = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Средний доход в месяц')
     own_contribution = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Размер собвственного вклада')
     assets = models.TextField(help_text='Актив - стоимость – дата приобретения',
