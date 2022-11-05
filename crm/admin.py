@@ -4,7 +4,6 @@ from .models import *
 
 admin.site.register(Client)
 admin.site.register(Entity)
-
 admin.site.register(Company)
 admin.site.register(Guarantor)
 admin.site.register(Files)

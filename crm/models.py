@@ -13,10 +13,12 @@ MARITAL_STATUSES = [
     ('single', 'Холост/Незамужем'),
 ]
 STATUS = [
-    ('success', 'Принят'),
+    ('success', 'Выдан'),
     ('processing', 'Обработка'),
     ('discussion', 'На рассмотрении'),
-    ('denied', 'Отказано')
+    ('denied', 'Отказано'),
+    ('1', 'Погашен за счет отступных'),
+    ('2', 'Судебный'),
 ]
 
 
@@ -25,6 +27,8 @@ class Client(models.Model):  # Физическое лицо
     credit_type = models.CharField(max_length=30, choices=LOAN_TYPE, verbose_name='Тип кредита')
     status = models.CharField(choices=STATUS, verbose_name='Статус клиента', max_length=30)
     credit_sum = models.CharField(max_length=30, verbose_name='Сумма кредита')
+#===================================================================
+    repaid_by_redemption = models.FileField(verbose_name='Отступные документы',null=True,upload_to='Отступные документы/%Y/%m/%d')
     marital_status = models.CharField(max_length=30, choices=MARITAL_STATUSES, verbose_name='Семейное положение')
     credit_history = models.FileField(null=True, blank=True, default='Кредитная история отсутствует',
                                       upload_to='client_credit_history/%Y/%m/%d', verbose_name='Кредитная история')
@@ -40,7 +44,7 @@ class Client(models.Model):  # Физическое лицо
                                  verbose_name='Договора с подрядчиками и поставщиками')
     report = models.FileField(upload_to='reports_with_suppliers/%Y/%m/%d', null=True, blank=True,
                               verbose_name='Oтчет подрядчиков и поставщиков об оказанной услугe')
-    monitoring_report = models.FileField(upload_to='media', verbose_name='Oтчет по мониторингу', null=True, blank=True)
+    monitoring_report = models.FileField(upload_to='media', verbose_name='Oabтчет по мониторингу', null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_date = models.DateTimeField(auto_now=True)
     id_credit_spec = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Кредитный специалист',null=True, blank=True)
