@@ -1,9 +1,9 @@
 import os
 from datetime import timedelta
 from pathlib import Path
+
 # heroku git:remote -a baitushumdemo
 from decouple import config
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -131,8 +131,8 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-if DEBUG:
-# if DEBUG == False:
+# if DEBUG:
+if DEBUG == False:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
