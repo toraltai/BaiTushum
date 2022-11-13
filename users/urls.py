@@ -9,7 +9,7 @@ r = DefaultRouter()
 r.register('info', RegisterClientAPIView,)
 
 urlpatterns = [
-    path('register/client/', RegisterClientAPIView.as_view()),
+    # path('register/client/', RegisterClientAPIView.as_view()),
     path('register/spec/', RegisterSpecAPIView.as_view()),
     path('user/<int:pk>/', UserAPIView.as_view()),
     path('logout/', UserLogoutView.as_view()),

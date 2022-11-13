@@ -10,7 +10,7 @@ class UserManager(BaseUserManager):
 
         user = self.model(email=self.normalize_email(email),
                           full_name=full_name, phone_number=phone_number, **extra)
-        
+
         user.set_password(password)
         user.is_active = True
         user.save()
@@ -48,15 +48,16 @@ class User(AbstractUser):
 
 
 OCCUPATION = (
-    ('Кредит.спец', 'Кредит.спец'),
-    ('Кредит.админ', 'Кредит.админ'),)
+    ('spec', 'Кредит.спец'),
+    ('admin', 'Кредит.админ'),)
+
 
 class SpecUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='spec_user', editable=False)
     occupation = models.CharField(choices=OCCUPATION, max_length=69)
 
     def __str__(self):
-        return f'{self.user.full_name} - {self.occupation} - {self.user.email}'
+        return f'{self.user.full_name}'
 
 
 class ClientUser(models.Model):
@@ -64,4 +65,4 @@ class ClientUser(models.Model):
     address = models.CharField(max_length=169)
 
     def __str__(self):
-        return f'{self.user.full_name}'
+        return f'{self.user.email}'

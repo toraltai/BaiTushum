@@ -1,9 +1,7 @@
 __pycache__/
 venv/
 media/
-static/
 staticfiles/
 .env
 db.sqlite3
 config/settings.py
-swagger.yaml
