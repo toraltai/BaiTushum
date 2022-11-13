@@ -10,7 +10,7 @@ class UserManager(BaseUserManager):
 
         user = self.model(email=self.normalize_email(email),
                           full_name=full_name, phone_number=phone_number, **extra)
-        
+
         user.set_password(password)
         user.is_active = True
         user.save()
@@ -50,6 +50,7 @@ class User(AbstractUser):
 OCCUPATION = (
     ('spec', 'Кредит.спец'),
     ('admin', 'Кредит.админ'),)
+
 
 class SpecUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='spec_user', editable=False)

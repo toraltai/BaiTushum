@@ -1,7 +1,7 @@
-from django.shortcuts import redirect
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import generics
+from rest_framework import generics, decorators
+from rest_framework.response import Response
 
 from .serializers import *
 
@@ -11,8 +11,8 @@ class APIClient(ModelViewSet):
     serializer_class = SerializerClient
     # permission_classes = [IsAuthenticated]
 
-    # def perform_create(self, serializer):
-    #     serializer.save(id_credit_spec=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(id_credit_spec=self.request.user)
 
     # def get_serializer_class(self):
     #     occupation = self.request.user.spec_user.occupation
@@ -30,8 +30,8 @@ class APIEntity(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
 
-    # def perform_create(self, serializer):
-    #     serializer.save(id_credit_spec=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(id_credit_spec=self.request.user)
 
     # def get_serializer_class(self):
     #     if self.request.user.spec_user.occupation == 'Кредит.спец':
@@ -46,6 +46,11 @@ class APICompany(ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = SerializerCompany
     # permission_classes = [IsAuthenticated]
+
+    # @decorators.action(['GET'], detail=False)
+    # def from_last(self, request):
+    #     res = Activity.objects.filter(reverse=False).values()
+    #     return Response(ActivitySerializer(res, many=True).data)
 
 
 
@@ -62,6 +67,7 @@ class APIProperty(ModelViewSet):
     queryset = Property.objects.all()
     serializer_class = SerializerPropertyAdmin
     # permission_classes = [IsAuthenticated]
+
 
     # def get_serializer_class(self):
     #     if self.request.user.spec_user.occupation == 'Кредит.спец':
@@ -88,6 +94,7 @@ class APIGuarantor(ModelViewSet):
 
 class APIConvers(ModelViewSet):
     queryset = Conversation.objects.all()
+    serializer_class = SerializersConvers
     # permission_classes = [IsAuthenticated]
 
     # def get_serializer_class(self):
@@ -105,8 +112,8 @@ class APIDataKK(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
 
-    # def perform_create(self, serializer):
-    #     serializer.save(id_spec=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(id_spec=self.request.user)
 
     # def get_serializer_class(self):
     #     if self.request.user.spec_user.occupation == 'Кредит.спец':
@@ -129,3 +136,8 @@ class FileAPIView(ModelViewSet):
 class APIActivity(generics.ListCreateAPIView):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
+
+    # @decorators.action(['GET'], detail=False)
+    # def max_and_min(self, request):
+    #     res = Activity.objects.filter()
+    #     return Response(ActivitySerializer(res, many=True).data)

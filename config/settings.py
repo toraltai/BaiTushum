@@ -1,16 +1,22 @@
 import os
 from datetime import timedelta
 from pathlib import Path
-
+# heroku git:remote -a baitushumdemo
 from decouple import config
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 SECRET_KEY = config('SECRET_KEY')
+
 
 DEBUG = True # DEBUG = True if config('DEBUG') == '1' else False
 
+
 ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
+
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -147,6 +153,8 @@ else:
     db = dj_database_url.config(conn_max_age=600)
     DATABASES['default'].update(db)
 
+# Password validation
+# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -163,6 +171,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Internationalization
+# https://docs.djangoproject.com/en/4.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -172,6 +182,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

@@ -25,7 +25,11 @@ class SerializerEntity(serializers.ModelSerializer):
 
     class Meta:
         model = Entity
-        exclude = ['credit_history', 'contracts', 'report', 'monitoring_report', ]
+        fields = '__all__'
+    # def to_representation(self, instance):
+    #     rep = super().to_representation(instance)
+    #     rep['souce_of_income'] = ActivitySerializer(instance.souce_of_income).data['activites_add']
+    #     return rep
 
 
 class SerializerEntityAdmin(serializers.ModelSerializer):
@@ -34,14 +38,14 @@ class SerializerEntityAdmin(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['full_name_director', 'client_company', 'credit_history', 'contracts', 'report',
-                  'monitoring_report', 'phone']
+        fields = ['client_company', 'full_name_director', 'credit_history', 'income_statement', 'contracts', 'report']
+
 
 
 class SerializerCompany(serializers.ModelSerializer):
     class Meta:
         model = Company
-        exclude = ['document']
+        fields = '__all__'
 
 
 class SerializerCompanyAdmin(serializers.ModelSerializer):
@@ -76,6 +80,7 @@ class ImagesSerializer(serializers.ModelSerializer):
 
     def get_url(self, instance):
         if instance.image.url.startswith('/media'):
+            print(instance.image.url)
             return f'http://127.0.0.1:8000{instance.image.url}'
         return instance.image.url
 
@@ -86,8 +91,8 @@ class ImagesSerializer(serializers.ModelSerializer):
 
 
 class SerializerPropertyAdmin(serializers.ModelSerializer):
-    type = serializers.ReadOnlyField()
-    address = serializers.ReadOnlyField()
+    # type = serializers.ReadOnlyField()
+    # address = serializers.ReadOnlyField()
     files = FilesSerializer(many=True, read_only=True, )
     images = ImagesSerializer(many=True, read_only=True)
 
@@ -126,7 +131,7 @@ class SerializerProperty(serializers.ModelSerializer):
 class SerializerGuarantor(serializers.ModelSerializer):
     class Meta:
         model = Guarantor
-        exclude = ['income_statement']
+        fields = '__all__'
 
 
 class SerializerGuarantorAdmin(serializers.ModelSerializer):
@@ -141,7 +146,7 @@ class SerializerGuarantorAdmin(serializers.ModelSerializer):
 class SerializersConvers(serializers.ModelSerializer):
     class Meta:
         model = Conversation
-        fields = ['is_meeting', 'date', 'name', 'time', 'desc']
+        fields = '__all__'
 
 
 class SerializersConversFull(serializers.ModelSerializer):
@@ -158,7 +163,7 @@ class SerializersDataKK(serializers.ModelSerializer):
 
     class Meta:
         model = DataKK
-        exclude = ['credit_spec_report', 'committee_decision', 'all_contracts']
+        fields = '__all__'
 
     # def to_representation(self, instance):
     #     rep = super().to_representation(instance)
@@ -170,7 +175,7 @@ class SerializersDataKK(serializers.ModelSerializer):
 class SerializersDataKKAdmin(serializers.ModelSerializer):
     class Meta:
         model = DataKK
-        fields = ['credit_spec_report', 'committee_decision', 'all_contracts']
+        fields = '__all__'
 
 
 class ActivitySerializer(serializers.ModelSerializer):
