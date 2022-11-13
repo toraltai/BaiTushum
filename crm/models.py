@@ -140,7 +140,7 @@ class Activity(models.Model):
 
 class Company(models.Model):
     company_name = models.CharField(max_length=100, unique=True, verbose_name='Наименование компании')
-    inn = models.CharField(max_length=14, unique=True)
+    inn = models.CharField(max_length=14, unique=True, verbose_name='ИНН Компании')
     legal_address = models.CharField(max_length=100, verbose_name='Юридический адрес')
     actual_address = models.CharField(max_length=100, verbose_name='Фактический адрес')
     telephone = models.CharField(max_length=30, verbose_name='Номер телефона')
@@ -248,6 +248,7 @@ class DataKK(models.Model):
     scoring = models.CharField(verbose_name="Скоринг:", max_length=150, null=True, blank=True)
     id_entity = models.ForeignKey('Entity', verbose_name='Юридическое лицо', on_delete=models.PROTECT,
                                   related_name='DataKK')
+
     id_spec = models.ForeignKey(User, verbose_name='Кредитный спец', on_delete=models.PROTECT)
 
     class Meta:
