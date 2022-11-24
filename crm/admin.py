@@ -83,8 +83,8 @@ admin.site.register(DataKK, DataKKAdmin)
 
 
 class ActivityAdmin(admin.ModelAdmin):
-    list_display = ['id']
-    search_fields = ['id', 'activites']
+    list_display = ['id', 'activites_add']
+    search_fields = ['id', 'activites_add']
 
 
 admin.site.register(Activity, ActivityAdmin)
