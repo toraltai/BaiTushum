@@ -66,6 +66,11 @@ class RegisterSpecSerializer(serializers.Serializer):
     phone_number = serializers.CharField()
     occupation = serializers.ChoiceField(choices=OCCUPATION)
 
+    def validate_email(self, email):
+        if User.objects.filter(email=email).exists():
+            raise serializers.ValidationError('Пользователь уже существует!')
+        return email
+
     def validate(self, attrs):
         password = attrs.get('password')
         password_confirm = attrs.pop('password_confirm')
