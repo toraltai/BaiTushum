@@ -39,7 +39,7 @@ class Client(models.Model):  # Физическое лицо
     address = models.CharField(max_length=100, verbose_name='Адрес прописки')
     client_actual_address = models.CharField(max_length=100, verbose_name='Адрес фактический',
                                              default='Тот же что и по прописке')
-    guarantor = models.CharField(max_length=100, verbose_name='Поручитель')
+    # guarantor = models.CharField(max_length=100, verbose_name='Поручитель')
     income_statement = models.FileField(upload_to='client_income_statement/%Y/%m/%d', null=True,
                                         verbose_name='Справка о доходах')
     mortgaged_property = models.CharField(max_length=255, verbose_name='Залоговое имущество')
