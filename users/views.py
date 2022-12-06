@@ -2,15 +2,14 @@ from rest_framework import status, generics, permissions,viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import  User
-from .serializer import RegisterClientSerializer, LogoutSerializer, RegisterSpecSerializer, UserSerializer
+from .serializer import LogoutSerializer, RegisterSpecSerializer, UserSerializer
 from rest_framework import decorators
 
 
-class RegisterClientAPIView(generics.CreateAPIView):
-# class RegisterClientAPIView(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = RegisterClientSerializer
-    
+# class RegisterClientAPIView(generics.CreateAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = RegisterClientSerializer
+#
     # @decorators.action(['GET'], detail=False)
     # def list(self, request):
     #     res = User.objects.all()

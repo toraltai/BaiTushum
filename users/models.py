@@ -60,9 +60,9 @@ class SpecUser(models.Model):
         return f'{self.user.full_name}'
 
 
-class ClientUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='client_user', editable=False)
-    address = models.CharField(max_length=169)
-
-    def __str__(self):
-        return f'{self.user.email}'
+# class ClientUser(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='client_user', editable=False)
+#     address = models.CharField(max_length=169)
+#
+#     def __str__(self):
+#         return f'{self.user.email}'

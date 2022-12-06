@@ -1,12 +1,10 @@
 from rest_framework.routers import DefaultRouter
 
 from django.urls import path
-from .views import RegisterClientAPIView, UserLogoutView, RegisterSpecAPIView, UserAPIView
+from .views import UserLogoutView, RegisterSpecAPIView, UserAPIView
 
 app_name = 'users'
 
-r = DefaultRouter()
-r.register('info', RegisterClientAPIView,)
 
 urlpatterns = [
     # path('register/client/', RegisterClientAPIView.as_view()),
