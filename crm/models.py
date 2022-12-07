@@ -46,7 +46,7 @@ class Client(models.Model):  # Физическое лицо
                                  verbose_name='Договора с подрядчиками и поставщиками')
     report = models.FileField(upload_to='reports_with_suppliers/%Y/%m/%d', null=True,
                               verbose_name='Oтчет подрядчиков и поставщиков об оказанной услугe')
-    monitoring_report = models.FileField(upload_to='media', verbose_name='Oabтчет по мониторингу', null=True,
+    monitoring_report = models.FileField(upload_to='media', verbose_name='Oтчет по мониторингу', null=True,
                                          )
     created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -70,7 +70,7 @@ class Client(models.Model):  # Физическое лицо
 class Entity(models.Model):  # Юридическое лицо
     full_name_director = models.CharField(max_length=100, verbose_name='ФИО представителя')
     client_company = models.CharField(max_length=50, verbose_name="Компания клиента", auto_created=True, )
-    id_company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True)
+    id_company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True, verbose_name='Компания')
     inn = models.CharField(max_length=20, verbose_name="ИНН")
     credit_type = models.CharField(max_length=30, choices=LOAN_TYPE, verbose_name='Тип кредита')
     # ===================================================================
