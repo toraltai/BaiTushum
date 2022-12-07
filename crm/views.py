@@ -1,7 +1,6 @@
+from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import generics, decorators
-from rest_framework.response import Response
 
 from .serializers import *
 
@@ -136,7 +135,7 @@ class FileAPIView(ModelViewSet):
 class APIActivity(generics.ListCreateAPIView):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
-
+    # permission_classes = [IsAuthenticated]
     # @decorators.action(['GET'], detail=False)
     # def max_and_min(self, request):
     #     res = Activity.objects.filter()
