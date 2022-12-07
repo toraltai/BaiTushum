@@ -39,7 +39,6 @@ class Client(models.Model):  # Физическое лицо
     address = models.CharField(max_length=100, verbose_name='Адрес прописки')
     client_actual_address = models.CharField(max_length=100, verbose_name='Адрес фактический',
                                              default='Тот же что и по прописке')
-    guarantor = models.CharField(max_length=100, verbose_name='Поручитель')
     income_statement = models.FileField(upload_to='client_income_statement/%Y/%m/%d', null=True,
                                         verbose_name='Справка о доходах')
     mortgaged_property = models.CharField(max_length=255, verbose_name='Залоговое имущество')
@@ -47,13 +46,13 @@ class Client(models.Model):  # Физическое лицо
                                  verbose_name='Договора с подрядчиками и поставщиками')
     report = models.FileField(upload_to='reports_with_suppliers/%Y/%m/%d', null=True,
                               verbose_name='Oтчет подрядчиков и поставщиков об оказанной услугe')
-    monitoring_report = models.FileField(upload_to='media', verbose_name='Oabтчет по мониторингу', null=True,
+    monitoring_report = models.FileField(upload_to='Oтчет по мониторингу/%Y/%m/%d', verbose_name='Oтчет по мониторингу', null=True,
                                          )
     created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_date = models.DateTimeField(auto_now=True)
     id_credit_spec = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Кредитный специалист', null=True,
                                        blank=True)
-    id_guarantor = models.ForeignKey('Guarantor', verbose_name='Поручитель', on_delete=models.CASCADE, null=True,
+    guarantor = models.ForeignKey('Guarantor', verbose_name='Поручитель', on_delete=models.CASCADE, null=True,
                                      blank=True)
     id_property = models.ForeignKey('Property', verbose_name='Залоговое имущество', on_delete=models.CASCADE, null=True,
                                     blank=True),
@@ -71,7 +70,7 @@ class Client(models.Model):  # Физическое лицо
 class Entity(models.Model):  # Юридическое лицо
     full_name_director = models.CharField(max_length=100, verbose_name='ФИО представителя')
     client_company = models.CharField(max_length=50, verbose_name="Компания клиента", auto_created=True, )
-    id_company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True, blank=True)
+    id_company = models.ForeignKey('Company',verbose_name="Компания клиента",on_delete=models.CASCADE, null=True, blank=True)
     inn = models.CharField(max_length=20, verbose_name="ИНН")
     credit_type = models.CharField(max_length=30, choices=LOAN_TYPE, verbose_name='Тип кредита')
     # ===================================================================
