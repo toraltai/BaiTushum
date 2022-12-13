@@ -160,6 +160,7 @@ class SerializersConversFull(serializers.ModelSerializer):
 
 class SerializersDataKK(serializers.ModelSerializer):
     id_spec = serializers.ReadOnlyField(source='id_spec.fullname')
+    created_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
 
     class Meta:
         model = DataKK
