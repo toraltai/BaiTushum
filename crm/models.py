@@ -278,4 +278,3 @@ class DataKK(models.Model):
             return f'{self.id}. {self.id_entity.full_name_director}'
         else:
             return f'{self.id}. {self.id_client.full_name}'
-

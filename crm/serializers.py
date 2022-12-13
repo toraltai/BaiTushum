@@ -5,10 +5,11 @@ from .models import *
 
 class SerializerClient(serializers.ModelSerializer):
     id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.full_name')
+    created_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    updated_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
 
     class Meta:
         model = Client
-        # exclude = ['credit_history', 'income_statement', 'contracts', 'report', 'monitoring_report', ]
         fields = "__all__"
 
 
@@ -22,6 +23,8 @@ class SerializerClientAdmin(serializers.ModelSerializer):
 
 class SerializerEntity(serializers.ModelSerializer):
     id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.full_name')
+    created_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    updated_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
 
     class Meta:
         model = Entity
@@ -144,6 +147,7 @@ class SerializerGuarantorAdmin(serializers.ModelSerializer):
 
 
 class SerializersConvers(serializers.ModelSerializer):
+    date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     class Meta:
         model = Conversation
         fields = '__all__'

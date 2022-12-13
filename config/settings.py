@@ -19,6 +19,8 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 
 
 INSTALLED_APPS = [
+    'jet.dashboard',
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -174,13 +176,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'Asia/Bishkek'
 
-USE_I18N = True
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
-USE_TZ = True
+USE_I18N = False
+
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -236,3 +240,4 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
