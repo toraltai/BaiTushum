@@ -149,6 +149,15 @@ class SerializersConvers(serializers.ModelSerializer):
         fields = '__all__'
 
 
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        datetime_noformat = rep['date']
+        # rep['date'] = datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+        # datetime_format =
+
+        return rep
+
+
 class SerializersConversFull(serializers.ModelSerializer):
     name = serializers.ReadOnlyField()
     date = serializers.ReadOnlyField()

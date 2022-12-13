@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from users.models import User
 
@@ -38,10 +40,8 @@ class Client(models.Model):  # Физическое лицо
     address = models.CharField(max_length=100, verbose_name='Адрес прописки')
     client_actual_address = models.CharField(max_length=100, verbose_name='Адрес фактический',
                                              default='Тот же что и по прописке')
-    # guarantor = models.CharField(max_length=100, verbose_name='Поручитель')
     income_statement = models.FileField(upload_to='client_income_statement/%Y/%m/%d', null=True,
                                         verbose_name='Справка о доходах')
-    # mortgaged_property = models.CharField(max_length=255, verbose_name='Залоговое имущество')
     contracts = models.FileField(upload_to='contracts_with_suppliers/%Y/%m/%d', null=True,
                                  verbose_name='Договора с подрядчиками и поставщиками')
     report = models.FileField(upload_to='reports_with_suppliers/%Y/%m/%d', null=True,
@@ -98,7 +98,7 @@ class Entity(models.Model):  # Юридическое лицо
     souce_of_income = models.ForeignKey('Activity', verbose_name='Источник дохода', on_delete=models.CASCADE, null=True,
                                         blank=True)
     average_salary = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Средний доход в месяц')
-    own_contribution = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Размер собвственного вклада')
+    own_contribution = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Размер собвственного взноса', null=True)
     assets = models.TextField(help_text='Актив - стоимость – дата приобретения',
                               verbose_name='Активы на момент анализа')
     current_loan = models.CharField(verbose_name='Текущие кредиты', max_length=200)
@@ -117,36 +117,8 @@ class Entity(models.Model):  # Юридическое лицо
 
 
 class Activity(models.Model):
-    # ACTIVITES = [
-    #     ('1', 'сельское хозяйство'),
-    #     ('2', 'торговля'),
-    #     ('3', 'производство'),
-    #     ('4', 'заготовка и переработка'),
-    #     ('5', 'промышленность'),
-    #     ('6', 'торговля и коммерция'),
-    #     ('7', 'строительство'),
-    #     ('8', 'транспорт'),
-    #     ('9', 'услуги'),
-    #     ('10', 'прочие')
-    # ]
-    # activites = models.CharField(max_length=100, choices=ACTIVITES, verbose_name='Источник дохода', null=True,
-    #                              blank=True)
     activites_add = models.CharField(max_length=100, verbose_name='Добавить источник дохода')
 
-    # # def save(self, *args, **kwargs):
-    # #     if self.activites_add:
-    # #         res = (str(self.activites_add), str(self.activites_add))
-    # #         self.ACTIVITES.append(res)
-    # #         self.activites = self.activites_add
-    # #         super(Activity, self).save(*args, **kwargs)
-    # #     else:
-    # #         super(Activity, self).save(*args, **kwargs)
-
-    # # def __str__(self):
-    # #     if self.activites_add:
-    # #         return self.activites_add
-    # #     else:
-    # #         return str(self.activites)
     def __str__(self):
         return f'{self.id} - {self.activites_add}'
 
@@ -233,8 +205,7 @@ class Images(models.Model):
 class Conversation(models.Model):
     is_meeting = models.BooleanField(default=False, verbose_name='Личная встреча')
     name = models.CharField(max_length=100, verbose_name='Название')
-    date = models.CharField(max_length=30, verbose_name='Дата')
-    time = models.CharField(max_length=30, verbose_name='Время')
+    date = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время', null=True, blank=True,)
     desc = models.TextField(max_length=200, verbose_name='Содержание')
     results_report = models.FileField(null=True,
                                       verbose_name="Очет по результатам",
@@ -245,6 +216,10 @@ class Conversation(models.Model):
 
     def __str__(self):
         return f'{self.id}. {self.name}'
+
+    def save(self, *args, **kwargs):
+        self.date = datetime.datetime.today().strftime("%Y-%m-%d")
+        super(Conversation, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Переговоры'
@@ -278,3 +253,43 @@ class DataKK(models.Model):
             return f'{self.id}. {self.id_entity.full_name_director}'
         else:
             return f'{self.id}. {self.id_client.full_name}'
+
+
+
+
+
+
+
+# class Activity(models.Model):
+    # ACTIVITES = [
+    #     ('1', 'сельское хозяйство'),
+    #     ('2', 'торговля'),
+    #     ('3', 'производство'),
+    #     ('4', 'заготовка и переработка'),
+    #     ('5', 'промышленность'),
+    #     ('6', 'торговля и коммерция'),
+    #     ('7', 'строительство'),
+    #     ('8', 'транспорт'),
+    #     ('9', 'услуги'),
+    #     ('10', 'прочие')
+    # ]
+    # activites = models.CharField(max_length=100, choices=ACTIVITES, verbose_name='Источник дохода', null=True,
+    #                              blank=True)
+    # activites_add = models.CharField(max_length=100, verbose_name='Добавить источник дохода')
+
+    # # def save(self, *args, **kwargs):
+    # #     if self.activites_add:
+    # #         res = (str(self.activites_add), str(self.activites_add))
+    # #         self.ACTIVITES.append(res)
+    # #         self.activites = self.activites_add
+    # #         super(Activity, self).save(*args, **kwargs)
+    # #     else:
+    # #         super(Activity, self).save(*args, **kwargs)
+
+    # # def __str__(self):
+    # #     if self.activites_add:
+    # #         return self.activites_add
+    # #     else:
+    # #         return str(self.activites)
+    # def __str__(self):
+    #     return f'{self.id} - {self.activites_add}'

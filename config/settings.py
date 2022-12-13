@@ -178,9 +178,11 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Bishkek'
 
-USE_I18N = True
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
-USE_TZ = True
+USE_I18N = False
+
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -212,6 +214,7 @@ CORS_ALLOW_ORIGINS = [
     'http://127.0.0.1:3000',
     'http://127.0.0.1:3001',
     'https://www.thunderclient.com',
+
 ]
 
 CORS_ORIGIN_WHITELIST = [
@@ -220,6 +223,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1:3000',
     'http://127.0.0.1:3001',
     'https://www.thunderclient.com',
+
 ]
 
 DRF_API_LOGGER_DATABASE = True  # Default to False
@@ -234,3 +238,4 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+

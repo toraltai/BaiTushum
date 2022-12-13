@@ -94,7 +94,7 @@ class APIGuarantor(ModelViewSet):
 class APIConvers(ModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = SerializersConvers
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     # def get_serializer_class(self):
     #     if self.request.user.spec_user.occupation == 'Кредит.спец':
