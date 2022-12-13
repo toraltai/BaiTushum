@@ -1,22 +1,16 @@
 from rest_framework import status, generics, permissions,viewsets
-from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+
 from .models import  User
-from .serializer import LogoutSerializer, RegisterSpecSerializer, UserSerializer
-from rest_framework import decorators
-
-
-# class RegisterClientAPIView(generics.CreateAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = RegisterClientSerializer
-#
-    # @decorators.action(['GET'], detail=False)
-    # def list(self, request):
-    #     res = User.objects.all()
-    #     return Response(RegisterClientSerializer(res, many=True).data)
+from .serializer import LoginSerializer, RegisterSpecSerializer, UserSerializer
 
 
 class RegisterSpecAPIView(generics.CreateAPIView):
+    '''Регистрация Спец Кредита'''
     queryset = User.objects.all()
     serializer_class = RegisterSpecSerializer
 
@@ -26,12 +20,20 @@ class UserAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
 
 
-class UserLogoutView(APIView):
-    serializer_class = LogoutSerializer
-    permission_classes = [permissions.IsAuthenticated, ]
+class LoginApiView(ObtainAuthToken):
+    '''Авторизация'''
+    serializer_class = LoginSerializer
+
+
+class LogOutApiView(APIView):
+    '''Выход из системы'''
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        try:
+            user = request.user
+            Token.objects.filter(user=user).delete()
+            return Response('Вы успешно разлогинились')
+        except Exception as s:
+            print('*********', s, '****************')
+            return Response(status=403)

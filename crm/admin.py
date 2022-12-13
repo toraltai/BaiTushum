@@ -20,7 +20,6 @@ class EntityAdmin(admin.ModelAdmin):
 admin.site.register(Entity, EntityAdmin)
 
 
-
 class CompanyAdmin(admin.ModelAdmin):
     list_display = ['id', 'company_name', 'legal_address', ]
     list_filter = ['field_activity']
@@ -90,4 +89,3 @@ class ActivityAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Activity, ActivityAdmin)
-# admin.site.register(Images)
