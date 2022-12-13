@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     #apps
     'crm',
     'users',
-
 ]
 
 MIDDLEWARE = [
@@ -178,8 +177,6 @@ LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'Asia/Bishkek'
 
-DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
-
 USE_I18N = False
 
 USE_TZ = False
@@ -227,6 +224,7 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 DRF_API_LOGGER_DATABASE = True  # Default to False
+DRF_API_LOGGER_STATUS_CODES = ['400', '404', '500']
 
 
 SWAGGER_SETTINGS = {
@@ -238,4 +236,3 @@ SWAGGER_SETTINGS = {
         }
     }
 }
-
