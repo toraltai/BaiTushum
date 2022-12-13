@@ -3,5 +3,6 @@ venv/
 media/
 staticfiles/
 .env
+.idea/
 db.sqlite3
 config/settings.py

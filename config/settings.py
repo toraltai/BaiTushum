@@ -133,8 +133,8 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-if DEBUG:
-# if DEBUG == False:
+# if DEBUG:
+if DEBUG == False:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -216,7 +216,7 @@ CORS_ALLOW_ORIGINS = [
     'http://127.0.0.1:3000',
     'http://127.0.0.1:3001',
     'https://www.thunderclient.com',
-
+    'https://bai-tushim.netlify.app',
 ]
 
 CORS_ORIGIN_WHITELIST = [
@@ -225,7 +225,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1:3000',
     'http://127.0.0.1:3001',
     'https://www.thunderclient.com',
-
+    'https://bai-tushim.netlify.app',
 ]
 
 DRF_API_LOGGER_DATABASE = True  # Default to False
