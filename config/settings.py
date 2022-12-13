@@ -26,17 +26,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',
+    'rest_framework',
+    'rest_framework_simplejwt',
     'drf_api_logger',
-
+    'django_filters',
+    'corsheaders',
+    'drf_yasg',
+    #apps
     'crm',
     'users',
-    'corsheaders',
-    'django_filters',
-    'rest_framework',
-    'drf_yasg',
-    'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',
-    'djoser',
 
 ]
 
