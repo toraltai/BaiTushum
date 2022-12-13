@@ -57,7 +57,7 @@ class Client(models.Model):  # Физическое лицо
     id_property = models.ForeignKey('Property', verbose_name='Залоговое имущество', on_delete=models.CASCADE, null=True,
                                     blank=True,related_name='Property')
     meet_conversation = models.ForeignKey('Conversation', on_delete=models.CASCADE, null=True, blank=True,
-                                          verbose_name='Переговоры', related_name='Conversation')
+                                          verbose_name='Переговоры', related_name='client')
 
     def __str__(self):
         return f'{self.id}. {self.full_name}'
@@ -106,7 +106,7 @@ class Entity(models.Model):  # Юридическое лицо
     id_property = models.ForeignKey('Property', verbose_name='Залоговое имущество', on_delete=models.CASCADE, null=True,
                                     blank=True, related_name='Entity')
     id_num_parley = models.ForeignKey('Conversation', on_delete=models.CASCADE, null=True, blank=True,
-                                      verbose_name='Переговоры')
+                                      verbose_name='Переговоры', related_name='entity')
 
     class Meta:
         verbose_name = "Юридическое лицо"
@@ -217,13 +217,13 @@ class Conversation(models.Model):
     def __str__(self):
         return f'{self.id}. {self.name}'
 
-    def save(self, *args, **kwargs):
-        self.date = datetime.datetime.today().strftime("%Y-%m-%d")
-        super(Conversation, self).save(*args, **kwargs)
-
     class Meta:
         verbose_name = 'Переговоры'
         verbose_name_plural = 'Переговоры'
+
+    def save(self, *args, **kwargs):
+        print(dir(self))
+        super(Conversation, self).save(*args, **kwargs)
 
 
 class DataKK(models.Model):
@@ -253,6 +253,9 @@ class DataKK(models.Model):
             return f'{self.id}. {self.id_entity.full_name_director}'
         else:
             return f'{self.id}. {self.id_client.full_name}'
+
+
+
 
 
 
@@ -293,3 +296,5 @@ class DataKK(models.Model):
     # #         return str(self.activites)
     # def __str__(self):
     #     return f'{self.id} - {self.activites_add}'
+
+

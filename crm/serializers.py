@@ -5,10 +5,11 @@ from .models import *
 
 class SerializerClient(serializers.ModelSerializer):
     id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.full_name')
+    created_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    updated_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
 
     class Meta:
         model = Client
-        # exclude = ['credit_history', 'income_statement', 'contracts', 'report', 'monitoring_report', ]
         fields = "__all__"
 
 
@@ -22,6 +23,8 @@ class SerializerClientAdmin(serializers.ModelSerializer):
 
 class SerializerEntity(serializers.ModelSerializer):
     id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.full_name')
+    created_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    updated_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
 
     class Meta:
         model = Entity
@@ -144,18 +147,10 @@ class SerializerGuarantorAdmin(serializers.ModelSerializer):
 
 
 class SerializersConvers(serializers.ModelSerializer):
+    date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     class Meta:
         model = Conversation
         fields = '__all__'
-
-
-    def to_representation(self, instance):
-        rep = super().to_representation(instance)
-        datetime_noformat = rep['date']
-        # rep['date'] = datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")
-        # datetime_format =
-
-        return rep
 
 
 class SerializersConversFull(serializers.ModelSerializer):
@@ -169,6 +164,7 @@ class SerializersConversFull(serializers.ModelSerializer):
 
 class SerializersDataKK(serializers.ModelSerializer):
     id_spec = serializers.ReadOnlyField(source='id_spec.fullname')
+    created_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
 
     class Meta:
         model = DataKK
