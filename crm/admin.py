@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import *
+from jet.admin import CompactInline
 
 
 class ClientAdmin(admin.ModelAdmin):
@@ -17,6 +18,7 @@ class EntityAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Entity, EntityAdmin)
+
 
 
 class CompanyAdmin(admin.ModelAdmin):
@@ -67,7 +69,7 @@ admin.site.register(Property, PropertyAdmin)
 
 class ConversationAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'date']
-    list_filter = ['date']
+    list_filter = ['date', 'is_meeting']
     search_fields = ['id', 'name', 'date']
 
 
