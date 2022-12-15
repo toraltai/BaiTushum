@@ -3,8 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
-
+from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
 from .models import  User
 from .serializer import LoginSerializer, RegisterSpecSerializer, UserSerializer
 
@@ -25,15 +24,14 @@ class LoginApiView(ObtainAuthToken):
     serializer_class = LoginSerializer
 
 
-class LogOutApiView(APIView):
-    '''Выход из системы'''
-    permission_classes = [IsAuthenticated]
-
+class LogoutView(APIView):
+    permission_classes = (IsAuthenticated,)
     def post(self, request):
-        try:
-            user = request.user
-            Token.objects.filter(user=user).delete()
-            return Response('Вы успешно разлогинились')
-        except Exception as s:
-            print('*********', s, '****************')
-            return Response(status=403)
+        tokens = OutstandingToken.objects.filter(user_id=request.user.id)
+        for token in tokens:
+            print(dir(token))
+            token.delete()
+            # t, _ = BlacklistedToken.objects.get_or_create(token=token)
+
+        return Response(status=status.HTTP_205_RESET_CONTENT)
+
