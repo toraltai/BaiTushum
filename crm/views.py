@@ -110,7 +110,6 @@ class APIDataKK(ModelViewSet):
     serializer_class = SerializersDataKK
     # permission_classes = [IsAuthenticated]
 
-
     def perform_create(self, serializer):
         serializer.save(id_spec=self.request.user)
 

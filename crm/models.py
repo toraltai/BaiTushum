@@ -57,7 +57,7 @@ class Client(models.Model):  # Физическое лицо
     id_property = models.ForeignKey('Property', verbose_name='Залоговое имущество', on_delete=models.CASCADE, null=True,
                                     blank=True,related_name='Property')
     meet_conversation = models.ForeignKey('Conversation', on_delete=models.CASCADE, null=True, blank=True,
-                                          verbose_name='Переговоры', related_name='Conversation')
+                                          verbose_name='Переговоры', related_name='Client')
 
     def __str__(self):
         return f'{self.id}. {self.full_name}'
@@ -98,7 +98,7 @@ class Entity(models.Model):  # Юридическое лицо
     souce_of_income = models.ForeignKey('Activity', verbose_name='Источник дохода', on_delete=models.CASCADE, null=True,
                                         blank=True)
     average_salary = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Средний доход в месяц')
-    own_contribution = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Размер собвственного вклада')
+    own_contribution = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Размер собвственного взноса')
     assets = models.TextField(help_text='Актив - стоимость – дата приобретения',
                               verbose_name='Активы на момент анализа')
     current_loan = models.CharField(verbose_name='Текущие кредиты', max_length=200)
@@ -106,7 +106,7 @@ class Entity(models.Model):  # Юридическое лицо
     id_property = models.ForeignKey('Property', verbose_name='Залоговое имущество', on_delete=models.CASCADE, null=True,
                                     blank=True, related_name='Entity')
     id_num_parley = models.ForeignKey('Conversation', on_delete=models.CASCADE, null=True, blank=True,
-                                      verbose_name='Переговоры')
+                                      verbose_name='Переговоры', related_name='Entity')
 
     class Meta:
         verbose_name = "Юридическое лицо"
@@ -117,36 +117,8 @@ class Entity(models.Model):  # Юридическое лицо
 
 
 class Activity(models.Model):
-    # ACTIVITES = [
-    #     ('1', 'сельское хозяйство'),
-    #     ('2', 'торговля'),
-    #     ('3', 'производство'),
-    #     ('4', 'заготовка и переработка'),
-    #     ('5', 'промышленность'),
-    #     ('6', 'торговля и коммерция'),
-    #     ('7', 'строительство'),
-    #     ('8', 'транспорт'),
-    #     ('9', 'услуги'),
-    #     ('10', 'прочие')
-    # ]
-    # activites = models.CharField(max_length=100, choices=ACTIVITES, verbose_name='Источник дохода', null=True,
-    #                              blank=True)
     activites_add = models.CharField(max_length=100, verbose_name='Добавить источник дохода')
 
-    # # def save(self, *args, **kwargs):
-    # #     if self.activites_add:
-    # #         res = (str(self.activites_add), str(self.activites_add))
-    # #         self.ACTIVITES.append(res)
-    # #         self.activites = self.activites_add
-    # #         super(Activity, self).save(*args, **kwargs)
-    # #     else:
-    # #         super(Activity, self).save(*args, **kwargs)
-
-    # # def __str__(self):
-    # #     if self.activites_add:
-    # #         return self.activites_add
-    # #     else:
-    # #         return str(self.activites)
     def __str__(self):
         return f'{self.id} - {self.activites_add}'
 
@@ -165,9 +137,6 @@ class Company(models.Model):
     okpo = models.CharField(max_length=8, unique=True, verbose_name='ОКПО')
     register_number = models.CharField(max_length=30, unique=True, verbose_name='Номер регистрации')
     document = models.FileField(upload_to='company_files/%Y/%m/%d', verbose_name='Документ компании', null=True)
-
-    def reversed_list(self):
-        return Activity.objects.filter(activites_add__gt=3)
 
     def __str__(self):
         return f'{self.id}. {self.company_name}'
@@ -232,19 +201,24 @@ class Images(models.Model):
 
 class Conversation(models.Model):
     is_meeting = models.BooleanField(default=False, verbose_name='Личная встреча')
-    name = models.CharField(max_length=100, verbose_name='Название')
-    date = models.CharField(max_length=30, verbose_name='Дата')
-    time = models.CharField(max_length=30, verbose_name='Время')
+    client = models.CharField(max_length=100, verbose_name='Клиент')
+    phone = models.CharField(max_length=15, verbose_name='Номер телефона', default='+996')
+    date = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
     desc = models.TextField(max_length=200, verbose_name='Содержание')
     results_report = models.FileField(null=True,
                                       verbose_name="Очет по результатам",
                                       upload_to="results_report/%Y/%m/%d")
-    statistics = models.FileField(null=True,
-                                  verbose_name="Статистика",
-                                  upload_to="statistics/%Y/%m/%d")
+    statistics = models.TextField(verbose_name="Предыдущие переговоры", null=True, blank=True)
 
     def __str__(self):
-        return f'{self.id}. {self.name}'
+        return f'{self.id}. {self.client}'
+
+
+    def save(self, *args, **kwargs):
+        if self.phone:
+            convers_count = Conversation.objects.filter(phone=self.phone).count()
+            self.statistics = convers_count
+        return super(Conversation, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Переговоры'
