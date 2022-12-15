@@ -1,6 +1,5 @@
 from django.contrib import admin
 from .models import *
-from jet.admin import CompactInline
 
 
 class ClientAdmin(admin.ModelAdmin):
@@ -37,14 +36,6 @@ class GuarantorAdmin(admin.ModelAdmin):
 admin.site.register(Guarantor, GuarantorAdmin)
 
 
-# admin.site.register(Files)
-# admin.site.register(Client)
-# admin.site.register(Entity)
-# admin.site.register(Company)
-# admin.site.register(Guarantor)
-# admin.site.register(Files)
-
-
 class FileInAdmin(admin.TabularInline):
     model = Files
     fields = ['file']
@@ -67,9 +58,9 @@ admin.site.register(Property, PropertyAdmin)
 
 
 class ConversationAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'date']
+    list_display = ['id', 'client', 'date']
     list_filter = ['date', 'is_meeting']
-    search_fields = ['id', 'name', 'date']
+    search_fields = ['id', 'client', 'date']
 
 
 admin.site.register(Conversation, ConversationAdmin)
