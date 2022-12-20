@@ -69,6 +69,12 @@ class LoginSerializer(serializers.Serializer):
 
 
 
+class UserSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['full_name']
+
+
 
 # class RegisterClientSerializer(serializers.Serializer):
 #     '''Регистрация клиента'''
