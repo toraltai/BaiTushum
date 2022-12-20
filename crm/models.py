@@ -234,8 +234,8 @@ class DataKK(models.Model):
 
     scoring = models.CharField(verbose_name="Скоринг:", max_length=150, null=True, blank=True)
     id_entity = models.ForeignKey('Entity', verbose_name='Юридическое лицо', on_delete=models.CASCADE, null=True, )
-    id_client = models.ForeignKey('Client', verbose_name='ЧП/ИП', on_delete=models.CASCADE, null=True, )
-    id_spec = models.ForeignKey(User, verbose_name='Кредитный спец', on_delete=models.SET_NULL, null=True)
+    id_client = models.ForeignKey('Client', verbose_name='ЧП/ИП', on_delete=models.CASCADE, null=True, blank=True)
+    id_spec = models.ForeignKey(User, verbose_name='Кредитный спец', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         verbose_name = "Документ на КК"
