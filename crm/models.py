@@ -208,8 +208,8 @@ class Conversation(models.Model):
                                       verbose_name="Очет по результатам",
                                       upload_to="results_report/%Y/%m/%d")
 
-    client_id = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='conversation', verbose_name='ЧП/ИП')
-    entity_id = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='conversation', verbose_name='Юр.лицо')
+    client_id = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='conversation', verbose_name='ЧП/ИП', null=True, blank=True)
+    entity_id = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='conversation', verbose_name='Юр.лицо', null=True, blank=True)
 
     def __str__(self):
         return f'{self.id}. {self.client}'
@@ -246,3 +246,7 @@ class DataKK(models.Model):
     #         return f'{self.id}. {self.id_entity.full_name_director}'
     #     else:
     #         return f'{self.id}. {self.id_client.full_name}'
+
+
+
+
