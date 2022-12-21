@@ -1,6 +1,5 @@
 from rest_framework import status, generics
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,8 +13,6 @@ class RegisterSpecAPIView(generics.CreateAPIView):
     '''Регистрация Спец Кредита'''
     queryset = User.objects.all()
     serializer_class = RegisterSpecSerializer
-
-
 
 
 class UserAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -41,10 +38,12 @@ class LogoutView(APIView):
         return Response(status=status.HTTP_205_RESET_CONTENT)
 
 
-
 class UserFullNameView(APIView):
     def get(self, request):
-        id = self.request.user.id
-        fullname = self.request.user.full_name
-        email = self.request.user.email
-        return Response({'id': id, 'fullname': fullname, 'email': email})
+        try:
+            id = self.request.user.id
+            fullname = self.request.user.full_name
+            email = self.request.user.email
+            return Response({'id': id, 'fullname': fullname, 'email': email})
+        except:
+            return Response('Пользователь не авторизован')
