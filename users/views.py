@@ -7,13 +7,15 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 
 from .models import User
-from .serializer import LoginSerializer, RegisterSpecSerializer, UserSerializer, UserSerializer2
+from .serializer import LoginSerializer, RegisterSpecSerializer, UserSerializer
 
 
 class RegisterSpecAPIView(generics.CreateAPIView):
     '''Регистрация Спец Кредита'''
     queryset = User.objects.all()
     serializer_class = RegisterSpecSerializer
+
+
 
 
 class UserAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -39,7 +41,10 @@ class LogoutView(APIView):
         return Response(status=status.HTTP_205_RESET_CONTENT)
 
 
-def fullname(request):
-     user = request.user
-     return Response(user.full_name)
 
+class UserFullNameView(APIView):
+    def get(self, request):
+        id = self.request.user.id
+        fullname = self.request.user.full_name
+        email = self.request.user.email
+        return Response({'id': id, 'fullname': fullname, 'email': email})

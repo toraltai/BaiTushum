@@ -1,5 +1,4 @@
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from .serializers import *
@@ -8,6 +7,7 @@ from .serializers import *
 class APIClient(ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = SerializerClient
+
     # permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -26,8 +26,8 @@ class APIClient(ModelViewSet):
 class APIEntity(ModelViewSet):
     queryset = Entity.objects.all()
     serializer_class = SerializerEntity
-    # permission_classes = [IsAuthenticated]
 
+    # permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(id_credit_spec=self.request.user)
@@ -52,7 +52,6 @@ class APICompany(ModelViewSet):
     #     return Response(ActivitySerializer(res, many=True).data)
 
 
-
 # def get_serializer_class(self):
 #     if self.request.user.spec_user.occupation == 'Кредит.спец':
 #         return SerializerCompany
@@ -66,7 +65,6 @@ class APIProperty(ModelViewSet):
     queryset = Property.objects.all()
     serializer_class = SerializerPropertyAdmin
     # permission_classes = [IsAuthenticated]
-
 
     # def get_serializer_class(self):
     #     if self.request.user.spec_user.occupation == 'Кредит.спец':
@@ -108,6 +106,7 @@ class APIConvers(ModelViewSet):
 class APIDataKK(ModelViewSet):
     queryset = DataKK.objects.all()
     serializer_class = SerializersDataKK
+
     # permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -130,6 +129,7 @@ class ImageAPIView(ModelViewSet):
 class FileAPIView(ModelViewSet):
     queryset = Files.objects.all()
     serializer_class = FilesSerializer
+
 
 class APIActivity(generics.ListCreateAPIView):
     queryset = Activity.objects.all()
