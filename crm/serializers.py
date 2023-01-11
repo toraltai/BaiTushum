@@ -12,6 +12,12 @@ class SerializerClient(serializers.ModelSerializer):
         model = Client
         fields = "__all__"
 
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['id_guarantor'] = SerializerGuarantor(instance.id_guarantor).data['full_name']
+        rep['id_property'] = SerializerPropertyAdmin(instance.id_property).data['type']
+        return rep
+
 
 class SerializerEntity(serializers.ModelSerializer):
     id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.full_name')
@@ -63,8 +69,8 @@ class ImagesSerializer(serializers.ModelSerializer):
 
 
 class SerializerPropertyAdmin(serializers.ModelSerializer):
-    # type = serializers.ReadOnlyField()
-    # address = serializers.ReadOnlyField()
+    type = serializers.ReadOnlyField()
+    address = serializers.ReadOnlyField()
     files = FilesSerializer(many=True, read_only=True, )
     images = ImagesSerializer(many=True, read_only=True)
 
@@ -92,8 +98,6 @@ class SerializerPropertyAdmin(serializers.ModelSerializer):
         rep['images'] = ImagesSerializer(instance.images.all(), many=True).data
         rep['files'] = FilesSerializer(instance.files.all(), many=True).data
         return rep
-
-
 
 
 class SerializerGuarantor(serializers.ModelSerializer):
