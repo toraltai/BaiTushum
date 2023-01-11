@@ -5,7 +5,7 @@ from .serializers import *
 
 
 class APIClient(ModelViewSet):
-    queryset = Client.objects.all()
+    queryset = Client.objects.order_by('id')
     serializer_class = SerializerClient
 
     # permission_classes = [IsAuthenticated]
@@ -24,7 +24,7 @@ class APIClient(ModelViewSet):
 
 
 class APIEntity(ModelViewSet):
-    queryset = Entity.objects.all()
+    queryset = Entity.objects.order_by('id')
     serializer_class = SerializerEntity
 
     # permission_classes = [IsAuthenticated]
@@ -42,7 +42,7 @@ class APIEntity(ModelViewSet):
 
 
 class APICompany(ModelViewSet):
-    queryset = Company.objects.all()
+    queryset = Company.objects.order_by('id')
     serializer_class = SerializerCompany
     # permission_classes = [IsAuthenticated]
 
@@ -62,7 +62,7 @@ class APICompany(ModelViewSet):
 
 
 class APIProperty(ModelViewSet):
-    queryset = Property.objects.all()
+    queryset = Property.objects.order_by('id')
     serializer_class = SerializerPropertyAdmin
     # permission_classes = [IsAuthenticated]
 
@@ -76,7 +76,7 @@ class APIProperty(ModelViewSet):
 
 
 class APIGuarantor(ModelViewSet):
-    queryset = Guarantor.objects.all()
+    queryset = Guarantor.objects.order_by('id')
     serializer_class = SerializerGuarantor
     # permission_classes = [IsAuthenticated]
 
@@ -90,7 +90,7 @@ class APIGuarantor(ModelViewSet):
 
 
 class APIConvers(ModelViewSet):
-    queryset = Conversation.objects.all()
+    queryset = Conversation.objects.order_by('id')
     serializer_class = SerializersConvers
     # permission_classes = [IsAuthenticated]
 
