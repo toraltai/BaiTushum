@@ -104,7 +104,7 @@ class APIConvers(ModelViewSet):
 
 
 class APIDataKK(ModelViewSet):
-    queryset = DataKK.objects.all()
+    queryset = DataKK.objects.order_by('id')
     serializer_class = SerializersDataKK
 
     # permission_classes = [IsAuthenticated]
@@ -132,7 +132,7 @@ class FileAPIView(ModelViewSet):
 
 
 class APIActivity(generics.ListCreateAPIView):
-    queryset = Activity.objects.all()
+    queryset = Activity.objects.order_by('id')
     serializer_class = ActivitySerializer
     # permission_classes = [IsAuthenticated]
     # @decorators.action(['GET'], detail=False)
