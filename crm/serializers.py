@@ -42,7 +42,7 @@ class FilesSerializer(serializers.ModelSerializer):
 
     def get_url(self, instance):
         if instance.file.url.startswith('/media'):
-            return f'https://bt-back-demo.herokuapp.com/{instance.file.url}'
+            return f'https://bt-back-demo.herokuapp.com{instance.file.url}'
         return instance.file.url
 
     def to_representation(self, instance):
@@ -59,7 +59,7 @@ class ImagesSerializer(serializers.ModelSerializer):
     def get_url(self, instance):
         if instance.image.url.startswith('/media'):
             print(instance.image.url)
-            return f'https://bt-back-demo.herokuapp.com/{instance.image.url}'
+            return f'https://bt-back-demo.herokuapp.com{instance.image.url}'
         return instance.image.url
 
     def to_representation(self, instance):
