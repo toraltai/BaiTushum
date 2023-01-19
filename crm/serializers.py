@@ -126,11 +126,11 @@ class SerializersDataKK(serializers.ModelSerializer):
         model = DataKK
         fields = '__all__'
 
-    # def to_representation(self, instance):
-    #     rep = super().to_representation(instance)
-    #     rep['id_client'] = SerializerEntity(instance.id_client).data['full_name']
-    #     # rep['id_spec'] = SerializerCreditSpecialist(instance.id_spec).data['full_name']
-    #     return rep
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['id_entity'] = SerializerEntity(instance.id_entity).data['full_name_director']
+        rep['id_client'] = SerializerClient(instance.id_client).data['full_name']
+        return rep
 
 
 class ActivitySerializer(serializers.ModelSerializer):
