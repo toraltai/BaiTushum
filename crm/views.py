@@ -1,13 +1,13 @@
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from .serializers import *
 
 
 class APIClient(ModelViewSet):
-    queryset = Client.objects.all()
+    queryset = Client.objects.order_by('-id')
     serializer_class = SerializerClient
+
     # permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -24,10 +24,10 @@ class APIClient(ModelViewSet):
 
 
 class APIEntity(ModelViewSet):
-    queryset = Entity.objects.all()
+    queryset = Entity.objects.order_by('-id')
     serializer_class = SerializerEntity
-    # permission_classes = [IsAuthenticated]
 
+    # permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(id_credit_spec=self.request.user)
@@ -42,7 +42,7 @@ class APIEntity(ModelViewSet):
 
 
 class APICompany(ModelViewSet):
-    queryset = Company.objects.all()
+    queryset = Company.objects.order_by('-id')
     serializer_class = SerializerCompany
     # permission_classes = [IsAuthenticated]
 
@@ -50,7 +50,6 @@ class APICompany(ModelViewSet):
     # def from_last(self, request):
     #     res = Activity.objects.filter(reverse=False).values()
     #     return Response(ActivitySerializer(res, many=True).data)
-
 
 
 # def get_serializer_class(self):
@@ -63,10 +62,9 @@ class APICompany(ModelViewSet):
 
 
 class APIProperty(ModelViewSet):
-    queryset = Property.objects.all()
+    queryset = Property.objects.order_by('-id')
     serializer_class = SerializerPropertyAdmin
     # permission_classes = [IsAuthenticated]
-
 
     # def get_serializer_class(self):
     #     if self.request.user.spec_user.occupation == 'Кредит.спец':
@@ -78,7 +76,7 @@ class APIProperty(ModelViewSet):
 
 
 class APIGuarantor(ModelViewSet):
-    queryset = Guarantor.objects.all()
+    queryset = Guarantor.objects.order_by('-id')
     serializer_class = SerializerGuarantor
     # permission_classes = [IsAuthenticated]
 
@@ -92,7 +90,7 @@ class APIGuarantor(ModelViewSet):
 
 
 class APIConvers(ModelViewSet):
-    queryset = Conversation.objects.all()
+    queryset = Conversation.objects.order_by('-id')
     serializer_class = SerializersConvers
     # permission_classes = [IsAuthenticated]
 
@@ -106,10 +104,10 @@ class APIConvers(ModelViewSet):
 
 
 class APIDataKK(ModelViewSet):
-    queryset = DataKK.objects.all()
+    queryset = DataKK.objects.order_by('-id')
     serializer_class = SerializersDataKK
-    # permission_classes = [IsAuthenticated]
 
+    # permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(id_spec=self.request.user)
@@ -132,8 +130,9 @@ class FileAPIView(ModelViewSet):
     queryset = Files.objects.all()
     serializer_class = FilesSerializer
 
+
 class APIActivity(generics.ListCreateAPIView):
-    queryset = Activity.objects.all()
+    queryset = Activity.objects.order_by('-id')
     serializer_class = ActivitySerializer
     # permission_classes = [IsAuthenticated]
     # @decorators.action(['GET'], detail=False)

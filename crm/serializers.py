@@ -5,41 +5,28 @@ from .models import *
 
 class SerializerClient(serializers.ModelSerializer):
     id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.full_name')
+    created_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    updated_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
 
     class Meta:
         model = Client
-        # exclude = ['credit_history', 'income_statement', 'contracts', 'report', 'monitoring_report', ]
         fields = "__all__"
 
-
-class SerializerClientAdmin(serializers.ModelSerializer):
-    full_name = serializers.ReadOnlyField()
-
-    class Meta:
-        model = Client
-        fields = ['full_name', 'credit_history', 'income_statement', 'contracts', 'report', 'monitoring_report', ]
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['id_guarantor'] = SerializerGuarantor(instance.id_guarantor).data['full_name']
+        rep['id_property'] = SerializerPropertyAdmin(instance.id_property).data['type']
+        return rep
 
 
 class SerializerEntity(serializers.ModelSerializer):
     id_credit_spec = serializers.ReadOnlyField(source='id_credit_spec.full_name')
+    created_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    updated_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
 
     class Meta:
         model = Entity
         fields = '__all__'
-    # def to_representation(self, instance):
-    #     rep = super().to_representation(instance)
-    #     rep['souce_of_income'] = ActivitySerializer(instance.souce_of_income).data['activites_add']
-    #     return rep
-
-
-class SerializerEntityAdmin(serializers.ModelSerializer):
-    client_company = serializers.ReadOnlyField()
-    full_name = serializers.ReadOnlyField()
-
-    class Meta:
-        model = Client
-        fields = ['client_company', 'full_name_director', 'credit_history', 'income_statement', 'contracts', 'report']
-
 
 
 class SerializerCompany(serializers.ModelSerializer):
@@ -47,14 +34,10 @@ class SerializerCompany(serializers.ModelSerializer):
         model = Company
         fields = '__all__'
 
-
-class SerializerCompanyAdmin(serializers.ModelSerializer):
-    company_name = serializers.ReadOnlyField()
-    inn = serializers.ReadOnlyField()
-
-    class Meta:
-        model = Company
-        fields = ['company_name', 'inn', 'document']
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['field_activity'] = ActivitySerializer(instance.field_activity).data['activites_add']
+        return rep
 
 
 class FilesSerializer(serializers.ModelSerializer):
@@ -64,7 +47,7 @@ class FilesSerializer(serializers.ModelSerializer):
 
     def get_url(self, instance):
         if instance.file.url.startswith('/media'):
-            return f'http://127.0.0.1:8000{instance.file.url}'
+            return f'https://bt-back-demo.herokuapp.com{instance.file.url}'
         return instance.file.url
 
     def to_representation(self, instance):
@@ -81,7 +64,7 @@ class ImagesSerializer(serializers.ModelSerializer):
     def get_url(self, instance):
         if instance.image.url.startswith('/media'):
             print(instance.image.url)
-            return f'http://127.0.0.1:8000{instance.image.url}'
+            return f'https://bt-back-demo.herokuapp.com{instance.image.url}'
         return instance.image.url
 
     def to_representation(self, instance):
@@ -122,44 +105,22 @@ class SerializerPropertyAdmin(serializers.ModelSerializer):
         return rep
 
 
-class SerializerProperty(serializers.ModelSerializer):
-    class Meta:
-        model = Property
-        fields = ['type', 'address']
-
-
 class SerializerGuarantor(serializers.ModelSerializer):
     class Meta:
         model = Guarantor
         fields = '__all__'
 
 
-class SerializerGuarantorAdmin(serializers.ModelSerializer):
-    date = serializers.ReadOnlyField()
-    name = serializers.ReadOnlyField()
-
-    class Meta:
-        model = Guarantor
-        fields = ['full_name', 'income_statement']
-
-
 class SerializersConvers(serializers.ModelSerializer):
+    date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     class Meta:
         model = Conversation
         fields = '__all__'
 
 
-class SerializersConversFull(serializers.ModelSerializer):
-    name = serializers.ReadOnlyField()
-    date = serializers.ReadOnlyField()
-
-    class Meta:
-        model = Conversation
-        fields = ['name', 'date', 'results_report', 'statistics']
-
-
 class SerializersDataKK(serializers.ModelSerializer):
     id_spec = serializers.ReadOnlyField(source='id_spec.fullname')
+    created_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
 
     class Meta:
         model = DataKK
@@ -170,12 +131,6 @@ class SerializersDataKK(serializers.ModelSerializer):
     #     rep['id_client'] = SerializerEntity(instance.id_client).data['full_name']
     #     # rep['id_spec'] = SerializerCreditSpecialist(instance.id_spec).data['full_name']
     #     return rep
-
-
-class SerializersDataKKAdmin(serializers.ModelSerializer):
-    class Meta:
-        model = DataKK
-        fields = '__all__'
 
 
 class ActivitySerializer(serializers.ModelSerializer):

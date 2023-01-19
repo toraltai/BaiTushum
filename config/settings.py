@@ -19,6 +19,8 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 
 
 INSTALLED_APPS = [
+    'jet.dashboard',
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -26,18 +28,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',
-    'drf_api_logger',
-
-    'crm',
-    'users',
-    'corsheaders',
-    'django_filters',
     'rest_framework',
-    'drf_yasg',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
-    'djoser',
-
+    'drf_api_logger',
+    'django_filters',
+    'corsheaders',
+    'drf_yasg',
+    #apps
+    'crm',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -79,11 +79,15 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 50,
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
@@ -174,13 +178,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'Asia/Bishkek'
 
-USE_I18N = True
+USE_I18N = False
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -212,6 +216,7 @@ CORS_ALLOW_ORIGINS = [
     'http://127.0.0.1:3000',
     'http://127.0.0.1:3001',
     'https://www.thunderclient.com',
+    'https://bai-tushim.netlify.app',
 ]
 
 CORS_ORIGIN_WHITELIST = [
@@ -220,9 +225,11 @@ CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1:3000',
     'http://127.0.0.1:3001',
     'https://www.thunderclient.com',
+    'https://bai-tushim.netlify.app',
 ]
 
 DRF_API_LOGGER_DATABASE = True  # Default to False
+DRF_API_LOGGER_STATUS_CODES = ['400', '404', '500']
 
 
 SWAGGER_SETTINGS = {
