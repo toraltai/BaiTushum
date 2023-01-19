@@ -117,6 +117,12 @@ class SerializersConvers(serializers.ModelSerializer):
         model = Conversation
         fields = '__all__'
 
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['entity_id'] = SerializerEntity(instance.entity_id).data['full_name_director']
+        rep['client_id'] = SerializerClient(instance.client_id).data['full_name']
+        return rep
+
 
 class SerializersDataKK(serializers.ModelSerializer):
     id_spec = serializers.ReadOnlyField(source='id_spec.fullname')
