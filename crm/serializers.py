@@ -12,11 +12,11 @@ class SerializerClient(serializers.ModelSerializer):
         model = Client
         fields = "__all__"
 
-    def to_representation(self, instance):
-        rep = super().to_representation(instance)
-        rep['id_guarantor'] = SerializerGuarantor(instance.id_guarantor).data['full_name']
-        rep['id_property'] = SerializerPropertyAdmin(instance.id_property).data['type']
-        return rep
+    # def to_representation(self, instance):
+    #     rep = super().to_representation(instance)
+    #     rep['id_guarantor'] = SerializerGuarantor(instance.id_guarantor).data['full_name']
+    #     rep['id_property'] = SerializerPropertyAdmin(instance.id_property).data['type']
+    #     return rep
 
 
 class SerializerEntity(serializers.ModelSerializer):
