@@ -5,7 +5,7 @@ from .serializers import *
 
 
 class APIClient(ModelViewSet):
-    queryset = Client.objects.order_by('-id')
+    queryset = Client.objects.order_by('-id').select_related('id_guarantor','id_property','id_credit_spec')
     serializer_class = SerializerClient
 
     # permission_classes = [IsAuthenticated]
@@ -122,12 +122,12 @@ class APIDataKK(ModelViewSet):
 
 
 class ImageAPIView(ModelViewSet):
-    queryset = Images.objects.all()
+    queryset = Images.objects.all().select_related('property')
     serializer_class = ImagesSerializer
 
 
 class FileAPIView(ModelViewSet):
-    queryset = Files.objects.all()
+    queryset = Files.objects.all().select_related('property')
     serializer_class = FilesSerializer
 
 
