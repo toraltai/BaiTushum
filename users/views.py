@@ -47,3 +47,5 @@ class UserFullNameView(APIView):
             return Response({'id': id, 'fullname': fullname, 'email': email})
         except:
             return Response('Пользователь не авторизован')
+
+
