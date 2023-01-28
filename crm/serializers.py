@@ -112,7 +112,7 @@ class SerializerGuarantor(serializers.ModelSerializer):
 
 
 class SerializersConvers(serializers.ModelSerializer):
-    date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    date = serializers.DateField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     class Meta:
         model = Conversation
         fields = '__all__'
