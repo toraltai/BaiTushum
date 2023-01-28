@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 from users.models import User
@@ -199,10 +201,11 @@ class Images(models.Model):
 
 
 class Conversation(models.Model):
+    date = models.DateField(default=datetime.date.today())
     is_meeting = models.BooleanField(default=False, verbose_name='Личная встреча')
     client = models.CharField(max_length=100, verbose_name='Клиент')
     phone = models.CharField(max_length=15, verbose_name='Номер телефона', default='+996')
-    date = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
     desc = models.TextField(max_length=200, verbose_name='Содержание')
     results_report = models.FileField(null=True,
                                       verbose_name="Очет по результатам",

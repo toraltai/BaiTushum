@@ -1,5 +1,12 @@
+import datetime
+
+from rest_framework.response import Response
 from rest_framework import generics
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
+from django.db.models import Count
+import json
+
 
 from .serializers import *
 
@@ -138,4 +145,15 @@ class APIActivity(generics.ListCreateAPIView):
     # @decorators.action(['GET'], detail=False)
     # def max_and_min(self, request):
     #     res = Activity.objects.filter()
-    #     return Response(ActivitySerializer(res, many=True).data)
+    #     return Response(ActivitySerializer(res, many=True).data)S
+
+
+class DashboardView(APIView):
+    def get(self, request):
+        try:
+
+            data = Conversation.objects.all().values('date').annotate(total=Count('id')).order_by('date')
+            return Response({"Conversation": [i for i in data]})
+        except:
+            return Response()
+
