@@ -1,29 +1,6 @@
-from djoser.serializers import UserCreateSerializer
-from rest_framework import serializers
-from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+from rest_framework  import serializers
+from django.contrib.auth import authenticate
 from .models import User, SpecUser, OCCUPATION
-
-
-# регистрация джосера с активацией
-class RegistrationUserSerializer(UserCreateSerializer):
-    class Meta(UserCreateSerializer.Meta):
-        fields = ['email', 'full_name', 'phone_number', 'password']
-
-
-class LogoutSerializer(serializers.Serializer):
-    refresh = serializers.CharField()
-
-    def validate(self, attrs):
-        self.token = attrs['refresh']
-        return attrs
-
-    def save(self, **kwargs):
-        try:
-            RefreshToken(self.token).blacklist()
-        except TokenError:
-            self.fail('bad token')
-
-
 
 
 class RegisterSpecSerializer(serializers.Serializer):
@@ -70,8 +47,32 @@ class UserSerializer(serializers.ModelSerializer):
         ref_name = 'user'
 
 
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(required=True)
+
+    def validate(self, email):
+        if not User.objects.filter(email=email).exists():
+            raise serializers.ValidationError('Пользователь не зарегестрирован!')
+        return email
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        password = attrs.get('password')
+
+        if email and password:
+            user = authenticate(username=email, password=password)
+            if not user:
+                raise serializers.ValidationError("Неправильный логин или пароль!")
+            attrs['user'] = user
+            return attrs
 
 
+
+class UserSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['full_name']
 
 
 
