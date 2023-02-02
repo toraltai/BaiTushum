@@ -14,12 +14,11 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('docs/', schema_view.with_ui('swagger')),
-    path('users/', include('users.urls')),
-    path('crm/', include('crm.urls')),
     path('jet/', include('jet.urls')),
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
-    path('', admin.site.urls),
-
+    path('admin/', admin.site.urls),
+    path('docs/', schema_view.with_ui('swagger')),
+    path('crm/', include('crm.urls')),
+    path('', include('users.urls')),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

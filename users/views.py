@@ -8,6 +8,8 @@ from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 from .models import User
 from .serializer import LoginSerializer, RegisterSpecSerializer, UserSerializer
 
+from django.http.response import HttpResponseRedirect
+
 
 class RegisterSpecAPIView(generics.CreateAPIView):
     '''Регистрация Спец Кредита'''
@@ -49,3 +51,6 @@ class UserFullNameView(APIView):
             return Response('Пользователь не авторизован')
 
 
+class RApi(APIView):
+    def get(self,request):
+        return HttpResponseRedirect('http://localhost:8000/admin/')
