@@ -53,4 +53,4 @@ class UserFullNameView(APIView):
 
 class RApi(APIView):
     def get(self,request):
-        return HttpResponseRedirect('http://baitushum-admin.herokuapp.com/admin/')
+        return HttpResponseRedirect('https://baitushum-admin.herokuapp.com/admin/')
