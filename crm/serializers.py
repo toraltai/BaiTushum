@@ -34,10 +34,10 @@ class SerializerCompany(serializers.ModelSerializer):
         model = Company
         fields = '__all__'
 
-    def to_representation(self, instance):
-        rep = super().to_representation(instance)
-        rep['field_activity'] = ActivitySerializer(instance.field_activity).data['activites_add']
-        return rep
+    # def to_representation(self, instance):
+    #     rep = super().to_representation(instance)
+    #     rep['field_activity'] = ActivitySerializer(instance.field_activity).data['activites_add']
+    #     return rep
 
 
 class FilesSerializer(serializers.ModelSerializer):
