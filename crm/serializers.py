@@ -14,8 +14,8 @@ class SerializerClient(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
-        rep['id_guarantor'] = SerializerGuarantor(instance.id_guarantor).data
-        # rep['id_property'] = SerializerPropertyAdmin(instance.id_property).data
+        
+        rep['id_property'] = SerializerPropertyAdmin(instance.id_property).data
         return rep
 
 
