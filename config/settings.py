@@ -135,15 +135,23 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-if DEBUG:
-# if DEBUG == False:
+# if DEBUG:
+if DEBUG == False:
     DATABASES = {
+        # 'default': {
+        #     'ENGINE': 'django.db.backends.postgresql',
+        #     'NAME': config('DB_NAME'),
+        #     'USER': config('DB_USER'),
+        #     'PASSWORD': config('DB_PASS'),
+        #     'HOST': config('DB_HOST'),
+        #     'PORT': 5432
+        # }
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASS'),
-            'HOST': config('DB_HOST'),
+            'NAME': 'initial_db',
+            'USER': 'postgres',
+            'PASSWORD': 'altayforever',
+            'HOST': 'database-2.ct3mu9jdpmsk.eu-central-1.rds.amazonaws.com',
             'PORT': 5432
         }
     }
