@@ -138,20 +138,12 @@ SIMPLE_JWT = {
 # if DEBUG:
 if DEBUG == False:
     DATABASES = {
-        # 'default': {
-        #     'ENGINE': 'django.db.backends.postgresql',
-        #     'NAME': config('DB_NAME'),
-        #     'USER': config('DB_USER'),
-        #     'PASSWORD': config('DB_PASS'),
-        #     'HOST': config('DB_HOST'),
-        #     'PORT': 5432
-        # }
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'initial_db',
-            'USER': 'postgres',
-            'PASSWORD': 'altayforever',
-            'HOST': 'database-2.ct3mu9jdpmsk.eu-central-1.rds.amazonaws.com',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASS'),
+            'HOST': config('DB_HOST'),
             'PORT': 5432
         }
     }
@@ -162,8 +154,9 @@ else:
             'ENGINE': 'django.db.backends.postgresql'
         }
     } 
-    db = dj_database_url.config(conn_max_age=600)
-    DATABASES['default'].update(db)
+    # db = dj_database_url.config(conn_max_age=600)
+    # DATABASES['default'].update(db)
+    DATABASES['default'] =  dj_database_url.config(conn_max_age=600)
 
 CSRF_TRUSTED_ORIGINS = [
     'https://baitushum.up.railway.app'
