@@ -154,9 +154,9 @@ else:
             'ENGINE': 'django.db.backends.postgresql'
         }
     } 
-    # db = dj_database_url.config(conn_max_age=600)
-    # DATABASES['default'].update(db)
-    DATABASES['default'] =  dj_database_url.config(conn_max_age=600)
+    db = dj_database_url.config(conn_max_age=600)
+    DATABASES['default'].update(db)
+    
 
 CSRF_TRUSTED_ORIGINS = [
     'https://baitushum.up.railway.app'
